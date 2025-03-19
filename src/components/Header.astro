@@ -1,0 +1,82 @@
+---
+import { Image } from 'astro:assets';
+import chevron from '../assets/images/chevron.png';
+
+const components = [
+  { label: 'À propos de moi', position: 'top', rotation: 90 },
+  { label: 'Portfolio', position: 'left', rotation: 0 },
+  { label: 'Contact', position: 'right', rotation: 180 },
+  { label: 'Mes compétences', position: 'bottom', rotation: 270 },
+];
+---
+
+<header>
+  <nav role="navigation" aria-label="navigation principale">
+    {components.map(({ label, position, rotation }) => (
+      <div class={`nav-item nav-${position}`}>
+        <p>{label}</p>
+        <Image
+          src={chevron}
+          alt={`Chevron pour ${label}`}
+          class="fade-in-image"
+          style={`transform: rotate(${rotation}deg);`}
+          width={32}
+          height={32}
+          format="webp"
+        />
+      </div>
+    ))}
+  </nav>
+</header>
+
+<style>
+  header {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nav-item {
+    position: fixed;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-item:hover {
+    cursor: url(..assets/images/click.png), pointer;
+  }
+
+  .nav-top { top: 3%; left: 50%; transform: translateX(-50%); flex-direction: column; }
+  .nav-bottom { bottom: 3%; left: 50%; transform: translateX(-50%); flex-direction: column-reverse; }
+  .nav-left { left: 3%; top: 50%; transform: translateY(-50%); writing-mode: vertical-lr; }
+  .nav-right { right: 3%; top: 50%; transform: translateY(-50%); writing-mode: vertical-lr; }
+
+  nav p {
+    font-family: 'Comfortaa', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px;
+  }
+
+  nav img {
+    width: 3vw;
+  }
+
+  .fade-in-image {
+    animation: chevronFade 2s ease-in-out;
+  }
+
+  @keyframes chevronFade {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+</style>
