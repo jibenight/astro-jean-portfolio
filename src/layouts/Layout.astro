@@ -12,6 +12,160 @@
 	</body>
 </html>
 
-<style>
-	
+<style is:global>
+:root {
+/* Ajustez si nécessaire */
+--primary-color: #1da5fe;
+--text-color: #000;
+}
+
+html{
+	font-family: 'Comfortaa', sans-serif;
+}
+
+/* entete génerique */
+.container-title {
+	width: 100%;
+	margin: 0 auto;
+	text-align: center;
+	padding: 1rem 0;
+}
+.title {
+display: inline-block;
+position: relative;
+margin: 5% 0;
+}
+
+.title h2 {
+font-size: 2rem;
+margin: 0px;
+text-transform: uppercase;
+position: relative;
+width: auto;
+font-weight: 500;
+padding-bottom: 15px;
+}
+
+.title h2::after {
+content: '';
+position: absolute;
+background-color: #202020;
+width: 100%;
+height: 2px;
+top: 100%;
+left: 0;
+}
+
+.title p {
+text-align: right;
+width: auto;
+text-transform: uppercase;
+background-color: #f8f8f8;
+margin: 0px;
+padding-left: 10px;
+position: absolute;
+right: 0;
+bottom: -10px;
+color: #1da5fe;
+font-weight: 500;
+}
+
+/* button */
+
+button{
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+
+
+
+/* Panel de base (occupant tout l'écran) */
+.panel {
+  position: absolute;
+  inset: 0; /* top:0; left:0; bottom:0; right:0; */
+  overflow: hidden;
+}
+
+/* Par défaut, .hidden => invisible (display: none) */
+.panel.hidden {
+  display: none;
+}
+
+/* .active => visible sans animation en cours */
+.panel.active {
+  display: block;
+  z-index: 1;
+}
+
+/* ================= ANIMATIONS ===================== */
+/* HAUT → BAS */
+.slide-in-down {
+  animation: slideInDown 0.5s forwards ease-in-out;
+}
+@keyframes slideInDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+.slide-out-down {
+  animation: slideOutDown 0.5s forwards ease-in-out;
+}
+@keyframes slideOutDown {
+  from { transform: translateY(0);     opacity: 1; }
+  to   { transform: translateY(100%);  opacity: 0; }
+}
+
+/* BAS → HAUT */
+.slide-in-up {
+  animation: slideInUp 0.5s forwards ease-in-out;
+}
+@keyframes slideInUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.slide-out-up {
+  animation: slideOutUp 0.5s forwards ease-in-out;
+}
+@keyframes slideOutUp {
+  from { transform: translateY(0);     opacity: 1; }
+  to   { transform: translateY(-100%); opacity: 0; }
+}
+
+/* GAUCHE → DROITE */
+.slide-in-right {
+  animation: slideInRight 0.5s forwards ease-in-out;
+}
+@keyframes slideInRight {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+.slide-out-right {
+  animation: slideOutRight 0.5s forwards ease-in-out;
+}
+@keyframes slideOutRight {
+  from { transform: translateX(0);     opacity: 1; }
+  to   { transform: translateX(100%);  opacity: 0; }
+}
+
+/* DROITE → GAUCHE */
+.slide-in-left {
+  animation: slideInLeft 0.5s forwards ease-in-out;
+}
+@keyframes slideInLeft {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+.slide-out-left {
+  animation: slideOutLeft 0.5s forwards ease-in-out;
+}
+@keyframes slideOutLeft {
+  from { transform: translateX(0);     opacity: 1; }
+  to   { transform: translateX(-100%); opacity: 0; }
+}
+
 </style>
