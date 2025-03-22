@@ -1,19 +1,169 @@
 ---
+import { Image } from 'astro:assets';
 import Close from './close.astro';
+import dataPortfolio from '../data/data-portfolio.json';
+const imagesPath = '../assets/images/images_portfolio/';
 ---
 
-<section id="portfolio">
-    <Close onClick="closeSection('portfolio')"/>
-    <div class="container-title">
-        <div class='title'>
-            <h2>Portfolio</h2>
-            <p>My work</p>
-        </div>
+<section id='portfolio'>
+  <Close onClick="closeSection('portfolio')" />
+  <div class='container-title'>
+    <div class='title'>
+      <h2>Portfolio</h2>
+      <p>My work</p>
     </div>
-    
+  </div>
+  <div class='autre-projets'>
+    <h2>Projets réalisés</h2>
+    <hr />
+
+    <div class='portfolio-item'>
+      {
+        dataPortfolio.map(info => (
+          <div class='card'>
+            <div class='flip-card-inner'>
+              <div class='flip-card-front'>
+                <Image
+                  src={import(`${imagesPath}${info.src}`)}
+                  alt={info.alt}
+                  width={720}
+                  height={480}
+                  format='webp'
+                  quality={80}
+                />
+              </div>
+              <div class='flip-card-back'>
+                <h2>{info.titre}</h2>
+                <p>{info.creation}</p>
+                <button class='btn-grad'>
+                  <a href={info.href} target='_blank' rel='noopener noreferrer'>
+                    Voir le site
+                  </a>
+                </button>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
 </section>
 
-
 <style>
+  #portfolio {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto; /* Permet le défilement vertical */
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff; /* Ajuste si nécessaire selon ton thème */
+  }
 
+  .container-title {
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+
+  .autre-projets {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+    margin: 0 auto; /* Centrage horizontal parfait */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrage horizontal du contenu interne */
+  }
+
+  .autre-projets hr {
+    width: 60%;
+    margin: 1rem auto 2rem; /* Centre horizontalement et ajoute un espacement */
+  }
+
+  .portfolio-item {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* Espacement régulier entre les cartes */
+  }
+
+  .card {
+    width: 360px;
+    height: 240px;
+    background-color: transparent;
+    border-radius: 25px;
+    perspective: 1000px;
+  }
+  .card :is(img, picture) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 25px;
+    display: block;
+  }
+
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+  }
+
+  .card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 25px;
+  }
+
+  .flip-card-front {
+    background: #ebebeb;
+  }
+
+  .flip-card-back {
+    background: #ebebeb;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-grad {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #1da5fe; /* Couleur thème */
+    border-radius: 10px;
+    transition: background-color 0.3s;
+  }
+
+  .btn-grad a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .btn-grad:hover {
+    background-color: #0d8ae8;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .card {
+      width: 100%;
+      height: auto;
+    }
+    .portfolio-item {
+      gap: 1rem;
+    }
+  }
 </style>
