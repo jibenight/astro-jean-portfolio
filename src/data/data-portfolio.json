@@ -107,9 +107,9 @@
     "src": "tuktuk.webp",
     "alt": "tuktuk en ligne",
     "titre": "tuktukworldtour.com",
-    "details": "Réalisation à 100% - Création de theme pour le CMS ghost - Self-hosted",
-    "logo": "",
-    "logogit": "Github",
+    "creation": "Réalisation à 100% - Création de theme pour le CMS ghost - Self-hosted",
+    "logo": ["ghost", "handlebars"],
+    "logogit": "github",
     "github": "https://github.com/jibenight/Ghost-theme-tuktuk",
     "href": "https://tuktukworldtour.com/"
   }

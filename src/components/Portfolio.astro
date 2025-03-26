@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Close from './close.astro';
 import dataPortfolio from '../data/data-portfolio.json';
 const imagesPath = '../assets/images/images_portfolio/';
+const logoTechPath = '../assets/images/icons-dev/';
 ---
 
 <section id='portfolio'>
@@ -13,13 +14,91 @@ const imagesPath = '../assets/images/images_portfolio/';
       <p>My work</p>
     </div>
   </div>
+
+  <!-- Derniers projets -->
+  <div class='last-work'>
+    <h2>Derniers projets</h2>
+    <hr />
+    {
+      dataPortfolio
+        .slice(-2)
+        .reverse()
+        .map((item, index) => (
+          <div class='last-card' key={index}>
+            <div class='last-images'>
+              <Image
+                src={import(`${imagesPath}${item.src}`)}
+                alt={item.alt}
+                width={360}
+                height={240}
+                format='webp'
+                quality={80}
+              />
+            </div>
+            <div class='last-infos'>
+              <a href={item.href} target='_blank' rel='noopener noreferrer'>
+                <h2>{item.titre}</h2>
+              </a>
+              <div class='last-logo'>
+                {Array.isArray(item.logo)
+                  ? item.logo.map((logo, i) => (
+                      <Image
+                        src={import(`${logoTechPath}${logo}.svg`)}
+                        alt={item.alt}
+                        key={i}
+                        width={128}
+                        height={128}
+                        format='svg'
+                      />
+                    ))
+                  : item.logo && (
+                      <Image
+                        src={import(`${logoTechPath}${item.logo}.svg`)}
+                        alt='Logo de la technologie de developpement utiliser'
+                        width={128}
+                        height={128}
+                        format='svg'
+                      />
+                    )}
+              </div>
+              <div>
+                <p>{item.creation}</p>
+              </div>
+              {item.github && (
+                <div>
+                  <a
+                    href={item.github}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <div class='git-link'>
+                      <div>
+                        <Image
+                          src={import(`${logoTechPath}${item.logogit}.svg`)}
+                          alt='Logo du site github'
+                          width={32}
+                          height={32}
+                          format='svg'
+                        />
+                      </div>
+                      <p>Voir le repository Github</p>
+                    </div>
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        ))
+    }
+  </div>
+
+  <!-- Autres projets -->
   <div class='autre-projets'>
     <h2>Projets réalisés</h2>
     <hr />
-
     <div class='portfolio-item'>
       {
-        dataPortfolio.map(info => (
+        dataPortfolio.slice(0, -2).map(info => (
           <div class='card'>
             <div class='flip-card-inner'>
               <div class='flip-card-front'>
@@ -34,6 +113,18 @@ const imagesPath = '../assets/images/images_portfolio/';
               </div>
               <div class='flip-card-back'>
                 <h2>{info.titre}</h2>
+                <div class='logo-tech'>
+                  <Image
+                    src={import(`${logoTechPath}${info.logo}.svg`)}
+                    alt={info.alt}
+                    width={64}
+                    height={64}
+                    format='svg'
+                    quality={80}
+                    class='logo-tech'
+                  />
+                </div>
+
                 <p>{info.creation}</p>
                 <button class='btn-grad'>
                   <a href={info.href} target='_blank' rel='noopener noreferrer'>
@@ -53,12 +144,12 @@ const imagesPath = '../assets/images/images_portfolio/';
   #portfolio {
     position: absolute;
     inset: 0;
-    overflow-y: auto; /* Permet le défilement vertical */
+    overflow-y: auto;
     padding: 2rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #fff; /* Ajuste si nécessaire selon ton thème */
+    background: #fff;
   }
 
   .container-title {
@@ -66,26 +157,111 @@ const imagesPath = '../assets/images/images_portfolio/';
     margin-bottom: 3rem;
   }
 
+  .last-work {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .last-work h2 {
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
+
+  .last-work hr {
+    width: 100%;
+    height: 2px;
+    background-color: #202020;
+    border: none;
+    margin-bottom: 2rem;
+  }
+
+  .last-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    background-color: #ebebeb;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .last-images {
+    flex-shrink: 0;
+  }
+
+  .last-images img {
+    object-fit: cover;
+    border-radius: 20px 0 0 20px;
+    height: auto;
+  }
+
+  .last-infos {
+    padding: 1rem;
+  }
+
+  .last-infos h3 {
+    margin: 0 0 1rem;
+  }
+
+  .last-logo {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .logo-tech {
+    width: 64px;
+  }
+
+  .last-logo img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .git-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .autre-projets {
     width: 100%;
     max-width: 1200px;
     padding: 0 2rem;
-    margin: 0 auto; /* Centrage horizontal parfait */
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centrage horizontal du contenu interne */
+    align-items: flex-start;
+  }
+
+  .autre-projets > h2 {
+    align-self: flex-start;
+    margin-bottom: 0.5rem;
   }
 
   .autre-projets hr {
-    width: 60%;
-    margin: 1rem auto 2rem; /* Centre horizontalement et ajoute un espacement */
+    width: 100%;
+    height: 2px;
+    background-color: #202020;
+    border: none;
+    border-radius: 50px;
+    margin: 0 0 2rem;
+  }
+
+  .flip-card-back h2 {
+    text-align: center;
+    width: 100%;
+    margin: 0.5rem 0;
   }
 
   .portfolio-item {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.5rem; /* Espacement régulier entre les cartes */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .card {
@@ -95,6 +271,7 @@ const imagesPath = '../assets/images/images_portfolio/';
     border-radius: 25px;
     perspective: 1000px;
   }
+
   .card :is(img, picture) {
     width: 100%;
     height: 100%;
@@ -142,7 +319,7 @@ const imagesPath = '../assets/images/images_portfolio/';
   .btn-grad {
     margin-top: 1rem;
     padding: 0.6rem 1.2rem;
-    background-color: #1da5fe; /* Couleur thème */
+    background-color: #1da5fe;
     border-radius: 10px;
     transition: background-color 0.3s;
   }
@@ -156,14 +333,28 @@ const imagesPath = '../assets/images/images_portfolio/';
     background-color: #0d8ae8;
   }
 
-  /* Responsive */
   @media (max-width: 768px) {
     .card {
       width: 100%;
       height: auto;
     }
     .portfolio-item {
-      gap: 1rem;
+      grid-template-columns: 1fr;
+      padding: 0 1rem;
+    }
+    .last-card {
+      flex-direction: column;
+    }
+    .last-images,
+    .last-infos {
+      width: 100%;
+    }
+    .last-logo {
+      justify-content: center;
+    }
+    .last-logo img {
+      width: 32px;
+      height: 32px;
     }
   }
 </style>
