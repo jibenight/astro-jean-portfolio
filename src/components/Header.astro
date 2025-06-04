@@ -2,80 +2,115 @@
 import { Image } from 'astro:assets';
 import chevron from '../assets/images/chevron.png';
 
-
 const components = [
-  { label: 'À propos de moi',  position: 'top',    rotation: 90,  target: 'about' },
-  { label: 'Portfolio',        position: 'left',   rotation: 0,   target: 'portfolio' },
-  { label: 'Mes compétences',  position: 'bottom', rotation: 270, target: 'skills' },
-  { label: 'Contact',          position: 'right',  rotation: 180, target: 'contact' },
+  { label: 'À propos de moi', position: 'top', rotation: 90, target: 'about' },
+  { label: 'Portfolio', position: 'left', rotation: 0, target: 'portfolio' },
+  {
+    label: 'Mes compétences',
+    position: 'bottom',
+    rotation: 270,
+    target: 'skills',
+  },
+  { label: 'Contact', position: 'right', rotation: 180, target: 'contact' },
 ];
-
-
 ---
 
 <header>
-  <nav role="navigation" aria-label="navigation principale">
-    {components.map(({ label, position, rotation, target }) => (
-      <div class={`nav-item nav-${position}`} data-target={target}>
-        <p>{label}</p>
-        <Image
-          src={chevron}
-          alt={`Chevron pour ${label}`}
-          class="fade-in-image"
-          style={`transform: rotate(${rotation}deg);`}
-          width={32}
-          height={32}
-          format="webp"
-        />
-      </div>
-    ))}
+  <nav role='navigation' aria-label='navigation principale'>
+    {
+      components.map(({ label, position, rotation, target }) => (
+        <div class={`nav-item nav-${position}`} data-target={target}>
+          <p>{label}</p>
+          <Image
+            src={chevron}
+            alt={`Chevron pour ${label}`}
+            class='fade-in-image'
+            style={`transform: rotate(${rotation}deg);`}
+            width={32}
+            height={32}
+            format='webp'
+          />
+        </div>
+      ))
+    }
   </nav>
 </header>
 
 <style>
-
   nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10; 
+    z-index: 10;
   }
 
   .nav-item {
-  position: fixed;
-  cursor: pointer;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 5px;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  }
-
-  .nav-item:hover {
+    position: fixed;
     cursor: pointer;
-  }
-
-  .nav-top { top: 3%; left: 50%; transform: translateX(-50%); flex-direction: column; }
-  .nav-bottom { bottom: 3%; left: 50%; transform: translateX(-50%); flex-direction: column-reverse; }
-  .nav-left { left: 3%; top: 50%; transform: translateY(-50%); writing-mode: vertical-lr;text-orientation: upright;flex-direction: column; }
-  .nav-right { right: 3%; top: 50%; transform: translateY(-50%); writing-mode: vertical-lr;text-orientation: upright;flex-direction: column-reverse; }
-
-  nav p {
+    font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 5px;
     font-size: 1.2rem;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    animation: fadeIn 2s ease-in-out;
+  }
+
+  .nav-item:hover {
+    opacity: 0.8;
+  }
+
+  .nav-top {
+    top: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column;
+  }
+
+  .nav-bottom {
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column-reverse;
+  }
+
+  .nav-left {
+    left: 3%;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    flex-direction: column;
+  }
+
+  .nav-right {
+    right: 3%;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    flex-direction: column-reverse;
+  }
+
+  nav p {
     margin: 0;
     padding: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-transform: uppercase;
   }
 
   .fade-in-image {
-    animation: chevronFade 2s ease-in-out;
+    animation: fadeIn 2s ease-in-out;
   }
 
-  @keyframes chevronFade {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 </style>

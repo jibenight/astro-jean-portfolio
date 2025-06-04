@@ -1,20 +1,131 @@
 ---
 import Close from './close.astro';
-
+import html from '../assets/images/icons-dev/html5.svg';
+import css from '../assets/images/icons-dev/css3.svg';
+import js from '../assets/images/icons-dev/js.svg';
+import linux from '../assets/images/icons-dev/linux.svg';
+import nodejs from '../assets/images/icons-dev/nodejs.svg';
+import react from '../assets/images/icons-dev/react.svg';
+import python from '../assets/images/icons-dev/python.svg';
+import wordpress from '../assets/images/icons-dev/wordpress.svg';
 ---
 
-<section id="skills">
-    <Close onClick="closeSection('skills')"/>
-    <div class="container-title">
-        <div class='title'>
-            <h2>Mes compétences</h2>
-            <p>Skills</p>
-        </div>
+<section id='skills' class='skills-section'>
+  <Close onClick="closeSection('skills')" />
+  <div class='container-title'>
+    <div class='title'>
+      <h2>Mes compétences</h2>
+      <p>Skills</p>
     </div>
-    
+  </div>
+
+  <div class='skills-content'>
+    <div class='softskills'>
+      <div class='sub-title'>
+        <h2>Soft Skills</h2>
+        <hr />
+      </div>
+
+      <ul>
+        <li>Rigoureux</li>
+        <li>Autonome</li>
+        <li>Polyvalent</li>
+        <li>Écoute</li>
+        <li>Relationnel</li>
+        <li>Réactif</li>
+        <li>Culture Web</li>
+        <li>Anglais</li>
+      </ul>
+    </div>
+
+    <div class='techskills'>
+      <div class='sub-title'>
+        <h2>Compétences techniques</h2>
+        <hr />
+      </div>
+
+      <div class='grid-icons'>
+        <div><img src='/icons/html.svg' alt='HTML' /><span>HTML</span></div>
+        <div><img src='/icons/css.svg' alt='CSS' /><span>CSS</span></div>
+        <div>
+          <img src='/icons/javascript.svg' alt='JavaScript' /><span
+            >JavaScript</span
+          >
+        </div>
+        <div><img src='/icons/react.svg' alt='React' /><span>React</span></div>
+        <div><img src='/icons/git.svg' alt='Git' /><span>Git</span></div>
+        <div>
+          <img src='/icons/wordpress.svg' alt='WordPress' /><span
+            >WordPress</span
+          >
+        </div>
+        <div><img src='/icons/bash.svg' alt='Bash' /><span>Bash</span></div>
+        <div><img src='/icons/linux.svg' alt='Linux' /><span>Linux</span></div>
+        <div><img src='/icons/astro.svg' alt='Astro' /><span>Astro</span></div>
+      </div>
+    </div>
+
+    <div class='ai-tools'>
+      <div class='sub-title'>
+        <h3>Outils IA</h3>
+        <hr />
+      </div>
+
+      <div class='ai-card'>
+        <img src='/icons/ai.svg' alt='AI' />
+        <p>
+          J’utilise l’intelligence artificielle pour automatiser, générer du
+          code, améliorer mes workflows et gagner en efficacité dans la création
+          web moderne.
+        </p>
+      </div>
+    </div>
+  </div>
 </section>
 
-
 <style>
+  .skills-content {
+    width: 100%;
+    max-width: 1200px;
+    gap: 2rem;
+    padding: 1rem;
+    margin: auto;
+  }
 
+  .softskills li {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    width: 100%;
+    display: inline;
+  }
+
+  .techskills .grid-icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .ai-card {
+    background: var(--muted-color);
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .skills-content {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .softskills,
+    .techskills,
+    .ai-tools {
+      flex: 1 1 30%;
+    }
+  }
 </style>

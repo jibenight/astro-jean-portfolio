@@ -9,29 +9,27 @@ import Contact from '../components/Contact.astro';
 ---
 
 <Layout>
-  
   <!-- Home -->
-  <div id="home-wrapper" class="panel active">
+  <div id='home-wrapper' class='panel active'>
     <Home />
   </div>
 
- <!-- Header -->
- <div id="header-wrapper" class="panel active">
+  <!-- Header -->
+  <div id='header-wrapper' class='panel active'>
     <Header />
   </div>
 
-
   <!-- Autres sections (hidden) -->
-  <div id="about-wrapper" class="panel hidden">
+  <div id='about-wrapper' class='panel hidden'>
     <About />
   </div>
-  <div id="contact-wrapper" class="panel hidden">
+  <div id='contact-wrapper' class='panel hidden'>
     <Contact />
   </div>
-  <div id="skills-wrapper" class="panel hidden">
+  <div id='skills-wrapper' class='panel hidden'>
     <Skills />
   </div>
-  <div id="portfolio-wrapper" class="panel hidden">
+  <div id='portfolio-wrapper' class='panel hidden'>
     <Portfolio />
   </div>
 
@@ -39,12 +37,12 @@ import Contact from '../components/Contact.astro';
   <script is:inline>
     // Récupération des panels
     const headerEl = document.getElementById('header-wrapper');
-    const homeEl   = document.getElementById('home-wrapper');
+    const homeEl = document.getElementById('home-wrapper');
 
     const sections = {
-      about:     document.getElementById('about-wrapper'),
-      contact:   document.getElementById('contact-wrapper'),
-      skills:    document.getElementById('skills-wrapper'),
+      about: document.getElementById('about-wrapper'),
+      contact: document.getElementById('contact-wrapper'),
+      skills: document.getElementById('skills-wrapper'),
       portfolio: document.getElementById('portfolio-wrapper'),
     };
 
@@ -55,7 +53,7 @@ import Contact from '../components/Contact.astro';
         item.addEventListener('click', () => {
           const targetId = item.getAttribute('data-target');
           if (!targetId) return;
-          
+
           switch (targetId) {
             case 'about':
               // about => in/down, header+home => out/down
@@ -91,7 +89,7 @@ import Contact from '../components/Contact.astro';
 
     // Fermeture depuis chaque composant
     // On l'expose en global pour pouvoir l'appeler depuis About.astro, etc.
-    window.closeSection = function(sectionId) {
+    window.closeSection = function (sectionId) {
       switch (sectionId) {
         case 'about':
           // about => out/up, header+home => in/up
@@ -121,14 +119,14 @@ import Contact from '../components/Contact.astro';
           slideIn(homeEl, 'left');
           break;
       }
-    }
+    };
 
     // Helpers : slideIn / slideOut
     function slideIn(el, direction) {
       if (!el) return;
       el.classList.remove('hidden');
       void el.offsetWidth; // force reflow
-      
+
       // Sélectionne la classe "slide-in-XXX" en fonction de direction
       const animClass = {
         down: 'slide-in-down',
@@ -138,17 +136,21 @@ import Contact from '../components/Contact.astro';
       }[direction];
 
       el.classList.add(animClass);
-      el.addEventListener('animationend', function endAnim() {
-        el.classList.remove(animClass);
-        el.classList.add('active');
-        el.removeEventListener('animationend', endAnim);
-      }, { once: true });
+      el.addEventListener(
+        'animationend',
+        function endAnim() {
+          el.classList.remove(animClass);
+          el.classList.add('active');
+          el.removeEventListener('animationend', endAnim);
+        },
+        { once: true }
+      );
     }
 
     function slideOut(el, direction) {
       if (!el) return;
       el.classList.remove('active');
-      
+
       // Sélectionne la classe "slide-out-XXX" en fonction de direction
       const animClass = {
         down: 'slide-out-down',
@@ -158,11 +160,15 @@ import Contact from '../components/Contact.astro';
       }[direction];
 
       el.classList.add(animClass);
-      el.addEventListener('animationend', function endAnim() {
-        el.classList.remove(animClass);
-        el.classList.add('hidden');
-        el.removeEventListener('animationend', endAnim);
-      }, { once: true });
+      el.addEventListener(
+        'animationend',
+        function endAnim() {
+          el.classList.remove(animClass);
+          el.classList.add('hidden');
+          el.removeEventListener('animationend', endAnim);
+        },
+        { once: true }
+      );
     }
   </script>
 </Layout>

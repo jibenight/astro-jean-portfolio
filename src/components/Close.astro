@@ -7,28 +7,31 @@ const { width = 32, height = 32, onClick } = Astro.props;
 <button class='close' onClick={onClick}>
   <Image
     src={closeImage}
-    alt="bouton de fermeture"
+    alt='bouton de fermeture'
     width={width}
     height={height}
-    format="png"
-    class="fade-in-image"
+    format='png'
+    class='fade-in-image'
   />
 </button>
 
 <style>
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
 
-.close {
-position: absolute;
-top:20px;
-right:20px;
-}
+  .fade-in-image {
+    animation: fadeIn 2s ease-in-out;
+  }
 
-.fade-in-image {
-  animation: chevronFade 2s ease-in-out;
-}
-
-@keyframes chevronFade {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 </style>
