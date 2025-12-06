@@ -1,0 +1,141 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <main class="legal">
+    <div class="header-bar">
+      <h1>Mentions légales</h1>
+      <a href="/" class="btn-home">← Retour à l’accueil</a>
+    </div>
+
+    <section>
+      <h2>Éditeur du site</h2>
+      <p>
+        Jean Nguyen<br />
+        Directeur de la publication : Jean Nguyen<br />
+        Contact : <a href="mailto:message@jean-nguyen.dev">message@jean-nguyen.dev</a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Hébergement</h2>
+      <p>
+        o2switch<br />
+        222 Boulevard Gustave Flaubert<br />
+        63000 Clermont-Ferrand<br />
+        France<br />
+        Téléphone : 04 44 44 60 40<br />
+        Site : <a href="https://www.o2switch.fr" target="_blank" rel="noopener">www.o2switch.fr</a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        L’ensemble des contenus (textes, images, graphismes, logo, vidéos, icônes,
+        mise en page) sont la propriété exclusive de Jean Nguyen ou de leurs auteurs
+        respectifs. Toute reproduction, représentation ou diffusion, totale ou
+        partielle, sans autorisation préalable est interdite.
+      </p>
+    </section>
+
+    <section>
+      <h2>Responsabilité</h2>
+      <p>
+        Jean Nguyen met tout en œuvre pour fournir des informations exactes et mises
+        à jour. Toutefois, il ne saurait être tenu responsable des erreurs ou
+        omissions, ni des conséquences liées à l’usage qui peut en être fait.
+      </p>
+    </section>
+
+    <section>
+      <h2>Données personnelles</h2>
+      <p>
+        Ce site ne collecte pas de données personnelles sans votre accord explicite.
+        Les informations transmises via le formulaire de contact sont utilisées
+        uniquement pour répondre à votre demande et ne sont pas conservées au-delà
+        du temps nécessaire au traitement de celle-ci.
+      </p>
+    </section>
+
+    <section>
+      <h2>Cookies</h2>
+      <p>
+        Ce site n’utilise pas de cookies à des fins de suivi publicitaire. Des
+        cookies techniques peuvent être déposés pour assurer le bon fonctionnement
+        du site et sont exemptés de consentement.
+      </p>
+    </section>
+
+    <section>
+      <h2>Signalement d’un contenu illicite</h2>
+      <p>
+        Pour signaler un contenu illicite ou porter une réclamation, vous pouvez
+        contacter le directeur de la publication à l’adresse suivante :
+        <a href="mailto:message@jean-nguyen.dev">message@jean-nguyen.dev</a>.
+      </p>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .legal {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 3rem;
+    color: #111827;
+    line-height: 1.6;
+    background: #ffffff;
+  }
+
+  h1 {
+    margin: 0 0 1.5rem;
+    font-size: clamp(2rem, 3vw, 2.6rem);
+  }
+
+  .header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin: 0 0 0.5rem;
+  }
+
+  a {
+    color: #0d8ae8;
+  }
+
+  .btn-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 10px;
+    background: #f1f5f9;
+    border: 1px solid #dbe2ee;
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 600;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    background: #e8eef6;
+  }
+</style>

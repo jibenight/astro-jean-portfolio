@@ -1,415 +1,492 @@
 ---
-import { Image } from 'astro:assets';
-import Close from './close.astro';
-import dataPortfolio from '../data/data-portfolio.json';
-const imagesPath = '../assets/images/images_portfolio/';
-const logoTechPath = '../assets/images/icons-dev/';
+import { Image } from "astro:assets";
+import Close from "./Close.astro";
+import { getCollection } from "astro:content";
+
+const imageImports = import.meta.glob("../assets/images/images_portfolio/*", {
+    eager: true,
+    import: "default",
+});
+
+const entries = await getCollection("portfolio");
+
+const normalizeLogos = (logos) =>
+    Array.isArray(logos) ? logos : logos ? [logos] : [];
+
+const categoryFromLogo = (logos) => {
+    if (logos.includes("ghost")) return "Ghost / Headless";
+    if (logos.includes("wordpress")) return "WordPress";
+    return "Custom build";
+};
+
+const getImageAsset = (imagePath) => {
+    if (!imagePath) return undefined;
+    const filename = imagePath.split("/").pop();
+    return filename
+        ? imageImports[`../assets/images/images_portfolio/${filename}`]
+        : undefined;
+};
+
+const projects = entries.map((entry) => {
+    const logos = normalizeLogos(entry.data.logos);
+    return {
+        ...entry.data,
+        logos,
+        category: categoryFromLogo(logos),
+        imageAsset: getImageAsset(entry.data.image),
+    };
+});
+
+const featuredProjects = projects.slice(-2).reverse();
+const archiveProjects = projects.slice(0, -2);
+const categories = [
+    "Tous",
+    ...new Set(projects.map((project) => project.category)),
+];
 ---
 
-<section id='portfolio' class='layout-section'>
-  <Close onClick="closeSection('portfolio')" />
-  <div class='container-title'>
-    <div class='title'>
-      <h2>Portfolio</h2>
-      <p>My work</p>
+<section id="portfolio" class="portfolio-section">
+    <Close onClick="closeSection('portfolio')" />
+    <div class="container-title">
+        <div class="title">
+            <h2>Portfolio</h2>
+            <p>Case studies</p>
+        </div>
     </div>
-  </div>
 
-  <!-- Derniers projets -->
-  <div class='last-work'>
-    <h2>Derniers projets</h2>
-    <hr />
-    {
-      dataPortfolio
-        .slice(-2)
-        .reverse()
-        .map((item, index) => (
-          <div class='last-card' key={index}>
-            <div class='last-images'>
-              <Image
-                src={import(`${imagesPath}${item.src}`)}
-                alt={item.alt}
-                width={360}
-                height={240}
-                format='webp'
-                quality={80}
-              />
-            </div>
-            <div class='last-infos'>
-              <a href={item.href} target='_blank' rel='noopener noreferrer'>
-                <h2>{item.titre}</h2>
-              </a>
-              <div class='last-logo'>
-                {Array.isArray(item.logo)
-                  ? item.logo.map((logo, i) => (
-                      <Image
-                        src={import(`${logoTechPath}${logo}.svg`)}
-                        alt={item.alt}
-                        key={i}
-                        width={128}
-                        height={128}
-                        format='svg'
-                      />
-                    ))
-                  : item.logo && (
-                      <Image
-                        src={import(`${logoTechPath}${item.logo}.svg`)}
-                        alt='Logo de la technologie de developpement utiliser'
-                        width={128}
-                        height={128}
-                        format='svg'
-                      />
-                    )}
-              </div>
-              <div>
-                <p>{item.creation}</p>
-              </div>
-              {item.github && (
+    <div class="portfolio-hero glass">
+        <div class="hero-copy">
+            <p class="eyebrow">+80 projets livrés depuis 2012</p>
+            <h3>
+                Des expériences web sur-mesure mêlant branding, UX et
+                performance technique.
+            </h3>
+            <p>
+                Chaque case study couvre discovery, design system, développement
+                et automatisations. Une approche product-first, peu importe le
+                stack.
+            </p>
+            <div class="hero-stats">
                 <div>
-                  <a
-                    href={item.github}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <div class='git-link'>
-                      <div>
-                        <Image
-                          src={import(`${logoTechPath}${item.logogit}.svg`)}
-                          alt='Logo du site github'
-                          width={32}
-                          height={32}
-                          format='svg'
-                        />
-                      </div>
-                      <p>Voir le repository Github</p>
-                    </div>
-                  </a>
+                    <strong>+30%</strong>
+                    <span>conversion moyenne</span>
                 </div>
-              )}
-            </div>
-          </div>
-        ))
-    }
-  </div>
-
-  <!-- Autres projets -->
-  <div class='autre-projets'>
-    <h2>Projets réalisés</h2>
-    <hr />
-    <div class='portfolio-item'>
-      {
-        dataPortfolio.slice(0, -2).map(info => (
-          <div class='card'>
-            <div class='flip-card-inner'>
-              <div class='flip-card-front'>
-                <Image
-                  src={import(`${imagesPath}${info.src}`)}
-                  alt={info.alt}
-                  width={720}
-                  height={480}
-                  format='webp'
-                  quality={80}
-                />
-              </div>
-              <div class='flip-card-back'>
-                <h2>{info.titre}</h2>
-                <div class='logo-tech'>
-                  <Image
-                    src={import(`${logoTechPath}${info.logo}.svg`)}
-                    alt={info.alt}
-                    width={64}
-                    height={64}
-                    format='svg'
-                    quality={80}
-                    class='logo-tech'
-                  />
+                <div>
+                    <strong>1.2s</strong>
+                    <span>Largest Contentful Paint</span>
                 </div>
-
-                <p>{info.creation}</p>
-                <button class='btn-grad'>
-                  <a href={info.href} target='_blank' rel='noopener noreferrer'>
-                    Voir le site
-                  </a>
-                </button>
-              </div>
+                <div>
+                    <strong>4 stacks</strong>
+                    <span>maîtrisées</span>
+                </div>
             </div>
-          </div>
-        ))
-      }
+        </div>
+        <div class="hero-filters">
+            <p>Filtrer par stack</p>
+            <div class="filter-chips">
+                {
+                    categories.map((category, index) => (
+                        <button
+                            type="button"
+                            class={`chip ${index === 0 ? "active" : ""}`}
+                            data-filter={category}
+                        >
+                            {category}
+                        </button>
+                    ))
+                }
+            </div>
+        </div>
     </div>
-  </div>
+
+    <section class="featured">
+        <div class="section-header">
+            <p class="eyebrow">Focus</p>
+            <h3>Études récentes</h3>
+        </div>
+        <div class="featured-grid">
+            {
+                featuredProjects.map((project) => (
+                    <article
+                        class="featured-card"
+                        data-category={project.category}
+                    >
+                        <div class="media-frame">
+                            {project.imageAsset ? (
+                                <Image
+                                    src={project.imageAsset}
+                                    alt={project.alt}
+                                    width={960}
+                                    height={540}
+                                    format="webp"
+                                    quality={90}
+                                    loading="lazy"
+                                    decoding="async"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                />
+                            ) : (
+                                <div
+                                    class="media-fallback"
+                                    aria-hidden="true"
+                                />
+                            )}
+                            <span class="category-pill">
+                                {project.category}
+                            </span>
+                        </div>
+                        <div class="featured-content">
+                            <div>
+                                <h4>{project.title}</h4>
+                                <p>{project.creation}</p>
+                            </div>
+                            <div class="logo-row">
+                                {project.logos.map((logo) => (
+                                    <img
+                                        src={`/icons-dev/${logo}.svg`}
+                                        alt={`Logo ${logo}`}
+                                        width="48"
+                                        height="48"
+                                    />
+                                ))}
+                            </div>
+                            <div class="card-actions">
+                                <a
+                                    href={project.href}
+                                    target="_blank"
+                                    rel="noopener"
+                                    class="btn-primary"
+                                >
+                                    Voir le site
+                                </a>
+                                {project.github && (
+                                    <a
+                                        href={project.github}
+                                        target="_blank"
+                                        rel="noopener"
+                                        class="btn-ghost"
+                                    >
+                                        Repo GitHub
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    </article>
+                ))
+            }
+        </div>
+    </section>
+
+    <section class="projects-grid">
+        <div class="section-header">
+            <p class="eyebrow">Archive</p>
+            <h3>Projets livrés</h3>
+        </div>
+        <div class="grid">
+            {
+                archiveProjects.map((project) => (
+                    <article
+                        class="project-card"
+                        data-category={project.category}
+                    >
+                        <div class="media-frame">
+                            {project.imageAsset ? (
+                                <Image
+                                    src={project.imageAsset}
+                                    alt={project.alt}
+                                    width={720}
+                                    height={480}
+                                    format="webp"
+                                    quality={80}
+                                    loading="lazy"
+                                    decoding="async"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                />
+                            ) : (
+                                <div
+                                    class="media-fallback"
+                                    aria-hidden="true"
+                                />
+                            )}
+                            <span class="category-pill">
+                                {project.category}
+                            </span>
+                        </div>
+                        <div class="project-body">
+                            <div>
+                                <h4>{project.title}</h4>
+                                <p>{project.creation}</p>
+                            </div>
+                            <div class="logo-row">
+                                {project.logos.map((logo) => (
+                                    <img
+                                        src={`/icons-dev/${logo}.svg`}
+                                        alt={`Logo ${logo}`}
+                                        width="40"
+                                        height="40"
+                                    />
+                                ))}
+                            </div>
+                            <a
+                                href={project.href}
+                                target="_blank"
+                                rel="noopener"
+                                class="link"
+                            >
+                                Explorer le site →
+                            </a>
+                        </div>
+                    </article>
+                ))
+            }
+        </div>
+    </section>
+
+    <section class="cta-card glass">
+        <div>
+            <p class="eyebrow">Encore plus de projets</p>
+            <h3>Besoin d’un audit ou d’un aperçu détaillé ?</h3>
+            <p>
+                Parlons de votre stack actuel, des points de friction et de la
+                roadmap idéale pour accélérer.
+            </p>
+        </div>
+        <a href="#contact" class="btn-primary">Planifier un call</a>
+    </section>
 </section>
 
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+        const chips = document.querySelectorAll(".chip");
+        const cards = document.querySelectorAll("[data-category]");
+
+        chips.forEach((chip) => {
+            chip.addEventListener("click", () => {
+                const filter = chip.dataset.filter;
+
+                chips.forEach((btn) =>
+                    btn.classList.toggle("active", btn === chip),
+                );
+                cards.forEach((card) => {
+                    const match =
+                        filter === "Tous" || card.dataset.category === filter;
+                    card.classList.toggle("hidden-card", !match);
+                });
+            });
+        });
+    });
+</script>
+
 <style>
-  #portfolio {
-    position: fixed;
-    inset: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 2rem 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #fff;
-    box-sizing: border-box;
-  }
-
-  .container-title {
-    width: 100%;
-    margin-bottom: 3rem;
-  }
-
-  .last-work {
-    width: 100%;
-    max-width: 1200px;
-    padding: 0 2rem;
-    margin-bottom: 3rem;
-  }
-
-  .last-work h2 {
-    margin-bottom: 0.5rem;
-    text-align: left;
-  }
-
-  .last-work hr {
-    width: 100%;
-    height: 2px;
-    background-color: #202020;
-    border: none;
-    margin-bottom: 2rem;
-  }
-
-  .last-card {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    background-color: #ebebeb;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .last-images {
-    flex-shrink: 0;
-  }
-
-  .last-images img {
-    object-fit: cover;
-    border-radius: 20px 0 0 20px;
-    height: auto;
-  }
-
-  .last-infos {
-    padding: 1rem;
-  }
-
-  .last-infos h3 {
-    margin: 0 0 1rem;
-  }
-
-  .last-logo {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0;
-    align-items: center;
-  }
-
-  .logo-tech {
-    width: 64px;
-  }
-
-  .last-logo img {
-    width: 100%;
-    max-width: 60px;
-    height: 100%;
-    max-height: 60px;
-  }
-
-  .git-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .autre-projets {
-    width: 100%;
-    max-width: 1200px;
-    padding: 0 2rem;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .autre-projets > h2 {
-    align-self: flex-start;
-    margin-bottom: 0.5rem;
-  }
-
-  .autre-projets hr {
-    width: 100%;
-    height: 2px;
-    background-color: #202020;
-    border: none;
-    border-radius: 50px;
-    margin: 0 0 2rem;
-  }
-
-  .flip-card-back h2 {
-    text-align: center;
-    width: 100%;
-    margin: 0.5rem 0;
-  }
-
-  .portfolio-item {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .card {
-    width: 100%;
-    max-width: 360px;
-    height: 240px;
-    background-color: transparent;
-    border-radius: 25px;
-    perspective: 1000px;
-  }
-
-  .card :is(img, picture) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 25px;
-    display: block;
-  }
-
-  .flip-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 25px;
-  }
-
-  .card:hover .flip-card-inner {
-    transform: rotateY(180deg);
-  }
-
-  .flip-card-front,
-  .flip-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 25px;
-  }
-
-  .flip-card-front {
-    background: #ebebeb;
-  }
-
-  .flip-card-back {
-    background: #ebebeb;
-    transform: rotateY(180deg);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .btn-grad {
-    margin-top: 1rem;
-    padding: 0.6rem 1.2rem;
-    background-color: #1da5fe;
-    border-radius: 10px;
-    transition: background-color 0.3s;
-  }
-
-  .btn-grad a {
-    color: #fff;
-    text-decoration: none;
-  }
-
-  .btn-grad:hover {
-    background-color: #0d8ae8;
-  }
-
-  @media (max-width: 768px) {
     #portfolio {
-      padding: 0 0 4rem 0;
-      margin: 0 10px; /* pour éviter le blanc vide dû à un débordement ou au clavier mobile */
+        position: fixed;
+        inset: 0;
+        overflow-y: auto;
+        padding: 2rem clamp(1rem, 4vw, 5rem);
+        background: radial-gradient(circle at top right, #eef6ff, #f7f8fc 45%);
     }
 
-    .autre-projets {
-      padding: 0;
+    .glass {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 32px;
+        box-shadow: 0 35px 80px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.6);
     }
 
-    .last-card {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+    .portfolio-hero {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+        margin-bottom: 3rem;
+        align-items: center;
     }
 
-    .last-images {
-      width: 100%;
+    .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        font-size: 0.85rem;
+        color: #7a7a7a;
     }
 
-    .last-images img {
-      width: 100%;
-      height: auto;
-      border-radius: 20px 20px 0 0;
-      object-fit: cover;
-      display: block;
+    .hero-stats {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
     }
 
-    .last-infos {
-      padding: 1rem;
-      width: 100%;
+    .hero-stats strong {
+        display: block;
+        font-size: 1.8rem;
     }
 
-    .last-infos h2 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      text-align: center;
+    .filter-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-top: 1rem;
     }
 
-    .last-logo {
-      justify-content: space-evenly;
-      flex-wrap: wrap;
+    .chip {
+        border-radius: 999px;
+        border: 1px solid rgba(13, 138, 232, 0.25);
+        padding: 0.45rem 1.1rem;
+        cursor: pointer;
+        background: transparent;
+        font-weight: 600;
+        color: #0d8ae8;
+        transition: 0.2s ease;
     }
 
-    .git-link {
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
+    .chip.active {
+        background: linear-gradient(120deg, #0d8ae8, #1da5fe);
+        color: #fff;
+        border-color: transparent;
     }
 
-    .portfolio-item {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-      padding: 0;
+    .featured,
+    .projects-grid {
+        margin-bottom: 3rem;
     }
 
-    .card {
-      width: 100%;
-      max-width: 100%;
-      aspect-ratio: 3 / 2;
+    .section-header {
+        margin-bottom: 1rem;
     }
 
-    .flip-card-back h2 {
-      font-size: 1.2rem;
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
     }
 
-    .btn-grad {
-      font-size: 1rem;
-      width: auto;
+    .featured-card,
+    .project-card {
+        border-radius: 28px;
+        box-shadow: 0 25px 65px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.2rem 1.2rem 1.5rem;
+        background: #fff;
     }
-  }
+
+    .project-card {
+        gap: 0.8rem;
+    }
+
+    .media-frame {
+        position: relative;
+        border-radius: 24px;
+        overflow: hidden;
+        aspect-ratio: 16 / 9;
+        background: #e4ecf8;
+    }
+
+    .media-frame :is(img, picture) {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .category-pill {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: rgba(17, 24, 39, 0.85);
+        color: #fff;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+    }
+
+    .featured-content,
+    .project-body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+    }
+
+    .logo-row {
+        display: flex;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .logo-row img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        padding: 6px;
+        border-radius: 14px;
+        background: rgba(13, 138, 232, 0.06);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-actions {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary {
+        background: linear-gradient(120deg, #0d8ae8, #1da5fe);
+        color: #fff;
+        border-radius: 12px;
+        padding: 0.6rem 1.2rem;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .btn-ghost {
+        border-radius: 12px;
+        padding: 0.6rem 1.2rem;
+        text-decoration: none;
+        font-weight: 600;
+        border: 1px solid rgba(13, 138, 232, 0.4);
+        color: #0d8ae8;
+    }
+
+    .projects-grid .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .link {
+        color: #0d8ae8;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: auto;
+    }
+
+    .cta-card {
+        padding: 2rem;
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .hidden-card {
+        display: none !important;
+    }
+
+    @media (max-width: 768px) {
+        .portfolio-hero {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-stats {
+            flex-direction: column;
+        }
+
+        .card-actions {
+            flex-direction: column;
+        }
+    }
 </style>

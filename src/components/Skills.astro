@@ -1,131 +1,496 @@
 ---
-import Close from './close.astro';
-import html from '../assets/images/icons-dev/html5.svg';
-import css from '../assets/images/icons-dev/css3.svg';
-import js from '../assets/images/icons-dev/js.svg';
-import linux from '../assets/images/icons-dev/linux.svg';
-import nodejs from '../assets/images/icons-dev/nodejs.svg';
-import react from '../assets/images/icons-dev/react.svg';
-import python from '../assets/images/icons-dev/python.svg';
-import wordpress from '../assets/images/icons-dev/wordpress.svg';
+import Close from "./Close.astro";
+const iconBasePath = "/icons-dev/";
+const heroIcon = "ai.svg";
+
+const softSkills = [
+    "Communication claire",
+    "Leadership",
+    "Résolution de problèmes",
+    "Empathie client",
+    "Gestion du temps",
+    "Esprit critique",
+    "Autonomie",
+    "Collaboration",
+];
+
+const hardHighlights = [
+    "Architecture front-end",
+    "Design system maintenable",
+    "Performance web (Core Web Vitals)",
+    "Accessibilité niveau AA",
+    "Automatisation CI/CD",
+    "Optimisation SEO technique",
+];
+
+const techSkills = [
+    { label: "HTML / CSS", icon: "html5.svg", level: 95 },
+    { label: "JavaScript", icon: "js.svg", level: 90 },
+    { label: "React", icon: "react.svg", level: 85 },
+    { label: "Astro", icon: "astro.svg", level: 80 },
+    { label: "Node.js", icon: "nodejs.svg", level: 75 },
+    { label: "Git & CI", icon: "github.svg", level: 88 },
+    { label: "WordPress", icon: "wordpress.svg", level: 92 },
+    { label: "Linux/Bash", icon: "linux.svg", level: 70 },
+];
+
+const aiTools = [
+    {
+        name: "Claude",
+        tag: "Prompt engineering",
+        desc: "idéation & revue de specs",
+    },
+    {
+        name: "GitHub Copilot",
+        tag: "Pair coding",
+        desc: "accélération dev front",
+    },
+    {
+        name: "Midjourney",
+        tag: "Moodboards",
+        desc: "recherches visuelles rapides",
+    },
+    {
+        name: "Make / n8n",
+        tag: "Automation",
+        desc: "pipelines et QA automatisés",
+    },
+];
+
+const metrics = [
+    { value: "12+", label: "années d'expérience" },
+    { value: "80+", label: "projets livrés" },
+    { value: "10", label: "stacks maîtrisées" },
+];
 ---
 
-<section id='skills' class='skills-section'>
-  <Close onClick="closeSection('skills')" />
-  <div class='container-title'>
-    <div class='title'>
-      <h2>Mes compétences</h2>
-      <p>Skills</p>
-    </div>
-  </div>
-
-  <div class='skills-content'>
-    <div class='softskills'>
-      <div class='sub-title'>
-        <h2>Soft Skills</h2>
-        <hr />
-      </div>
-
-      <ul>
-        <li>Rigoureux</li>
-        <li>Autonome</li>
-        <li>Polyvalent</li>
-        <li>Écoute</li>
-        <li>Relationnel</li>
-        <li>Réactif</li>
-        <li>Culture Web</li>
-        <li>Anglais</li>
-      </ul>
-    </div>
-
-    <div class='techskills'>
-      <div class='sub-title'>
-        <h2>Compétences techniques</h2>
-        <hr />
-      </div>
-
-      <div class='grid-icons'>
-        <div><img src='/icons/html.svg' alt='HTML' /><span>HTML</span></div>
-        <div><img src='/icons/css.svg' alt='CSS' /><span>CSS</span></div>
-        <div>
-          <img src='/icons/javascript.svg' alt='JavaScript' /><span
-            >JavaScript</span
-          >
+<section id="skills" class="skills-section">
+    <Close onClick="closeSection('skills')" />
+    <div class="container-title">
+        <div class="title">
+            <h2>Mes compétences</h2>
+            <p>Skillset</p>
         </div>
-        <div><img src='/icons/react.svg' alt='React' /><span>React</span></div>
-        <div><img src='/icons/git.svg' alt='Git' /><span>Git</span></div>
+    </div>
+
+    <div class="skills-hero reveal">
         <div>
-          <img src='/icons/wordpress.svg' alt='WordPress' /><span
-            >WordPress</span
-          >
+            <p class="eyebrow">Product mindset</p>
+            <h3>
+                Hard skills, soft skills et IA pour livrer des expériences web
+                complètes.
+            </h3>
+            <p>
+                Chaque projet bénéficie d’une approche centrée utilisateur, de
+                méthodologies agiles et d’un stack moderne optimisé par l’IA
+                pour gagner en vitesse sans sacrifier la qualité.
+            </p>
         </div>
-        <div><img src='/icons/bash.svg' alt='Bash' /><span>Bash</span></div>
-        <div><img src='/icons/linux.svg' alt='Linux' /><span>Linux</span></div>
-        <div><img src='/icons/astro.svg' alt='Astro' /><span>Astro</span></div>
-      </div>
+        <div class="hero-icon" aria-hidden="true">
+            <img
+                src={`${iconBasePath}${heroIcon}`}
+                alt="Icône IA"
+                width="140"
+                height="140"
+            />
+        </div>
     </div>
 
-    <div class='ai-tools'>
-      <div class='sub-title'>
-        <h3>Outils IA</h3>
-        <hr />
-      </div>
+    <div class="skills-grid">
+        <article class="card soft-card reveal">
+            <div class="card-header">
+                <h3>Dimension humaine</h3>
+                <div
+                    class="skill-toggle"
+                    role="group"
+                    aria-label="Filtrer les aptitudes"
+                >
+                    <button class="toggle-btn active" data-scope="soft"
+                        >Soft</button
+                    >
+                    <button class="toggle-btn" data-scope="hard">Hard</button>
+                </div>
+            </div>
 
-      <div class='ai-card'>
-        <img src='/icons/ai.svg' alt='AI' />
-        <p>
-          J’utilise l’intelligence artificielle pour automatiser, générer du
-          code, améliorer mes workflows et gagner en efficacité dans la création
-          web moderne.
-        </p>
-      </div>
+            <ul class="badge-list toggle-list soft active">
+                {softSkills.map((skill) => <li>{skill}</li>)}
+            </ul>
+            <ul class="badge-list toggle-list hard">
+                {hardHighlights.map((skill) => <li>{skill}</li>)}
+            </ul>
+        </article>
+
+        <article class="card kpi-card reveal">
+            <h3>Impact en chiffres</h3>
+            <div class="metrics">
+                {
+                    metrics.map((item) => (
+                        <div class="metric-item">
+                            <span class="metric-value">{item.value}</span>
+                            <span class="metric-label">{item.label}</span>
+                        </div>
+                    ))
+                }
+            </div>
+        </article>
+
+        <article class="card tech-card reveal">
+            <h3>Stack technique</h3>
+            <div class="skill-pills">
+                {
+                    techSkills.map((skill) => (
+                        <div class="pill">
+                            <div class="pill-info">
+                                <img
+                                    src={`${iconBasePath}${skill.icon}`}
+                                    alt={`Icône ${skill.label}`}
+                                    width="40"
+                                    height="40"
+                                />
+                                <span>{skill.label}</span>
+                            </div>
+                            <div class="progress">
+                                <span style={`width: ${skill.level}%;`} />
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </article>
+
+        <article class="card ai-card reveal">
+            <h3>IA & automatisation</h3>
+            <p>
+                L’IA accompagne chaque phase : prototypage, développement, QA et
+                surveillance de production. Elle agit comme un multiplicateur
+                d’efficacité, pas un remplacement.
+            </p>
+            <ul class="ai-tools">
+                {
+                    aiTools.map((tool) => (
+                        <li>
+                            <div>
+                                <strong>{tool.name}</strong>
+                                <span>{tool.tag}</span>
+                            </div>
+                            <p>{tool.desc}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+        </article>
     </div>
-  </div>
 </section>
 
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggleButtons = document.querySelectorAll(".toggle-btn");
+        const lists = document.querySelectorAll(".toggle-list");
+
+        toggleButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const scope = button.dataset.scope;
+                toggleButtons.forEach((btn) =>
+                    btn.classList.toggle("active", btn === button),
+                );
+                lists.forEach((list) => {
+                    list.classList.toggle(
+                        "active",
+                        list.classList.contains(scope),
+                    );
+                });
+            });
+        });
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("in-view");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.3 },
+        );
+
+        document
+            .querySelectorAll(".reveal")
+            .forEach((el) => observer.observe(el));
+    });
+</script>
+
 <style>
-  .skills-content {
-    width: 100%;
-    max-width: 1200px;
-    gap: 2rem;
-    padding: 1rem;
-    margin: auto;
-  }
-
-  .softskills li {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 1.2rem;
-    width: 100%;
-    display: inline;
-  }
-
-  .techskills .grid-icons {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 1rem;
-    text-align: center;
-  }
-
-  .ai-card {
-    background: var(--muted-color);
-    border-radius: 1rem;
-    padding: 1rem;
-  }
-
-  @media (min-width: 768px) {
-    .skills-content {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-between;
+    #skills {
+        position: fixed;
+        inset: 0;
+        overflow-y: auto;
+        padding: 2rem clamp(1rem, 5vw, 4rem);
+        background: #f5f7fb;
     }
 
-    .softskills,
-    .techskills,
-    .ai-tools {
-      flex: 1 1 30%;
+    .skills-hero {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        align-items: center;
+        gap: 2rem;
+        padding: 2.5rem;
+        border-radius: 32px;
+        background: linear-gradient(120deg, #0d8ae8, #1da5fe);
+        color: #fff;
+        position: relative;
+        overflow: hidden;
     }
-  }
+
+    .skills-hero .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
+    }
+
+    .skills-hero h3 {
+        font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+        margin: 0 0 1rem;
+    }
+
+    .hero-icon img {
+        width: 140px;
+        height: 140px;
+        animation: float 6s ease-in-out infinite;
+        filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
+    }
+
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 1.5rem 2rem;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+        transition:
+            transform 0.35s ease,
+            box-shadow 0.35s ease;
+        position: relative;
+    }
+
+    .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .skill-toggle {
+        background: #ecf5ff;
+        border-radius: 999px;
+        padding: 0.2rem;
+        display: inline-flex;
+    }
+
+    .toggle-btn {
+        border: none;
+        background: transparent;
+        color: #0d8ae8;
+        padding: 0.4rem 1rem;
+        border-radius: 999px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+    }
+
+    .toggle-btn.active {
+        background: #fff;
+        color: #111;
+        box-shadow: 0 4px 12px rgba(13, 138, 232, 0.2);
+    }
+
+    .badge-list {
+        list-style: none;
+        margin: 1.5rem 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.6rem;
+        opacity: 0;
+        pointer-events: none;
+        max-height: 0;
+        transition:
+            opacity 0.25s ease,
+            max-height 0.25s ease;
+    }
+
+    .badge-list.active {
+        opacity: 1;
+        pointer-events: auto;
+        max-height: 500px;
+    }
+
+    .badge-list li {
+        background: rgba(15, 171, 255, 0.12);
+        border: 1px solid rgba(15, 171, 255, 0.3);
+        color: #0d7cd1;
+        border-radius: 999px;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.95rem;
+    }
+
+    .kpi-card {
+        border-left: 4px solid #1da5fe;
+    }
+
+    .metrics {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .metric-item {
+        flex: 1 1 120px;
+    }
+
+    .metric-value {
+        display: block;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #111;
+    }
+
+    .metric-label {
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+        font-size: 0.8rem;
+        color: #7a7a7a;
+    }
+
+    .skill-pills {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .pill {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .pill-info {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-weight: 600;
+    }
+
+    .pill-info img {
+        width: 36px;
+        height: 36px;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover .pill-info img {
+        transform: scale(1.05);
+    }
+
+    .progress {
+        width: 100%;
+        height: 8px;
+        background: #ecf5ff;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .progress span {
+        display: block;
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(120deg, #0d8ae8, #1da5fe);
+    }
+
+    .ai-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 1.2rem 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .ai-card li {
+        padding: 1rem;
+        border-radius: 16px;
+        background: #f4f8ff;
+        border: 1px solid rgba(13, 138, 232, 0.2);
+    }
+
+    .ai-card strong {
+        display: block;
+        font-size: 1rem;
+    }
+
+    .ai-card span {
+        font-size: 0.8rem;
+        color: #1da5fe;
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+    }
+
+    .ai-card p {
+        margin: 0.3rem 0 0;
+        color: #4c4c4c;
+    }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+            opacity 0.6s ease,
+            transform 0.6s ease;
+    }
+
+    .reveal.in-view {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        #skills {
+            padding: 1.5rem 1rem 3rem;
+        }
+
+        .card {
+            padding: 1.5rem;
+        }
+
+        .metrics {
+            flex-direction: column;
+        }
+    }
 </style>

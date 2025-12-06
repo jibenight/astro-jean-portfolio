@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 150" width="100" height="150">
+  <defs>
+    <linearGradient id="metalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4a5568;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#718096;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4a5568;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="darkJoint" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d3748;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a202c;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="aiGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+      <stop offset="80%" style="stop-color:#00b7ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0077ff;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+
+  <g transform="translate(25, 90)">
+    <rect x="5" y="0" width="15" height="40" rx="4" fill="url(#metalGradient)"/>
+    <circle cx="12.5" cy="0" r="6" fill="url(#darkJoint)"/> <circle cx="12.5" cy="20" r="5" fill="url(#darkJoint)"/> <path d="M5 40 h15 v8 a4 4 0 0 1 -4 4 h-7 a4 4 0 0 1 -4 -4 z" fill="#2d3748"/> <rect x="30" y="0" width="15" height="40" rx="4" fill="url(#metalGradient)"/>
+     <circle cx="37.5" cy="0" r="6" fill="url(#darkJoint)"/> <circle cx="37.5" cy="20" r="5" fill="url(#darkJoint)"/> <path d="M30 40 h15 v8 a4 4 0 0 1 -4 4 h-7 a4 4 0 0 1 -4 -4 z" fill="#2d3748"/> </g>
+
+  <g transform="translate(25, 35)">
+    <path d="M5 0 H45 L50 50 H0 L5 0Z" fill="url(#metalGradient)"/>
+    <path d="M5 0 L0 50 H10 L15 0 H5Z" fill="#000" opacity="0.2"/>
+    <circle cx="25" cy="25" r="10" fill="#2d3748" stroke="#1a202c" stroke-width="2"/>
+    <circle cx="25" cy="25" r="7" fill="url(#aiGlow)">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
+    </circle>
+  </g>
+  
+  <g>
+    <g transform="translate(10, 40) rotate(10)">
+       <rect x="0" y="0" width="12" height="35" rx="3" fill="url(#metalGradient)"/>
+       <circle cx="6" cy="0" r="6" fill="url(#darkJoint)"/> <circle cx="6" cy="17.5" r="4.5" fill="url(#darkJoint)"/> <path d="M2 35 L0 45 L4 42 L6 45 L8 42 L12 45 L10 35 Z" fill="#2d3748"/>
+    </g>
+    <g transform="translate(78, 40) rotate(-10)">
+       <rect x="-12" y="0" width="12" height="35" rx="3" fill="url(#metalGradient)"/>
+       <circle cx="-6" cy="0" r="6" fill="url(#darkJoint)"/> <circle cx="-6" cy="17.5" r="4.5" fill="url(#darkJoint)"/> <path d="M-2 35 L0 45 L-4 42 L-6 45 L-8 42 L-12 45 L-10 35 Z" fill="#2d3748"/>
+    </g>
+  </g>
+
+  <g transform="translate(35, 5)">
+    <rect x="10" y="25" width="10" height="10" fill="url(#darkJoint)"/>
+    <rect x="0" y="5" width="30" height="25" rx="5" ry="5" fill="url(#metalGradient)"/>
+    <path d="M0 5 A5 5 0 0 1 5 0 H10 L5 30 H0 V5 Z" fill="#000" opacity="0.2"/>
+    <rect x="5" y="12" width="20" height="8" rx="2" fill="#1a202c"/>
+    <rect x="7" y="14" width="16" height="4" rx="1" fill="url(#aiGlow)">
+    </rect>
+    <path d="M5 5 L2 0 M25 5 L28 0" stroke="#718096" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
