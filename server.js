@@ -8,7 +8,7 @@ const SMTP_HOST = process.env.SMTP_HOST;
 const SMTP_PORT = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 587;
 const SMTP_USER = process.env.SMTP_USER;
 const SMTP_PASS = process.env.SMTP_PASS;
-const TO_EMAIL = process.env.TO_EMAIL || 'message@jean-nguyen.dev';
+const TO_EMAIL = process.env.TO_EMAIL || 'contact@jean-nguyen.dev';
 const FROM_EMAIL = process.env.FROM_EMAIL || SMTP_USER || 'no-reply@localhost';
 
 app.use(express.json());
