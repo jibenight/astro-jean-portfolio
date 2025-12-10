@@ -174,4 +174,25 @@ const mailHref = `mailto:${email}`;
     margin: 0;
     color: #4b5563;
   }
+
+  @media (max-width: 640px) {
+    .popup-card {
+      width: 88vw;
+      max-width: 360px;
+      padding: 1.25rem;
+      gap: 0.7rem;
+    }
+
+    .popup-actions {
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+      justify-content: center;
+      padding: 0.7rem 1rem;
+      border-radius: 14px;
+    }
+  }
 </style>

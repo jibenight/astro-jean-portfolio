@@ -54,30 +54,34 @@ import Contact from '../components/Contact.astro';
           const targetId = item.getAttribute('data-target');
           if (!targetId) return;
 
+          const isMobile = window.innerWidth <= 768;
+
+          if (isMobile) {
+            // Mobile : même comportement que Skills (in/up, header+home out/up)
+            slideIn(sections[targetId], 'up');
+            slideOut(headerEl, 'up');
+            slideOut(homeEl, 'up');
+            return;
+          }
+
+          // Desktop : directions spécifiques
           switch (targetId) {
             case 'about':
-              // about => in/down, header+home => out/down
               slideIn(sections['about'], 'down');
               slideOut(headerEl, 'down');
               slideOut(homeEl, 'down');
               break;
-
             case 'contact':
-              // contact => in/left, header+home => out/left
               slideIn(sections['contact'], 'left');
               slideOut(headerEl, 'left');
               slideOut(homeEl, 'left');
               break;
-
             case 'skills':
-              // skills => in/up, header+home => out/up
               slideIn(sections['skills'], 'up');
               slideOut(headerEl, 'up');
               slideOut(homeEl, 'up');
               break;
-
             case 'portfolio':
-              // portfolio => in/right, header+home => out/right
               slideIn(sections['portfolio'], 'right');
               slideOut(headerEl, 'right');
               slideOut(homeEl, 'right');
@@ -90,30 +94,34 @@ import Contact from '../components/Contact.astro';
     // Fermeture depuis chaque composant
     // On l'expose en global pour pouvoir l'appeler depuis About.astro, etc.
     window.closeSection = function (sectionId) {
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        // Mobile : sortie vers le bas, retour header/home par le bas
+        slideOut(sections[sectionId], 'down');
+        slideIn(headerEl, 'down');
+        slideIn(homeEl, 'down');
+        return;
+      }
+
+      // Desktop : directions spécifiques
       switch (sectionId) {
         case 'about':
-          // about => out/up, header+home => in/up
           slideOut(sections['about'], 'up');
           slideIn(headerEl, 'up');
           slideIn(homeEl, 'up');
           break;
-
         case 'contact':
-          // contact => out/right, header+home => in/right
           slideOut(sections['contact'], 'right');
           slideIn(headerEl, 'right');
           slideIn(homeEl, 'right');
           break;
-
         case 'skills':
-          // skills => out/down, header+home => in/down
           slideOut(sections['skills'], 'down');
           slideIn(headerEl, 'down');
           slideIn(homeEl, 'down');
           break;
-
         case 'portfolio':
-          // portfolio => out/left, header+home => in/left
           slideOut(sections['portfolio'], 'left');
           slideIn(headerEl, 'left');
           slideIn(homeEl, 'left');
