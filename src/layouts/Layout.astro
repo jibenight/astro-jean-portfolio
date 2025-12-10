@@ -1,3 +1,7 @@
+---
+import CallPopup from "../components/CallPopup.astro";
+---
+
 <!doctype html>
 <html lang='fr'>
   <head>
@@ -9,6 +13,7 @@
   </head>
   <body>
     <slot />
+    <CallPopup id="call-popup" />
   </body>
 </html>
 
@@ -23,10 +28,31 @@
     font-family: 'Comfortaa', sans-serif;
   }
 
+  p {
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+
   a {
     text-decoration: none;
     color: inherit;
     outline: none;
+  }
+
+  button.popup-trigger {
+    font-size: 1rem;
+    font-weight: 800;
+    border-radius: 24px;
+    padding: 1.05rem 1.85rem;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  button.popup-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 40px rgba(0, 0, 0, 0.16);
   }
 
   .sub-title {

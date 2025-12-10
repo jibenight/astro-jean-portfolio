@@ -1,492 +1,485 @@
 ---
-import { Image } from "astro:assets";
-import Close from "./Close.astro";
-import { getCollection } from "astro:content";
+import { Image } from 'astro:assets';
+import Close from './Close.astro';
+import { getCollection } from 'astro:content';
 
-const imageImports = import.meta.glob("../assets/images/images_portfolio/*", {
-    eager: true,
-    import: "default",
+const imageImports = import.meta.glob('../assets/images/images_portfolio/*', {
+  eager: true,
+  import: 'default',
 });
 
-const entries = await getCollection("portfolio");
+const entries = await getCollection('portfolio');
+const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
 
-const normalizeLogos = (logos) =>
-    Array.isArray(logos) ? logos : logos ? [logos] : [];
+const normalizeLogos = logos =>
+  Array.isArray(logos) ? logos : logos ? [logos] : [];
 
-const categoryFromLogo = (logos) => {
-    if (logos.includes("ghost")) return "Ghost / Headless";
-    if (logos.includes("wordpress")) return "WordPress";
-    return "Custom build";
+const categoryFromLogo = logos => {
+  if (logos.includes('ghost')) return 'Ghost / Headless';
+  if (logos.includes('wordpress')) return 'WordPress';
+  return 'Custom build';
 };
 
-const getImageAsset = (imagePath) => {
-    if (!imagePath) return undefined;
-    const filename = imagePath.split("/").pop();
-    return filename
-        ? imageImports[`../assets/images/images_portfolio/${filename}`]
-        : undefined;
+const getImageAsset = imagePath => {
+  if (!imagePath) return undefined;
+  const filename = imagePath.split('/').pop();
+  return filename
+    ? imageImports[`../assets/images/images_portfolio/${filename}`]
+    : undefined;
 };
 
-const projects = entries.map((entry) => {
-    const logos = normalizeLogos(entry.data.logos);
-    return {
-        ...entry.data,
-        logos,
-        category: categoryFromLogo(logos),
-        imageAsset: getImageAsset(entry.data.image),
-    };
+const projects = entries.map(entry => {
+  const logos = normalizeLogos(entry.data.logos);
+  return {
+    ...entry.data,
+    logos,
+    category: categoryFromLogo(logos),
+    imageAsset: getImageAsset(entry.data.image),
+  };
 });
 
 const featuredProjects = projects.slice(-2).reverse();
 const archiveProjects = projects.slice(0, -2);
 const categories = [
-    "Tous",
-    ...new Set(projects.map((project) => project.category)),
+  'Tous',
+  ...new Set(projects.map(project => project.category)),
 ];
 ---
 
-<section id="portfolio" class="portfolio-section">
-    <Close onClick="closeSection('portfolio')" />
-    <div class="container-title">
-        <div class="title">
-            <h2>Portfolio</h2>
-            <p>Case studies</p>
-        </div>
+<section id='portfolio' class='portfolio-section'>
+  <Close onClick="closeSection('portfolio')" />
+  <div class='container-title'>
+    <div class='title'>
+      <h2>Portfolio</h2>
+      <p>Case studies</p>
     </div>
+  </div>
 
-    <div class="portfolio-hero glass">
-        <div class="hero-copy">
-            <p class="eyebrow">+80 projets livrés depuis 2012</p>
-            <h3>
-                Des expériences web sur-mesure mêlant branding, UX et
-                performance technique.
-            </h3>
-            <p>
-                Chaque case study couvre discovery, design system, développement
-                et automatisations. Une approche product-first, peu importe le
-                stack.
-            </p>
-            <div class="hero-stats">
-                <div>
-                    <strong>+30%</strong>
-                    <span>conversion moyenne</span>
-                </div>
-                <div>
-                    <strong>1.2s</strong>
-                    <span>Largest Contentful Paint</span>
-                </div>
-                <div>
-                    <strong>4 stacks</strong>
-                    <span>maîtrisées</span>
-                </div>
-            </div>
-        </div>
-        <div class="hero-filters">
-            <p>Filtrer par stack</p>
-            <div class="filter-chips">
-                {
-                    categories.map((category, index) => (
-                        <button
-                            type="button"
-                            class={`chip ${index === 0 ? "active" : ""}`}
-                            data-filter={category}
-                        >
-                            {category}
-                        </button>
-                    ))
-                }
-            </div>
-        </div>
-    </div>
-
-    <section class="featured">
-        <div class="section-header">
-            <p class="eyebrow">Focus</p>
-            <h3>Études récentes</h3>
-        </div>
-        <div class="featured-grid">
-            {
-                featuredProjects.map((project) => (
-                    <article
-                        class="featured-card"
-                        data-category={project.category}
-                    >
-                        <div class="media-frame">
-                            {project.imageAsset ? (
-                                <Image
-                                    src={project.imageAsset}
-                                    alt={project.alt}
-                                    width={960}
-                                    height={540}
-                                    format="webp"
-                                    quality={90}
-                                    loading="lazy"
-                                    decoding="async"
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                />
-                            ) : (
-                                <div
-                                    class="media-fallback"
-                                    aria-hidden="true"
-                                />
-                            )}
-                            <span class="category-pill">
-                                {project.category}
-                            </span>
-                        </div>
-                        <div class="featured-content">
-                            <div>
-                                <h4>{project.title}</h4>
-                                <p>{project.creation}</p>
-                            </div>
-                            <div class="logo-row">
-                                {project.logos.map((logo) => (
-                                    <img
-                                        src={`/icons-dev/${logo}.svg`}
-                                        alt={`Logo ${logo}`}
-                                        width="48"
-                                        height="48"
-                                    />
-                                ))}
-                            </div>
-                            <div class="card-actions">
-                                <a
-                                    href={project.href}
-                                    target="_blank"
-                                    rel="noopener"
-                                    class="btn-primary"
-                                >
-                                    Voir le site
-                                </a>
-                                {project.github && (
-                                    <a
-                                        href={project.github}
-                                        target="_blank"
-                                        rel="noopener"
-                                        class="btn-ghost"
-                                    >
-                                        Repo GitHub
-                                    </a>
-                                )}
-                            </div>
-                        </div>
-                    </article>
-                ))
-            }
-        </div>
-    </section>
-
-    <section class="projects-grid">
-        <div class="section-header">
-            <p class="eyebrow">Archive</p>
-            <h3>Projets livrés</h3>
-        </div>
-        <div class="grid">
-            {
-                archiveProjects.map((project) => (
-                    <article
-                        class="project-card"
-                        data-category={project.category}
-                    >
-                        <div class="media-frame">
-                            {project.imageAsset ? (
-                                <Image
-                                    src={project.imageAsset}
-                                    alt={project.alt}
-                                    width={720}
-                                    height={480}
-                                    format="webp"
-                                    quality={80}
-                                    loading="lazy"
-                                    decoding="async"
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                />
-                            ) : (
-                                <div
-                                    class="media-fallback"
-                                    aria-hidden="true"
-                                />
-                            )}
-                            <span class="category-pill">
-                                {project.category}
-                            </span>
-                        </div>
-                        <div class="project-body">
-                            <div>
-                                <h4>{project.title}</h4>
-                                <p>{project.creation}</p>
-                            </div>
-                            <div class="logo-row">
-                                {project.logos.map((logo) => (
-                                    <img
-                                        src={`/icons-dev/${logo}.svg`}
-                                        alt={`Logo ${logo}`}
-                                        width="40"
-                                        height="40"
-                                    />
-                                ))}
-                            </div>
-                            <a
-                                href={project.href}
-                                target="_blank"
-                                rel="noopener"
-                                class="link"
-                            >
-                                Explorer le site →
-                            </a>
-                        </div>
-                    </article>
-                ))
-            }
-        </div>
-    </section>
-
-    <section class="cta-card glass">
+  <div class='portfolio-hero glass'>
+    <div class='hero-copy'>
+      <p class='eyebrow'>
+        Front-end Astro/Tailwind + IA — {yearsExperience}+ ans
+      </p>
+      <h3>Sites Astro rapides, accessibles, optimisés Core Web Vitals.</h3>
+      <p>
+        Intégration front, audits perfs/a11y, automatisation et QA assistée par
+        l’IA. Focus sur des livraisons propres, scalables, avec des stacks
+        légères et maintenables.
+      </p>
+      <div class='hero-stats'>
         <div>
-            <p class="eyebrow">Encore plus de projets</p>
-            <h3>Besoin d’un audit ou d’un aperçu détaillé ?</h3>
-            <p>
-                Parlons de votre stack actuel, des points de friction et de la
-                roadmap idéale pour accélérer.
-            </p>
+          <strong>{yearsExperience}+ ans</strong>
+          <span>d’expérience front</span>
         </div>
-        <a href="#contact" class="btn-primary">Planifier un call</a>
-    </section>
+        <div>
+          <strong>Astro/TW</strong>
+          <span>stack cœur</span>
+        </div>
+        <div>
+          <strong>IA</strong>
+          <span>analyse & QA</span>
+        </div>
+      </div>
+    </div>
+    <div class='hero-filters'>
+      <p>Filtrer par stack</p>
+      <div class='filter-chips'>
+        {
+          categories.map((category, index) => (
+            <button
+              type='button'
+              class={`chip ${index === 0 ? 'active' : ''}`}
+              data-filter={category}
+            >
+              {category}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <section class='featured'>
+    <div class='section-header'>
+      <p class='eyebrow'>Focus</p>
+      <h3>Études récentes</h3>
+    </div>
+    <div class='featured-grid'>
+      {
+        featuredProjects.map(project => (
+          <article class='featured-card' data-category={project.category}>
+            <div class='media-frame'>
+              {project.imageAsset ? (
+                <Image
+                  src={project.imageAsset}
+                  alt={project.alt}
+                  width={960}
+                  height={540}
+                  format='webp'
+                  quality={90}
+                  loading='lazy'
+                  decoding='async'
+                  sizes='(max-width: 768px) 100vw, 50vw'
+                />
+              ) : (
+                <div class='media-fallback' aria-hidden='true' />
+              )}
+              <span class='category-pill'>{project.category}</span>
+            </div>
+            <div class='featured-content'>
+              <div>
+                <h4>{project.title}</h4>
+                <p>{project.creation}</p>
+              </div>
+              <div class='logo-row'>
+                {project.logos.map(logo => (
+                  <img
+                    src={`/icons-dev/${logo}.svg`}
+                    alt={`Logo ${logo}`}
+                    width='48'
+                    height='48'
+                  />
+                ))}
+              </div>
+              <div class='card-actions'>
+                <a
+                  href={project.href}
+                  target='_blank'
+                  rel='noopener'
+                  class='btn-primary'
+                >
+                  Voir le site
+                </a>
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target='_blank'
+                    rel='noopener'
+                    class='btn-ghost'
+                  >
+                    Repo GitHub
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class='projects-grid'>
+    <div class='section-header'>
+      <p class='eyebrow'>Archive</p>
+      <h3>Projets livrés</h3>
+    </div>
+    <div class='grid'>
+      {
+        archiveProjects.map(project => (
+          <article class='project-card' data-category={project.category}>
+            <div class='media-frame'>
+              {project.imageAsset ? (
+                <Image
+                  src={project.imageAsset}
+                  alt={project.alt}
+                  width={720}
+                  height={480}
+                  format='webp'
+                  quality={80}
+                  loading='lazy'
+                  decoding='async'
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                />
+              ) : (
+                <div class='media-fallback' aria-hidden='true' />
+              )}
+              <span class='category-pill'>{project.category}</span>
+            </div>
+            <div class='project-body'>
+              <div>
+                <h4>{project.title}</h4>
+                <p>{project.creation}</p>
+              </div>
+              <div class='logo-row'>
+                {project.logos.map(logo => (
+                  <img
+                    src={`/icons-dev/${logo}.svg`}
+                    alt={`Logo ${logo}`}
+                    width='40'
+                    height='40'
+                  />
+                ))}
+              </div>
+              <a
+                href={project.href}
+                target='_blank'
+                rel='noopener'
+                class='link'
+              >
+                Explorer le site →
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class='cta-card glass'>
+    <div>
+      <p class='eyebrow'>Encore plus de projets</p>
+      <h3>Besoin d’un audit ou d’un aperçu détaillé ?</h3>
+      <p>
+        Parlons de votre stack actuel, des points de friction et de la roadmap
+        idéale pour accélérer.
+      </p>
+    </div>
+    <button
+      type='button'
+      class='btn-primary popup-trigger'
+      data-open-popup='call-popup'
+      aria-haspopup='dialog'
+    >
+      Prendre contact
+    </button>
+  </section>
 </section>
 
 <script is:inline>
-    document.addEventListener("DOMContentLoaded", () => {
-        const chips = document.querySelectorAll(".chip");
-        const cards = document.querySelectorAll("[data-category]");
+  document.addEventListener('DOMContentLoaded', () => {
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('[data-category]');
 
-        chips.forEach((chip) => {
-            chip.addEventListener("click", () => {
-                const filter = chip.dataset.filter;
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const filter = chip.dataset.filter;
 
-                chips.forEach((btn) =>
-                    btn.classList.toggle("active", btn === chip),
-                );
-                cards.forEach((card) => {
-                    const match =
-                        filter === "Tous" || card.dataset.category === filter;
-                    card.classList.toggle("hidden-card", !match);
-                });
-            });
+        chips.forEach(btn => btn.classList.toggle('active', btn === chip));
+        cards.forEach(card => {
+          const match = filter === 'Tous' || card.dataset.category === filter;
+          card.classList.toggle('hidden-card', !match);
         });
+      });
     });
+  });
 </script>
 
 <style>
-    #portfolio {
-        position: fixed;
-        inset: 0;
-        overflow-y: auto;
-        padding: 2rem clamp(1rem, 4vw, 5rem);
-        background: radial-gradient(circle at top right, #eef6ff, #f7f8fc 45%);
-    }
+  #portfolio {
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    padding: 2rem clamp(1rem, 4vw, 5rem);
+    background: radial-gradient(circle at top right, #eef6ff, #f7f8fc 45%);
+  }
 
-    .glass {
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 32px;
-        box-shadow: 0 35px 80px rgba(15, 23, 42, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-    }
+  #portfolio p {
+    line-height: 1.4;
+  }
 
+  .glass {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 32px;
+    box-shadow: 0 35px 80px rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .portfolio-hero {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    align-items: center;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    font-size: 0.85rem;
+    color: #7a7a7a;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+
+  .hero-stats strong {
+    display: block;
+    font-size: 1.8rem;
+  }
+
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+
+  .chip {
+    border-radius: 999px;
+    border: 1px solid rgba(13, 138, 232, 0.25);
+    padding: 0.45rem 1.1rem;
+    cursor: pointer;
+    background: transparent;
+    font-weight: 600;
+    color: #0d8ae8;
+    transition: 0.2s ease;
+  }
+
+  .chip.active {
+    background: linear-gradient(120deg, #0d8ae8, #1da5fe);
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .featured,
+  .projects-grid {
+    margin-bottom: 3rem;
+  }
+
+  .section-header {
+    margin-bottom: 1rem;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .featured-card,
+  .project-card {
+    border-radius: 28px;
+    box-shadow: 0 25px 65px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.2rem 1.2rem 1.5rem;
+    background: #fff;
+  }
+
+  .project-card {
+    gap: 0.8rem;
+  }
+
+  .media-frame {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: #e4ecf8;
+  }
+
+  .media-frame :is(img, picture) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .category-pill {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(17, 24, 39, 0.85);
+    color: #fff;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+  }
+
+  .featured-content,
+  .project-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .logo-row {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .logo-row img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    padding: 6px;
+    border-radius: 14px;
+    background: rgba(13, 138, 232, 0.06);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(120deg, #0d8ae8, #1da5fe);
+    color: #fff;
+    border-radius: 99px;
+    padding: 0.9rem 1.6rem;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .btn-ghost {
+    border-radius: 12px;
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    font-weight: 600;
+    border: 1px solid rgba(13, 138, 232, 0.4);
+    color: #0d8ae8;
+  }
+
+  .projects-grid .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .link {
+    color: #0d8ae8;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: auto;
+  }
+
+  .cta-card {
+    padding: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .hidden-card {
+    display: none !important;
+  }
+
+  @media (max-width: 768px) {
     .portfolio-hero {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        padding: 2rem;
-        margin-bottom: 3rem;
-        align-items: center;
-    }
-
-    .eyebrow {
-        text-transform: uppercase;
-        letter-spacing: 0.2rem;
-        font-size: 0.85rem;
-        color: #7a7a7a;
+      grid-template-columns: 1fr;
     }
 
     .hero-stats {
-        display: flex;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-        margin-top: 1.5rem;
-    }
-
-    .hero-stats strong {
-        display: block;
-        font-size: 1.8rem;
-    }
-
-    .filter-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.8rem;
-        margin-top: 1rem;
-    }
-
-    .chip {
-        border-radius: 999px;
-        border: 1px solid rgba(13, 138, 232, 0.25);
-        padding: 0.45rem 1.1rem;
-        cursor: pointer;
-        background: transparent;
-        font-weight: 600;
-        color: #0d8ae8;
-        transition: 0.2s ease;
-    }
-
-    .chip.active {
-        background: linear-gradient(120deg, #0d8ae8, #1da5fe);
-        color: #fff;
-        border-color: transparent;
-    }
-
-    .featured,
-    .projects-grid {
-        margin-bottom: 3rem;
-    }
-
-    .section-header {
-        margin-bottom: 1rem;
-    }
-
-    .featured-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .featured-card,
-    .project-card {
-        border-radius: 28px;
-        box-shadow: 0 25px 65px rgba(0, 0, 0, 0.12);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1.2rem 1.2rem 1.5rem;
-        background: #fff;
-    }
-
-    .project-card {
-        gap: 0.8rem;
-    }
-
-    .media-frame {
-        position: relative;
-        border-radius: 24px;
-        overflow: hidden;
-        aspect-ratio: 16 / 9;
-        background: #e4ecf8;
-    }
-
-    .media-frame :is(img, picture) {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .category-pill {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        background: rgba(17, 24, 39, 0.85);
-        color: #fff;
-        padding: 0.35rem 0.9rem;
-        border-radius: 999px;
-        font-size: 0.85rem;
-    }
-
-    .featured-content,
-    .project-body {
-        display: flex;
-        flex-direction: column;
-        gap: 0.9rem;
-    }
-
-    .logo-row {
-        display: flex;
-        gap: 0.65rem;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .logo-row img {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-        padding: 6px;
-        border-radius: 14px;
-        background: rgba(13, 138, 232, 0.06);
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+      flex-direction: column;
     }
 
     .card-actions {
-        display: flex;
-        gap: 0.8rem;
-        flex-wrap: wrap;
+      flex-direction: column;
     }
-
-    .btn-primary {
-        background: linear-gradient(120deg, #0d8ae8, #1da5fe);
-        color: #fff;
-        border-radius: 12px;
-        padding: 0.6rem 1.2rem;
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    .btn-ghost {
-        border-radius: 12px;
-        padding: 0.6rem 1.2rem;
-        text-decoration: none;
-        font-weight: 600;
-        border: 1px solid rgba(13, 138, 232, 0.4);
-        color: #0d8ae8;
-    }
-
-    .projects-grid .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .link {
-        color: #0d8ae8;
-        text-decoration: none;
-        font-weight: 600;
-        margin-top: auto;
-    }
-
-    .cta-card {
-        padding: 2rem;
-        display: flex;
-        gap: 1.5rem;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
-
-    .hidden-card {
-        display: none !important;
-    }
-
-    @media (max-width: 768px) {
-        .portfolio-hero {
-            grid-template-columns: 1fr;
-        }
-
-        .hero-stats {
-            flex-direction: column;
-        }
-
-        .card-actions {
-            flex-direction: column;
-        }
-    }
+  }
 </style>

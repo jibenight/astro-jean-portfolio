@@ -1,0 +1,177 @@
+---
+export interface Props {
+  id?: string;
+  phone?: string;
+  email?: string;
+}
+
+const {
+  id = 'call-popup',
+  phone = '+33 6 11 45 18 56',
+  email = 'message@jean-nguyen.dev',
+} = Astro.props;
+
+const phoneHref = `tel:${phone.replace(/\\s+/g, '')}`;
+const mailHref = `mailto:${email}`;
+---
+
+<div class='popup-overlay' id={id} hidden>
+  <div
+    class='popup-card'
+    role='dialog'
+    aria-modal='true'
+    aria-labelledby={`${id}-title`}
+  >
+    <button
+      class='popup-close'
+      type='button'
+      data-close-popup={id}
+      aria-label='Fermer le pop-up'
+    >
+      ×
+    </button>
+    <p class='eyebrow'>Contact rapide</p>
+    <h3 id={`${id}-title`}>Choisissez votre canal</h3>
+    <p class='lead'>
+      Vous pouvez m’appeler directement ou m’écrire un mail. Réponse sous 48h
+      maximum.
+    </p>
+    <div class='popup-actions'>
+      <a class='btn-primary' href={phoneHref}>Appeler</a>
+      <a class='btn-ghost' href={mailHref}>Écrire un mail</a>
+    </div>
+  </div>
+</div>
+
+<script is:inline data-popup-id={id}>
+  (() => {
+    const popupId = document.currentScript?.dataset.popupId || 'call-popup';
+    const overlay = document.getElementById(popupId);
+    if (!overlay) return;
+
+    const open = () => {
+      overlay.hidden = false;
+      overlay.classList.add('visible');
+    };
+
+    const close = () => {
+      overlay.classList.remove('visible');
+      overlay.hidden = true;
+    };
+
+    document.addEventListener('click', event => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const opener = target.closest(`[data-open-popup="${popupId}"]`);
+      if (opener) {
+        event.preventDefault();
+        open();
+        return;
+      }
+
+      const closer = target.closest(`[data-close-popup="${popupId}"]`);
+      if (closer) {
+        event.preventDefault();
+        close();
+      }
+    });
+
+    overlay.addEventListener('click', event => {
+      if (event.target === overlay) close();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && overlay.classList.contains('visible')) {
+        close();
+      }
+    });
+  })();
+</script>
+
+<style>
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: grid;
+    place-items: center;
+    z-index: 999;
+  }
+
+  .popup-overlay[hidden] {
+    display: none;
+  }
+
+  .popup-card {
+    position: relative;
+    background: #fff;
+    padding: 1.8rem;
+    border-radius: 24px;
+    max-width: 480px;
+    width: min(90vw, 480px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #475569;
+  }
+
+  .popup-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.3rem;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(120deg, #0d8ae8, #1da5fe);
+    color: #fff;
+    box-shadow: 0 15px 30px rgba(13, 138, 232, 0.25);
+  }
+
+  .btn-ghost {
+    border: 1px solid rgba(13, 138, 232, 0.3);
+    color: #0d8ae8;
+    background: #f8fbff;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18rem;
+    font-size: 0.8rem;
+    margin: 0;
+    color: #64748b;
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  .lead {
+    margin: 0;
+    color: #4b5563;
+  }
+</style>

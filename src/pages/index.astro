@@ -46,9 +46,9 @@ import Contact from '../components/Contact.astro';
       portfolio: document.getElementById('portfolio-wrapper'),
     };
 
-    // Au chargement, attacher les clics du Header
+    // Au chargement, attacher les clics du Header (desktop + mobile)
     window.addEventListener('DOMContentLoaded', () => {
-      const navItems = document.querySelectorAll('.nav-item');
+      const navItems = document.querySelectorAll('.nav-item, .mobile-link');
       navItems.forEach(item => {
         item.addEventListener('click', () => {
           const targetId = item.getAttribute('data-target');
