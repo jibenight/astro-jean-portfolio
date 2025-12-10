@@ -86,7 +86,9 @@ import avatarPortrait from '../assets/images/jean-portrait.jpg';
       <h3>Pitch ton projet</h3>
       <p>2–3 phrases suffisent pour lancer l’échange.</p>
 
-      <form>
+      <div id='contact-status' class='status' hidden></div>
+
+      <form id='contact-form'>
         <div class='form-grid'>
           <label>
             Nom complet
@@ -143,6 +145,10 @@ import avatarPortrait from '../assets/images/jean-portrait.jpg';
     const revealBlocks = document.querySelectorAll(
       '.reveal-left, .reveal-right'
     );
+    const form = document.getElementById('contact-form');
+    const statusEl = document.getElementById('contact-status');
+
+    const API_URL = 'http://localhost:3001/api/contact';
 
     const observer = new IntersectionObserver(
       entries => {
@@ -156,6 +162,46 @@ import avatarPortrait from '../assets/images/jean-portrait.jpg';
       { threshold: 0.3 }
     );
     revealBlocks.forEach(block => observer.observe(block));
+
+    const setStatus = (message, type = 'info') => {
+      if (!statusEl) return;
+      statusEl.hidden = false;
+      statusEl.textContent = message;
+      statusEl.dataset.type = type;
+    };
+
+    form?.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!form) return;
+
+      const formData = new FormData(form);
+      const payload = {
+        name: formData.get('name') || '',
+        email: formData.get('email') || '',
+        projectType: formData.get('project-type') || '',
+        message: formData.get('message') || '',
+      };
+
+      try {
+        setStatus('Envoi en cours...', 'info');
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error('Erreur serveur');
+        }
+
+        setStatus('Message envoyé, merci !', 'success');
+        form.reset();
+      } catch (error) {
+        setStatus('Impossible d’envoyer le message. Réessaie plus tard.', 'error');
+      }
+    });
   });
 </script>
 
@@ -472,6 +518,27 @@ import avatarPortrait from '../assets/images/jean-portrait.jpg';
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
   }
 
+  .status {
+    margin-bottom: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #0f172a;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+  }
+
+  .status[data-type='success'] {
+    border-color: rgba(22, 163, 74, 0.35);
+    background: rgba(22, 163, 74, 0.08);
+    color: #166534;
+  }
+
+  .status[data-type='error'] {
+    border-color: rgba(220, 38, 38, 0.35);
+    background: rgba(248, 113, 113, 0.12);
+    color: #991b1b;
+  }
   .reveal-left,
   .reveal-right {
     opacity: 0;
