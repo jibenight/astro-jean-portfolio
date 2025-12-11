@@ -38,6 +38,7 @@ SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=ton_identifiant_smtp
 SMTP_PASS=ton_mot_de_passe_smtp
+SMTP_SECURE=starttls # starttls | ssl | true | false
 FROM_EMAIL=no-reply@example.com
 TO_EMAIL=contact@jean-nguyen.dev
 CLIENT_ORIGIN=http://localhost:4321

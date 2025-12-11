@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "astro": "^5.16.2",
+    "dotenv": "^17.2.3",
     "express": "^4.19.2",
-    "nodemailer": "^6.9.13"
+    "nodemailer": "^7.0.11"
   }
 }
