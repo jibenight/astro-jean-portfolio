@@ -8,7 +8,6 @@ const imageImports = import.meta.glob('../assets/images/images_portfolio/*', {
   import: 'default',
 });
 
-const entries = await getCollection('portfolio');
 const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
 
 const normalizeLogos = logos =>
@@ -28,18 +27,29 @@ const getImageAsset = imagePath => {
     : undefined;
 };
 
-const projects = entries.map(entry => {
-  const logos = normalizeLogos(entry.data.logos);
-  return {
-    ...entry.data,
-    logos,
-    category: categoryFromLogo(logos),
-    imageAsset: getImageAsset(entry.data.image),
-  };
-});
+// Récupération + tri (récent -> ancien) en parsant explicitement la date (string ou Date)
+const projects = (await getCollection('portfolio'))
+  .map(entry => {
+    const logos = normalizeLogos(entry.data.logos);
+    const rawDate = entry.data.date;
+    const parsed =
+      rawDate instanceof Date ? rawDate : rawDate ? new Date(rawDate) : null;
+    const sortValue =
+      parsed && !isNaN(parsed.valueOf()) ? parsed.valueOf() : -Infinity;
 
-const featuredProjects = projects.slice(-2).reverse();
-const archiveProjects = projects.slice(0, -2);
+    return {
+      ...entry.data,
+      logos,
+      category: categoryFromLogo(logos),
+      imageAsset: getImageAsset(entry.data.image),
+      sortValue,
+    };
+  })
+  .sort((a, b) => b.sortValue - a.sortValue)
+  .map(({ sortValue, ...rest }) => rest);
+
+const featuredProjects = projects.slice(0, 2);
+const archiveProjects = projects.slice(2);
 const categories = [
   'Tous',
   ...new Set(projects.map(project => project.category)),
@@ -47,7 +57,10 @@ const categories = [
 ---
 
 <section id='portfolio' class='portfolio-section'>
-  <Close onClick="closeSection('portfolio')" />
+  {/* Sécurisation de l'appel onClick */}
+  <Close
+    onClick="window.closeSection ? window.closeSection('portfolio') : console.warn('closeSection missing')"
+  />
   <div class='container-title'>
     <div class='title'>
       <h2>Portfolio</h2>
@@ -90,6 +103,7 @@ const categories = [
               type='button'
               class={`chip ${index === 0 ? 'active' : ''}`}
               data-filter={category}
+              aria-pressed={index === 0}
             >
               {category}
             </button>
@@ -112,7 +126,7 @@ const categories = [
               {project.imageAsset ? (
                 <Image
                   src={project.imageAsset}
-                  alt={project.alt}
+                  alt={project.alt || ''}
                   width={960}
                   height={540}
                   format='webp'
@@ -145,7 +159,7 @@ const categories = [
                 <a
                   href={project.href}
                   target='_blank'
-                  rel='noopener'
+                  rel='noopener noreferrer'
                   class='btn-primary'
                 >
                   Voir le site
@@ -154,7 +168,7 @@ const categories = [
                   <a
                     href={project.github}
                     target='_blank'
-                    rel='noopener'
+                    rel='noopener noreferrer'
                     class='btn-ghost'
                   >
                     Repo GitHub
@@ -181,7 +195,7 @@ const categories = [
               {project.imageAsset ? (
                 <Image
                   src={project.imageAsset}
-                  alt={project.alt}
+                  alt={project.alt || ''}
                   width={720}
                   height={480}
                   format='webp'
@@ -210,14 +224,26 @@ const categories = [
                   />
                 ))}
               </div>
-              <a
-                href={project.href}
-                target='_blank'
-                rel='noopener'
-                class='link'
-              >
-                Explorer le site →
-              </a>
+              <div class='card-actions'>
+                <a
+                  href={project.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  class='btn-primary'
+                >
+                  Voir le site
+                </a>
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    class='btn-ghost'
+                  >
+                    Repo GitHub
+                  </a>
+                )}
+              </div>
             </div>
           </article>
         ))
@@ -246,6 +272,13 @@ const categories = [
 </section>
 
 <script is:inline>
+  // Définition de closeSection pour le bouton Close
+  // On le met sur window pour qu'il soit accessible globalement
+  window.closeSection = id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     const chips = document.querySelectorAll('.chip');
     const cards = document.querySelectorAll('[data-category]');
@@ -254,9 +287,15 @@ const categories = [
       chip.addEventListener('click', () => {
         const filter = chip.dataset.filter;
 
-        chips.forEach(btn => btn.classList.toggle('active', btn === chip));
+        chips.forEach(btn => {
+          const isActive = btn === chip;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-pressed', isActive); // Accessibilité
+        });
+
         cards.forEach(card => {
           const match = filter === 'Tous' || card.dataset.category === filter;
+          // Utilisation de la classe .hidden-card définie en global
           card.classList.toggle('hidden-card', !match);
         });
       });
@@ -271,6 +310,7 @@ const categories = [
     overflow-y: auto;
     padding: 2rem clamp(1rem, 4vw, 5rem);
     background: radial-gradient(circle at top right, #eef6ff, #f7f8fc 45%);
+    z-index: 100; /* Assure que le portfolio passe au-dessus du reste */
   }
 
   #portfolio p {
@@ -361,6 +401,9 @@ const categories = [
     gap: 1rem;
     padding: 1.2rem 1.2rem 1.5rem;
     background: #fff;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
   }
 
   .project-card {
@@ -409,8 +452,8 @@ const categories = [
   }
 
   .logo-row img {
-    width: 44px;
-    height: 44px;
+    width: 56px;
+    height: 56px;
     object-fit: contain;
     padding: 6px;
     border-radius: 14px;
@@ -432,6 +475,11 @@ const categories = [
     text-decoration: none;
     font-weight: 700;
     font-size: 1rem;
+    border: none;
+  }
+
+  .cta-card .btn-primary {
+    font-size: 1.5rem;
   }
 
   .btn-ghost {
@@ -441,6 +489,10 @@ const categories = [
     font-weight: 600;
     border: 1px solid rgba(13, 138, 232, 0.4);
     color: #0d8ae8;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .projects-grid .grid {
@@ -465,7 +517,9 @@ const categories = [
     flex-wrap: wrap;
   }
 
-  .hidden-card {
+  /* IMPORTANT : :global() empêche Astro de renommer cette classe.
+     C'est vital car elle est ajoutée via JS, pas présente dans le HTML initial. */
+  :global(.hidden-card) {
     display: none !important;
   }
 
@@ -480,6 +534,14 @@ const categories = [
 
     .card-actions {
       flex-direction: column;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .featured-card:hover,
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.14);
     }
   }
 </style>

@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import Close from './Close.astro';
 import aboutPortrait from '../assets/images/jean-portrait.jpg';
-import focusIcon from '../assets/images/competences/focus.png';
 import ConsoleVideo from '../assets/images/console-video.png';
 import Professeur from '../assets/images/professeur.png';
 import Clavier from '../assets/images/clavier.png';
@@ -236,8 +235,8 @@ const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
     </div>
   </section>
 
-    <section class='cta-card'>
-      <div>
+  <section class='cta-card'>
+    <div>
       <p class='eyebrow'>Prendre un café virtuel</p>
       <h3>Parlons optimisation front, perfs et Astro.js.</h3>
       <p>Je peux auditer, intégrer ou accélérer votre prochaine release.</p>
@@ -254,17 +253,17 @@ const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
 </section>
 
 <style>
-    #about {
-        position: fixed;
-        inset: 0;
-        overflow-y: auto;
-        padding: 2rem clamp(1rem, 4vw, 5rem);
-        background: #f3f5fb;
-    }
+  #about {
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    padding: 2rem clamp(1rem, 4vw, 5rem);
+    background: #f3f5fb;
+  }
 
-    #about p {
-        line-height: 1.4;
-    }
+  #about p {
+    line-height: 1.4;
+  }
 
   .about-hero {
     display: grid;
@@ -448,15 +447,45 @@ const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
   }
 
   .timeline-date {
-    font-weight: 600;
-    color: #4f4f4f;
+    font-weight: 700;
+    color: #0d8ae8;
+    background: rgba(13, 138, 232, 0.08);
+    padding: 0.65rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid rgba(13, 138, 232, 0.15);
+    width: fit-content;
   }
 
   .timeline-card {
+    position: relative;
     border-radius: 20px;
-    padding: 1.2rem 1.5rem;
-    background: #fff;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+    padding: 1.35rem 1.5rem;
+    background: linear-gradient(135deg, #e8f3ff, #f7fbff);
+    box-shadow:
+      0 20px 45px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(13, 138, 232, 0.08);
+    overflow: hidden;
+  }
+
+  .timeline-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(13, 138, 232, 0.18), transparent);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .timeline-card h4 {
+    position: relative;
+    z-index: 1;
+    color: #0f172a;
+  }
+
+  .timeline-card p {
+    position: relative;
+    z-index: 1;
+    color: #1f2937;
   }
 
   .timeline-tags {
@@ -465,8 +494,11 @@ const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
   }
 
   .timeline-tags li {
-    padding: 0.3rem 0.6rem;
+    padding: 0.35rem 0.7rem;
     font-size: 0.9rem;
+    background: rgba(13, 138, 232, 0.12);
+    color: #0b5394;
+    border: 1px solid rgba(13, 138, 232, 0.18);
   }
 
   .method {
@@ -491,7 +523,7 @@ const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
     width: 42px;
     height: 42px;
     border-radius: 12px;
-    background: #0d8ae8;
+    background: linear-gradient(135deg, #0d8ae8, #1da5fe);
     color: #fff;
     display: flex;
     align-items: center;
@@ -526,26 +558,26 @@ const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
   }
 
-    .cta-card {
-        background: linear-gradient(120deg, #0d8ae8, #1da5fe);
-        color: #fff;
-        border-radius: 32px;
-        padding: 2rem;
+  .cta-card {
+    background: linear-gradient(120deg, #0d8ae8, #1da5fe);
+    color: #fff;
+    border-radius: 32px;
+    padding: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
   }
 
-    .btn-cta {
-        background: #fff;
-        color: #0d8ae8;
-        padding: 1rem 1.6rem;
-        border-radius: 999px;
-        font-weight: 700;
-        font-size: 1rem;
-        text-decoration: none;
-    }
+  .btn-cta {
+    background: #fff;
+    color: #0d8ae8;
+    padding: 1rem 1.6rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-decoration: none;
+  }
 
   @media (max-width: 768px) {
     .timeline-item {

@@ -12,7 +12,7 @@ const {
 } = Astro.props;
 
 const phoneHref = `tel:${phone.replace(/\\s+/g, '')}`;
-const mailHref = `mailto:${email}`;
+const [emailUser = '', emailDomain = ''] = email.split('@');
 ---
 
 <div class='popup-overlay' id={id} hidden>
@@ -38,7 +38,7 @@ const mailHref = `mailto:${email}`;
     </p>
     <div class='popup-actions'>
       <a class='btn-primary' href={phoneHref}>Appeler</a>
-      <a class='btn-ghost' href={mailHref}>Écrire un mail</a>
+      <a class='btn-ghost' data-email-user={emailUser} data-email-domain={emailDomain}>Écrire un mail</a>
     </div>
   </div>
 </div>

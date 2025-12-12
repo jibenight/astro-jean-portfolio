@@ -1,10 +1,16 @@
 import 'dotenv/config';
 import express from 'express';
 import nodemailer from 'nodemailer';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 const PORT = process.env.API_PORT || 3001;
 const ALLOWED_ORIGIN = process.env.CLIENT_ORIGIN || '*';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DIST_DIR = path.join(__dirname, 'dist');
 
 // Configuration SMTP (valeurs par défaut pour iCloud si non définies dans le .env)
 const SMTP_HOST = process.env.SMTP_HOST;
@@ -25,6 +31,9 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// Servir le build Astro (dossier dist) pour la mise en production
+app.use(express.static(DIST_DIR));
 
 app.post('/api/contact', async (req, res) => {
   const { name, email, projectType, message } = req.body || {};
@@ -87,8 +96,14 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
+// Fallback : renvoyer l'index Astro pour les routes non API
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
+  return res.sendFile(path.join(DIST_DIR, 'index.html'));
+});
+
 app.listen(PORT, () => {
   console.log(
-    `API contact disponible sur http://localhost:${PORT}/api/contact`
+    `Serveur en ligne : build statique servi depuis /dist et API contact sur http://localhost:${PORT}/api/contact`
   );
 });

@@ -303,22 +303,34 @@ const components = [
   .mobile-menu {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.9);
-    backdrop-filter: blur(6px);
-    display: none;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
     align-items: center;
     justify-content: center;
     z-index: 15;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.01);
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
   }
 
   .mobile-menu.open {
-    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
   }
 
   .mobile-menu-content {
     display: grid;
     gap: 1rem;
     text-align: center;
+    width: min(90vw, 360px);
+    transform: translateY(6px);
+    transition: transform 0.25s ease;
   }
 
   .mobile-link {
@@ -344,6 +356,10 @@ const components = [
 
     .menu-toggle {
       display: flex;
+    }
+
+    .mobile-menu.open .mobile-menu-content {
+      transform: translateY(0);
     }
   }
 </style>

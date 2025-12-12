@@ -7,13 +7,35 @@ import CallPopup from "../components/CallPopup.astro";
   <head>
     <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width' />
-    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <link rel='icon' type='image/png' href='/coding-2.png' />
     <meta name='generator' content={Astro.generator} />
+    <meta
+      name='description'
+      content="Jean Nguyen — développeur front-end Astro/Tailwind : sites ultra-rapides, perfs Core Web Vitals, IA pour livrer plus vite, navigation immersive et prise de contact express."
+    />
     <title>Jean Nguyen</title>
   </head>
   <body>
     <slot />
     <CallPopup id="call-popup" />
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        document
+          .querySelectorAll('[data-email-user][data-email-domain]')
+          .forEach(el => {
+            const user = el.getAttribute('data-email-user') || '';
+            const domain = el.getAttribute('data-email-domain') || '';
+            if (!user || !domain) return;
+            const email = `${user}@${domain}`;
+            if (el.tagName === 'A') {
+              el.setAttribute('href', `mailto:${email}`);
+            }
+            if (!el.dataset.noTextReplace) {
+              el.textContent = email;
+            }
+          });
+      });
+    </script>
   </body>
 </html>
 
@@ -40,11 +62,11 @@ import CallPopup from "../components/CallPopup.astro";
   }
 
   button.popup-trigger {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 800;
-    border-radius: 24px;
-    padding: 1.05rem 1.85rem;
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+    border-radius: 26px;
+    padding: 1.2rem 2.1rem;
+    box-shadow: 0 20px 38px rgba(0, 0, 0, 0.14);
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease;
