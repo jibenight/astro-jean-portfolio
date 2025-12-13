@@ -1,0 +1,5 @@
+User-agent: *
+Disallow:
+
+# Sitemap (ajustez le domaine si nécessaire)
+# Sitemap: https://votre-domaine/sitemap-index.xml
