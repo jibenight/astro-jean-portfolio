@@ -17,6 +17,7 @@ const { width = 32, height = 32, onClick } = Astro.props;
     height={height}
     format='png'
     class='close-icon'
+    densities={[1.5, 2]}
   />
 </button>
 
@@ -38,48 +39,48 @@ const { width = 32, height = 32, onClick } = Astro.props;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-        transition:
-            transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
-            box-shadow 0.24s ease,
-            background 0.2s ease,
-            filter 0.24s ease;
-        backdrop-filter: blur(10px);
-        animation: popIn 0.4s ease-out;
-        position: fixed;
-        overflow: hidden;
-    }
+    transition:
+      transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.24s ease,
+      background 0.2s ease,
+      filter 0.24s ease;
+    backdrop-filter: blur(10px);
+    animation: popIn 0.4s ease-out;
+    position: fixed;
+    overflow: hidden;
+  }
 
   .close::after {
     content: '';
     position: absolute;
     inset: -6px;
     border-radius: 50%;
-        border: 2px solid rgba(13, 138, 232, 0.2);
-        opacity: 0;
-        transform: scale(0.9);
-        transition:
-            opacity 0.3s ease,
-            transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-        pointer-events: none;
-    }
+    border: 2px solid rgba(13, 138, 232, 0.2);
+    opacity: 0;
+    transform: scale(0.9);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
 
   .close:hover,
   .close:focus-visible {
-        transform: translateY(-2px) scale(1.03);
-        box-shadow:
-            0 16px 32px rgba(0, 0, 0, 0.2),
-            0 0 0 2px rgba(13, 138, 232, 0.2),
-            0 0 0 14px rgba(13, 138, 232, 0.08);
-        background: rgba(255, 255, 255, 0.98);
-        filter: saturate(1.05);
-    }
+    transform: translateY(-2px) scale(1.03);
+    box-shadow:
+      0 16px 32px rgba(0, 0, 0, 0.2),
+      0 0 0 2px rgba(13, 138, 232, 0.2),
+      0 0 0 14px rgba(13, 138, 232, 0.08);
+    background: rgba(255, 255, 255, 0.98);
+    filter: saturate(1.05);
+  }
 
-    .close:hover::after,
-    .close:focus-visible::after {
-        opacity: 1;
-        transform: scale(1.06);
-        animation: ringPulse 1.4s ease-out;
-    }
+  .close:hover::after,
+  .close:focus-visible::after {
+    opacity: 1;
+    transform: scale(1.06);
+    animation: ringPulse 1.4s ease-out;
+  }
 
   .close:active {
     transform: translateY(0) scale(0.98);
@@ -95,39 +96,39 @@ const { width = 32, height = 32, onClick } = Astro.props;
   .close-icon {
     width: 28px;
     height: 28px;
-        transform: scale(1);
-        transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-    }
+    transform: scale(1);
+    transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+  }
 
-    .close:hover .close-icon,
-    .close:focus-visible .close-icon {
-        transform: scale(1.05);
-    }
+  .close:hover .close-icon,
+  .close:focus-visible .close-icon {
+    transform: scale(1.05);
+  }
 
-    @keyframes popIn {
-        from {
-            opacity: 0;
-            transform: translateY(-6px) scale(0.96);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+  @keyframes popIn {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.96);
     }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
 
-    @keyframes ringPulse {
-        0% {
-            transform: scale(1.06);
-            opacity: 0.15;
-        }
-        70% {
-            transform: scale(1.12);
-            opacity: 0.35;
-        }
-        100% {
-            transform: scale(1.15);
-            opacity: 0;
-        }
+  @keyframes ringPulse {
+    0% {
+      transform: scale(1.06);
+      opacity: 0.15;
     }
+    70% {
+      transform: scale(1.12);
+      opacity: 0.35;
+    }
+    100% {
+      transform: scale(1.15);
+      opacity: 0;
+    }
+  }
 </style>
