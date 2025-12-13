@@ -6,6 +6,10 @@ import pinIcon from '../assets/images/pin.png';
 import emailIcon from '../assets/images/email.png';
 import smileIcon from '../assets/images/smile-64.png';
 import avatarPortrait from '../assets/images/jean-portrait.jpg';
+
+const apiUrl = import.meta.env.PROD
+  ? '/api/contact'
+  : 'http://localhost:3001/api/contact';
 ---
 
 <section id='contact' class='contact-section'>
@@ -179,10 +183,7 @@ import avatarPortrait from '../assets/images/jean-portrait.jpg';
     const form = document.getElementById('contact-form');
     const statusEl = document.getElementById('contact-status');
 
-    // Détecte si on est en prod ou en dev
-    const API_URL = import.meta.env.PROD
-      ? '/api/contact'
-      : 'http://localhost:3001/api/contact';
+    const API_URL = apiUrl;
 
     const observer = new IntersectionObserver(
       entries => {
