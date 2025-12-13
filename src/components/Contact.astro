@@ -117,7 +117,7 @@ const apiUrl = import.meta.env.PROD
 
       <div id='contact-status' class='status' hidden></div>
 
-      <form id='contact-form'>
+      <form id='contact-form' data-api-url={apiUrl}>
         <div class='form-grid'>
           <label>
             Nom complet
@@ -183,7 +183,7 @@ const apiUrl = import.meta.env.PROD
     const form = document.getElementById('contact-form');
     const statusEl = document.getElementById('contact-status');
 
-    const API_URL = apiUrl;
+    const API_URL = form ? form.getAttribute('data-api-url') : '';
 
     const observer = new IntersectionObserver(
       entries => {
