@@ -5,7 +5,12 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const app = express();
-const PORT = process.env.API_PORT || 3001;
+const isPassenger = typeof globalThis.PhusionPassenger !== 'undefined';
+if (isPassenger) {
+  globalThis.PhusionPassenger.configure({ autoInstall: false });
+}
+
+const PORT = process.env.PORT || process.env.API_PORT || 3001;
 const ALLOWED_ORIGIN = process.env.CLIENT_ORIGIN || '*';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -102,8 +107,19 @@ app.get('*', (req, res, next) => {
   return res.sendFile(path.join(DIST_DIR, 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(
-    `Serveur en ligne : build statique servi depuis /dist et API contact sur http://localhost:${PORT}/api/contact`
-  );
-});
+const startServer = () => {
+  if (isPassenger) {
+    app.listen('passenger');
+    console.log(
+      'Serveur lancé avec Phusion Passenger — build statique /dist et API /api/contact'
+    );
+  } else {
+    app.listen(PORT, () => {
+      console.log(
+        `Serveur en ligne : build statique servi depuis /dist et API contact sur http://localhost:${PORT}/api/contact`
+      );
+    });
+  }
+};
+
+startServer();
