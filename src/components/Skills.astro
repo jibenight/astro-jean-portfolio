@@ -67,7 +67,7 @@ const metrics = [
 ---
 
 <section id='skills' class='skills-section'>
-  <Close onClick="closeSection('skills')" />
+  <Close target='skills' />
   <div class='container-title'>
     <div class='title'>
       <h2>Mes compétences</h2>
@@ -86,7 +86,7 @@ const metrics = [
       </p>
     </div>
     <div class='hero-icon' aria-hidden='true'>
-      <video class='hero-video' src={heroVideo} autoplay muted loop playsinline
+      <video class='hero-video' src={heroVideo} muted loop playsinline preload='metadata' aria-hidden='true'
       ></video>
     </div>
   </div>
@@ -139,6 +139,8 @@ const metrics = [
                   alt={`Icône ${skill.label}`}
                   width='40'
                   height='40'
+                  loading='lazy'
+                  decoding='async'
                 />
                 <span>{skill.label}</span>
               </div>
@@ -224,6 +226,23 @@ const metrics = [
     );
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const heroVideo = document.querySelector('#skills .hero-video');
+    if (heroVideo) {
+      const videoObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              heroVideo.play().catch(() => {});
+            } else {
+              heroVideo.pause();
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      videoObserver.observe(heroVideo);
+    }
   });
 </script>
 
@@ -532,7 +551,7 @@ const metrics = [
     color: #0d8ae8;
     padding: 1.05rem 1.8rem;
     border-radius: 999px;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 1.5rem;
     text-decoration: none;
     box-shadow: 0 12px 26px rgba(0, 0, 0, 0.15);

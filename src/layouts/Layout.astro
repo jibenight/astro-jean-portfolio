@@ -14,6 +14,8 @@ import CallPopup from "../components/CallPopup.astro";
       content="Jean Nguyen — développeur front-end Astro/Tailwind : sites ultra-rapides, perfs Core Web Vitals, IA pour livrer plus vite, navigation immersive et prise de contact express."
     />
     <title>Jean Nguyen</title>
+    <link rel='preload' as='font' type='font/woff2' href='/fonts/comfortaa/comfortaa-variable-latin.woff2' crossorigin />
+    <link rel='stylesheet' href='/fonts/comfortaa/comfortaa.css' />
   </head>
   <body>
     <slot />
@@ -63,7 +65,7 @@ import CallPopup from "../components/CallPopup.astro";
 
   button.popup-trigger {
     font-size: 1.1rem;
-    font-weight: 800;
+    font-weight: 700;
     border-radius: 26px;
     padding: 1.2rem 2.1rem;
     box-shadow: 0 20px 38px rgba(0, 0, 0, 0.14);

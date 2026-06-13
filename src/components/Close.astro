@@ -1,15 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import closeImage from '../assets/images/cancel.png';
-const { width = 32, height = 32, onClick } = Astro.props;
+const { width = 32, height = 32, target } = Astro.props;
 ---
 
-<button
-  class='close'
-  type='button'
-  aria-label='Fermer la section'
-  onClick={onClick}
->
+<button class='close' type='button' aria-label='Fermer la section' data-close-target={target}>
   <Image
     src={closeImage}
     alt='bouton de fermeture'
