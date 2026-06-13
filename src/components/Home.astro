@@ -4,7 +4,7 @@ import heroVideo from '../assets/video/dev_web.mp4';
 ---
 
 <section id='home' class='hero-video'>
-  <video class='bg-video' autoplay muted loop playsinline>
+  <video class='bg-video' autoplay muted loop playsinline preload='metadata' aria-hidden='true'>
     <source src={heroVideo} type='video/mp4' />
   </video>
   <div class='overlay'></div>

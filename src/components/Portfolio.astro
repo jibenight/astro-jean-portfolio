@@ -57,10 +57,7 @@ const categories = [
 ---
 
 <section id='portfolio' class='portfolio-section'>
-  {/* Sécurisation de l'appel onClick */}
-  <Close
-    onClick="window.closeSection ? window.closeSection('portfolio') : console.warn('closeSection missing')"
-  />
+  <Close target='portfolio' />
   <div class='container-title'>
     <div class='title'>
       <h2>Portfolio</h2>
@@ -152,6 +149,8 @@ const categories = [
                     alt={`Logo ${logo}`}
                     width='48'
                     height='48'
+                    loading='lazy'
+                    decoding='async'
                   />
                 ))}
               </div>
@@ -221,6 +220,8 @@ const categories = [
                     alt={`Logo ${logo}`}
                     width='40'
                     height='40'
+                    loading='lazy'
+                    decoding='async'
                   />
                 ))}
               </div>
@@ -272,13 +273,6 @@ const categories = [
 </section>
 
 <script is:inline>
-  // Définition de closeSection pour le bouton Close
-  // On le met sur window pour qu'il soit accessible globalement
-  window.closeSection = id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  };
-
   document.addEventListener('DOMContentLoaded', () => {
     const chips = document.querySelectorAll('.chip');
     const cards = document.querySelectorAll('[data-category]');

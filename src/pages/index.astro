@@ -89,6 +89,17 @@ import Contact from '../components/Contact.astro';
           }
         });
       });
+
+      // Event delegation pour tous les boutons Close
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-close-target]');
+        if (trigger) {
+          const id = trigger.getAttribute('data-close-target');
+          if (id && typeof window.closeSection === 'function') {
+            window.closeSection(id);
+          }
+        }
+      });
     });
 
     // Fermeture depuis chaque composant

@@ -13,7 +13,7 @@ const apiUrl = import.meta.env.PROD
 ---
 
 <section id='contact' class='contact-section'>
-  <Close onClick="closeSection('contact')" />
+  <Close target='contact' />
   <div class='container-title'>
     <div class='title'>
       <h2>Me contacter</h2>
@@ -118,6 +118,10 @@ const apiUrl = import.meta.env.PROD
       <div id='contact-status' class='status' hidden></div>
 
       <form id='contact-form' data-api-url={apiUrl}>
+        <label class='hp-field' aria-hidden='true'>
+          Site web
+          <input type='text' name='website' tabindex='-1' autocomplete='off' />
+        </label>
         <div class='form-grid'>
           <label>
             Nom complet
@@ -215,6 +219,7 @@ const apiUrl = import.meta.env.PROD
         email: formData.get('email') || '',
         projectType: formData.get('project-type') || '',
         message: formData.get('message') || '',
+        website: formData.get('website') || '',
       };
 
       try {
@@ -460,6 +465,14 @@ const apiUrl = import.meta.env.PROD
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
+  }
+
+  .hp-field {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
   }
 
   label {
