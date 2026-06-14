@@ -43,49 +43,55 @@ const [emailUser = '', emailDomain = ''] = email.split('@');
   </div>
 </div>
 
-<script is:inline data-popup-id={id}>
-  (() => {
-    const popupId = document.currentScript?.dataset.popupId || 'call-popup';
-    const overlay = document.getElementById(popupId);
+<script>
+  // Event delegation document-level pour le popup d'appel.
+  // Indépendant des re-renders du DOM (View Transitions) car aucune référence
+  // d'élément n'est capturée — tout est résolu à chaque clic.
+  const POPUP_ID = 'call-popup';
+
+  const getOverlay = () => document.getElementById(POPUP_ID);
+
+  const openPopup = () => {
+    const overlay = getOverlay();
     if (!overlay) return;
+    overlay.hidden = false;
+    overlay.classList.add('visible');
+  };
 
-    const open = () => {
-      overlay.hidden = false;
-      overlay.classList.add('visible');
-    };
+  const closePopup = () => {
+    const overlay = getOverlay();
+    if (!overlay) return;
+    overlay.classList.remove('visible');
+    overlay.hidden = true;
+  };
 
-    const close = () => {
-      overlay.classList.remove('visible');
-      overlay.hidden = true;
-    };
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
 
-    document.addEventListener('click', event => {
-      const target = event.target;
-      if (!(target instanceof Element)) return;
+    if (target.closest(`[data-open-popup="${POPUP_ID}"]`)) {
+      event.preventDefault();
+      openPopup();
+      return;
+    }
+    if (target.closest(`[data-close-popup="${POPUP_ID}"]`)) {
+      event.preventDefault();
+      closePopup();
+      return;
+    }
+    // clic sur le voile lui-même
+    if (target instanceof HTMLElement && target.id === POPUP_ID) {
+      closePopup();
+    }
+  });
 
-      const opener = target.closest(`[data-open-popup="${popupId}"]`);
-      if (opener) {
-        event.preventDefault();
-        open();
-        return;
-      }
-
-      const closer = target.closest(`[data-close-popup="${popupId}"]`);
-      if (closer) {
-        event.preventDefault();
-        close();
-      }
-    });
-
-    overlay.addEventListener('click', event => {
-      if (event.target === overlay) close();
-    });
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && overlay.classList.contains('visible')) {
-        close();
-      }
-    });
-  })();
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const overlay = getOverlay();
+    if (overlay && overlay.classList.contains('visible')) {
+      closePopup();
+    }
+  });
 </script>
 
 <style>

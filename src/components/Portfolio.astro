@@ -57,7 +57,7 @@ const categories = [
 ---
 
 <section id='portfolio' class='portfolio-section'>
-  <Close target='portfolio' />
+  <Close direction='left' />
   <div class='container-title'>
     <div class='title'>
       <h2>Portfolio</h2>
@@ -272,24 +272,25 @@ const categories = [
   </section>
 </section>
 
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    const chips = document.querySelectorAll('.chip');
-    const cards = document.querySelectorAll('[data-category]');
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+    if (!chips.length) return; // pas sur la page Portfolio
 
-    chips.forEach(chip => {
+    const cards = document.querySelectorAll<HTMLElement>('[data-category]');
+
+    chips.forEach((chip) => {
       chip.addEventListener('click', () => {
         const filter = chip.dataset.filter;
 
-        chips.forEach(btn => {
+        chips.forEach((btn) => {
           const isActive = btn === chip;
           btn.classList.toggle('active', isActive);
-          btn.setAttribute('aria-pressed', isActive); // Accessibilité
+          btn.setAttribute('aria-pressed', String(isActive));
         });
 
-        cards.forEach(card => {
+        cards.forEach((card) => {
           const match = filter === 'Tous' || card.dataset.category === filter;
-          // Utilisation de la classe .hidden-card définie en global
           card.classList.toggle('hidden-card', !match);
         });
       });

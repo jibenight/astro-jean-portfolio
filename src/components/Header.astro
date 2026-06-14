@@ -8,15 +8,17 @@ const components = [
     position: 'top',
     rotation: 90,
     target: 'about',
+    direction: 'down',
   },
-  { label: 'Portfolio', position: 'left', rotation: 0, target: 'portfolio' },
+  { label: 'Portfolio', position: 'left', rotation: 0, target: 'portfolio', direction: 'right' },
   {
     label: 'Mes compétences',
     position: 'bottom',
     rotation: 270,
     target: 'skills',
+    direction: 'up',
   },
-  { label: 'Contact', position: 'right', rotation: 180, target: 'contact' },
+  { label: 'Contact', position: 'right', rotation: 180, target: 'contact', direction: 'left' },
 ];
 ---
 
@@ -35,10 +37,15 @@ const components = [
   <div class='mobile-menu' aria-hidden='true'>
     <div class='mobile-menu-content'>
       {
-        components.map(({ label, target }) => (
-          <button class='mobile-link' data-target={target}>
+        components.map(({ label, target, direction }) => (
+          <a
+            class='mobile-link'
+            href={`/${target}`}
+            data-direction={direction}
+            data-mobile-direction='up'
+          >
             {label}
-          </button>
+          </a>
         ))
       }
     </div>
@@ -46,8 +53,13 @@ const components = [
 
   <nav role='navigation' aria-label='navigation principale'>
     {
-      components.map(({ label, position, rotation, target }) => (
-        <div class={`nav-item nav-${position}`} data-target={target}>
+      components.map(({ label, position, rotation, target, direction }) => (
+        <a
+          class={`nav-item nav-${position}`}
+          href={`/${target}`}
+          data-direction={direction}
+          data-mobile-direction='up'
+        >
           <p>{label}</p>
           <Image
             src={chevron}
@@ -59,19 +71,20 @@ const components = [
             format='webp'
             densities={[1.5, 2]}
           />
-        </div>
+        </a>
       ))
     }
   </nav>
 </header>
 
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+<script>
+  // Mobile menu — exécuté à chaque page-load (la nav peut être réinjectée par le ClientRouter)
+  document.addEventListener('astro:page-load', () => {
     const toggle = document.querySelector('.menu-toggle');
     const menu = document.querySelector('.mobile-menu');
-    const links = document.querySelectorAll('.mobile-link, .nav-item');
-
     if (!toggle || !menu) return;
+
+    const links = document.querySelectorAll('.mobile-link, .nav-item');
 
     const open = () => {
       menu.classList.add('open');
@@ -95,22 +108,16 @@ const components = [
       }
     });
 
-    links.forEach(link => {
-      link.addEventListener('click', () => {
-        close();
-      });
+    links.forEach((link) => {
+      link.addEventListener('click', () => close());
     });
 
-    menu.addEventListener('click', event => {
-      if (event.target === menu) {
-        close();
-      }
+    menu.addEventListener('click', (event) => {
+      if (event.target === menu) close();
     });
 
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && menu.classList.contains('open')) {
-        close();
-      }
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.classList.contains('open')) close();
     });
   });
 </script>
