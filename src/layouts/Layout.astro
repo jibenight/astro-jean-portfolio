@@ -50,6 +50,7 @@ import CallPopup from "../components/CallPopup.astro";
 
   html {
     font-family: 'Comfortaa', sans-serif;
+    font-size: 93.75%; /* 15px base au lieu de 16px — compense la largeur de Comfortaa */
   }
 
   p {
@@ -95,17 +96,17 @@ import CallPopup from "../components/CallPopup.astro";
     border: none;
     margin-bottom: 2rem;
   }
-  /* entete génerique */
+  /* entete génerique — aligné verticalement avec le bouton Close (top: 20px, h: 56px → centre à 48px) */
   .container-title {
     width: 100%;
     margin: 0 auto;
     text-align: center;
-    padding: 1rem 0;
+    padding: 0;
   }
   .title {
     display: inline-block;
     position: relative;
-    margin: 5% 0;
+    margin: 0 0 2rem;
   }
 
   .title h2 {
