@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from 'astro:transitions';
 import CallPopup from "../components/CallPopup.astro";
 ---
 
@@ -17,34 +16,15 @@ import CallPopup from "../components/CallPopup.astro";
     <title>Jean Nguyen</title>
     <link rel='preload' as='font' type='font/woff2' href='/fonts/comfortaa/comfortaa-variable-latin.woff2' crossorigin />
     <link rel='stylesheet' href='/fonts/comfortaa/comfortaa.css' />
-    <ClientRouter />
   </head>
   <body>
     <slot />
     <CallPopup id="call-popup" />
-    <script>
-      // Capture la direction au clic sur tout lien marqué data-direction
-      // afin que le CSS view-transition applique la bonne animation directionnelle
-      // Sur mobile, on utilise data-mobile-direction (toutes les ouvertures = 'up', tous les retours = 'down')
-      document.addEventListener('click', (e) => {
-        const target = e.target;
-        if (!(target instanceof Element)) return;
-        const link = target.closest('a[data-direction]');
-        if (link instanceof HTMLAnchorElement) {
-          const isMobile = window.innerWidth <= 768;
-          const direction = isMobile
-            ? link.dataset.mobileDirection || link.dataset.direction || ''
-            : link.dataset.direction || '';
-          document.documentElement.dataset.direction = direction;
-        }
-      });
-
-      // Reconstruction des emails obfusqués — re-exécuté à chaque page-load
-      // (chargement initial + navigation View Transitions)
-      const reconstructEmails = () => {
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
         document
           .querySelectorAll('[data-email-user][data-email-domain]')
-          .forEach((el) => {
+          .forEach(el => {
             const user = el.getAttribute('data-email-user') || '';
             const domain = el.getAttribute('data-email-domain') || '';
             if (!user || !domain) return;
@@ -52,12 +32,11 @@ import CallPopup from "../components/CallPopup.astro";
             if (el.tagName === 'A') {
               el.setAttribute('href', `mailto:${email}`);
             }
-            if (!(el instanceof HTMLElement) || !el.dataset.noTextReplace) {
+            if (!el.dataset.noTextReplace) {
               el.textContent = email;
             }
           });
-      };
-      document.addEventListener('astro:page-load', reconstructEmails);
+      });
     </script>
   </body>
 </html>
@@ -304,45 +283,6 @@ import CallPopup from "../components/CallPopup.astro";
     to {
       transform: translateX(-100%);
       opacity: 0;
-    }
-  }
-
-  /* ============ VIEW TRANSITIONS directionnelles (Astro ClientRouter) ============ */
-  /* La direction est posée sur <html data-direction="..."> par le script global
-     en fonction du data-direction du lien cliqué. */
-  html[data-direction='down'] ::view-transition-old(root) {
-    animation: 0.5s ease-in-out forwards slideOutDown;
-  }
-  html[data-direction='down'] ::view-transition-new(root) {
-    animation: 0.5s ease-in-out forwards slideInDown;
-  }
-
-  html[data-direction='up'] ::view-transition-old(root) {
-    animation: 0.5s ease-in-out forwards slideOutUp;
-  }
-  html[data-direction='up'] ::view-transition-new(root) {
-    animation: 0.5s ease-in-out forwards slideInUp;
-  }
-
-  html[data-direction='left'] ::view-transition-old(root) {
-    animation: 0.5s ease-in-out forwards slideOutLeft;
-  }
-  html[data-direction='left'] ::view-transition-new(root) {
-    animation: 0.5s ease-in-out forwards slideInLeft;
-  }
-
-  html[data-direction='right'] ::view-transition-old(root) {
-    animation: 0.5s ease-in-out forwards slideOutRight;
-  }
-  html[data-direction='right'] ::view-transition-new(root) {
-    animation: 0.5s ease-in-out forwards slideInRight;
-  }
-
-  /* Respecte la préférence utilisateur "moins d'animations" */
-  @media (prefers-reduced-motion: reduce) {
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation: none !important;
     }
   }
 </style>

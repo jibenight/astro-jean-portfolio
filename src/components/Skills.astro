@@ -67,7 +67,7 @@ const metrics = [
 ---
 
 <section id='skills' class='skills-section'>
-  <Close direction='down' />
+  <Close target='skills' />
   <div class='container-title'>
     <div class='title'>
       <h2>Mes compétences</h2>
@@ -196,28 +196,26 @@ const metrics = [
   </div>
 </section>
 
-<script>
-  document.addEventListener('astro:page-load', () => {
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
     const toggleButtons = document.querySelectorAll('.toggle-btn');
-    if (!toggleButtons.length) return; // pas sur la page Skills
-
     const lists = document.querySelectorAll('.toggle-list');
 
-    toggleButtons.forEach((button) => {
+    toggleButtons.forEach(button => {
       button.addEventListener('click', () => {
-        const scope = (button as HTMLElement).dataset.scope;
-        toggleButtons.forEach((btn) =>
+        const scope = button.dataset.scope;
+        toggleButtons.forEach(btn =>
           btn.classList.toggle('active', btn === button)
         );
-        lists.forEach((list) => {
-          list.classList.toggle('active', list.classList.contains(scope || ''));
+        lists.forEach(list => {
+          list.classList.toggle('active', list.classList.contains(scope));
         });
       });
     });
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('in-view');
             observer.unobserve(entry.target);
@@ -227,13 +225,13 @@ const metrics = [
       { threshold: 0.3 }
     );
 
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    const heroVideo = document.querySelector<HTMLVideoElement>('#skills .hero-video');
+    const heroVideo = document.querySelector('#skills .hero-video');
     if (heroVideo) {
       const videoObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
+        entries => {
+          entries.forEach(entry => {
             if (entry.isIntersecting) {
               heroVideo.play().catch(() => {});
             } else {

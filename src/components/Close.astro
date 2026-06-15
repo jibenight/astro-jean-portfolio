@@ -1,16 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import closeImage from '../assets/images/cancel.png';
-const { width = 32, height = 32, direction = 'up' } = Astro.props;
+const { width = 32, height = 32, target } = Astro.props;
 ---
 
-<a
-  href='/'
-  class='close'
-  aria-label="Retour à l'accueil"
-  data-direction={direction}
-  data-mobile-direction='down'
->
+<button class='close' type='button' aria-label='Fermer la section' data-close-target={target}>
   <Image
     src={closeImage}
     alt='bouton de fermeture'
@@ -20,7 +14,7 @@ const { width = 32, height = 32, direction = 'up' } = Astro.props;
     class='close-icon'
     densities={[1.5, 2]}
   />
-</a>
+</button>
 
 <style>
   .close {
@@ -47,8 +41,8 @@ const { width = 32, height = 32, direction = 'up' } = Astro.props;
       filter 0.24s ease;
     backdrop-filter: blur(10px);
     animation: popIn 0.4s ease-out;
+    position: fixed;
     overflow: hidden;
-    text-decoration: none;
   }
 
   .close::after {
