@@ -6,7 +6,19 @@ test('navigue entre les panneaux et respecte l’historique', async ({
 }) => {
   await page.goto('/');
 
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(
+    page.getByRole('heading', {
+      level: 1,
+      name: /Développeur augmenté par l’IA, de l’idée au produit/,
+    }),
+  ).toBeVisible();
+  await expect(page).toHaveTitle(
+    'Jean Nguyen — Développeur web augmenté par l’IA',
+  );
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    /Développeur web augmenté par l’IA/,
+  );
   await expect(
     page.getByRole('button', { name: 'À propos de moi' }),
   ).toBeVisible();
@@ -126,7 +138,7 @@ test('harmonise les panneaux éditoriaux sans régression accessible', async ({
 
   const panels = [
     { id: 'about', heading: /Du code clair, une approche humaine/ },
-    { id: 'skills', heading: /Une stack moderne, sans complexité inutile/ },
+    { id: 'skills', heading: /Des compétences solides, amplifiées par l’IA/ },
     { id: 'contact', heading: /Parlons de votre prochain projet/ },
   ];
 
