@@ -3,9 +3,12 @@ dist/
 
 # generated types
 .astro/
+.wrangler/
 
 # dependencies
 node_modules/
+playwright-report/
+test-results/
 
 # logs
 npm-debug.log*
@@ -16,6 +19,8 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.dev.vars
+.dev.vars.local
 
 # macOS-specific files
 .DS_Store

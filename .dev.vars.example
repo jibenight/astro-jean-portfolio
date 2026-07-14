@@ -1,0 +1,4 @@
+# Copiez ce fichier vers .dev.vars pour tester le Worker localement.
+# Utilisez les clés de test officielles Turnstile et une clé Resend restreinte.
+RESEND_API_KEY=re_votre_cle_resend
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA

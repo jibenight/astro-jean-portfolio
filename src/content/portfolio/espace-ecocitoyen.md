@@ -1,7 +1,7 @@
 ---
-title: 'Espace ecocitoyen'
-alt: 'Jeune fille dans une serre avec une pancard entre les mains'
-image: '../assets/images/images_portfolio/espace-ecocitoyen-1200-1024x593.jpg'
+title: 'Espace écocitoyen'
+alt: 'Jeune fille dans une serre avec une pancarte entre les mains'
+image: '/images/portfolio/espace-ecocitoyen-1200-1024x593.jpg'
 creation: 'Réalisation à 100%'
 date: '2019-03-10'
 logos: ['wordpress']

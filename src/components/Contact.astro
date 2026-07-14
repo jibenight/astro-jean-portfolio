@@ -10,31 +10,32 @@ import avatarPortrait from '../assets/images/jean-portrait.jpg';
 const apiUrl = import.meta.env.PROD
   ? '/api/contact'
   : 'http://localhost:3001/api/contact';
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 
-<section id='contact' class='contact-section'>
+<section id="contact" class="contact-section">
   <Close onClick="closeSection('contact')" />
-  <div class='container-title'>
-    <div class='title'>
+  <div class="container-title">
+    <div class="title">
       <h2>Me contacter</h2>
       <p>Hire me</p>
     </div>
   </div>
 
-  <div class='contact-grid'>
-    <div class='contact-info reveal-left'>
-      <div class='info-header'>
-        <div class='avatar'>
+  <div class="contact-grid">
+    <div class="contact-info reveal-left">
+      <div class="info-header">
+        <div class="avatar">
           <Image
             src={avatarPortrait}
-            alt='Portrait de Jean Nguyen'
+            alt="Portrait de Jean Nguyen"
             width={72}
             height={72}
-            class='avatar-img'
+            class="avatar-img"
           />
         </div>
         <div>
-          <p class='eyebrow'>
+          <p class="eyebrow">
             Front-end Astro/Tailwind — IA (Claude/ChatGPT/Gemini)
           </p>
           <h3>Discutons perfs et delivery</h3>
@@ -45,23 +46,23 @@ const apiUrl = import.meta.env.PROD
         </div>
       </div>
 
-      <div class='badges'>
+      <div class="badges">
         <span>Freelance front-end</span>
         <span>Remote — Avignon</span>
         <span>FR / EN</span>
       </div>
 
-      <div class='contact-cards'>
+      <div class="contact-cards">
         <a
-          class='contact-card'
-          data-email-user='contact'
-          data-email-domain='jean-nguyen.dev'
-          data-no-text-replace='true'
+          class="contact-card"
+          data-email-user="contact"
+          data-email-domain="jean-nguyen.dev"
+          data-no-text-replace="true"
         >
-          <div class='icon'>
+          <div class="icon">
             <Image
               src={emailIcon}
-              alt='Email'
+              alt="Email"
               width={32}
               height={32}
               densities={[1.5, 2]}
@@ -70,15 +71,15 @@ const apiUrl = import.meta.env.PROD
           <div>
             <p>Email</p>
             <strong
-              data-email-user='contact'
-              data-email-domain='jean-nguyen.dev'></strong>
+              data-email-user="contact"
+              data-email-domain="jean-nguyen.dev"></strong>
           </div>
         </a>
-        <a href='tel:(+33) 06 11 45 18 56' class='contact-card'>
-          <div class='icon'>
+        <a href="tel:+33611451856" class="contact-card">
+          <div class="icon">
             <Image
               src={phoneIcon}
-              alt='Téléphone'
+              alt="Téléphone"
               width={32}
               height={32}
               densities={[1.5, 2]}
@@ -89,11 +90,11 @@ const apiUrl = import.meta.env.PROD
             <strong>(+33) 06 11 45 18 56</strong>
           </div>
         </a>
-        <div class='contact-card'>
-          <div class='icon'>
+        <div class="contact-card">
+          <div class="icon">
             <Image
               src={pinIcon}
-              alt='Localisation'
+              alt="Localisation"
               width={32}
               height={32}
               densities={[1.5, 2]}
@@ -106,56 +107,99 @@ const apiUrl = import.meta.env.PROD
         </div>
       </div>
 
-      <div class='availability-card'>
+      <div class="availability-card">
         <p>Besoin d’un retour rapide ? Un mail ou un call, et on démarre.</p>
       </div>
     </div>
 
-    <div class='contact-form reveal-right'>
+    <div class="contact-form reveal-right">
       <h3>Pitch ton projet</h3>
       <p>2–3 phrases suffisent pour lancer l’échange.</p>
 
-      <div id='contact-status' class='status' hidden></div>
+      <div
+        id="contact-status"
+        class="status"
+        role="status"
+        aria-live="polite"
+        hidden
+      >
+      </div>
 
-      <form id='contact-form' data-api-url={apiUrl}>
-        <div class='form-grid'>
+      <form id="contact-form" data-api-url={apiUrl}>
+        <div class="form-grid">
           <label>
             Nom complet
-            <input type='text' name='name' placeholder='Votre nom' required />
+            <input
+              type="text"
+              name="name"
+              placeholder="Votre nom"
+              autocomplete="name"
+              minlength="2"
+              maxlength="100"
+              required
+            />
           </label>
           <label>
             Email
             <input
-              type='email'
-              name='email'
-              placeholder='mon-email@domaine.fr'
+              type="email"
+              name="email"
+              placeholder="mon-email@domaine.fr"
+              autocomplete="email"
+              maxlength="254"
               required
             />
           </label>
           <label>
             Type de projet
-            <select name='project-type' required>
-              <option value=''>Sélectionnez</option>
+            <select name="project-type" required>
+              <option value="">Sélectionnez</option>
               <option>Site vitrine</option>
               <option>E-commerce</option>
               <option>Refonte</option>
               <option>Application web</option>
+              <option>Autre</option>
             </select>
           </label>
-          <label class='full-width'>
+          <label class="full-width">
             Message
             <textarea
-              name='message'
-              rows='4'
-              placeholder='Décrivez brièvement votre projet'
+              name="message"
+              rows="4"
+              minlength="10"
+              maxlength="5000"
+              placeholder="Décrivez brièvement votre projet"
               required></textarea>
+          </label>
+          <label class="hp-field" aria-hidden="true">
+            Site web
+            <input
+              type="text"
+              name="website"
+              tabindex="-1"
+              autocomplete="off"
+            />
           </label>
         </div>
 
-        <button type='submit' class='btn-submit'>
+        {
+          turnstileSiteKey && (
+            <div class="turnstile-container">
+              <div
+                class="cf-turnstile"
+                data-sitekey={turnstileSiteKey}
+                data-action="contact"
+                data-theme="light"
+                data-size="flexible"
+              />
+            </div>
+          )
+        }
+
+        <button type="submit" class="btn-submit">
           <Image
             src={smileIcon}
-            alt='emoji sourire'
+            alt="emoji sourire"
             width={32}
             height={32}
             densities={[1.5, 2]}
@@ -163,40 +207,49 @@ const apiUrl = import.meta.env.PROD
           Envoyer le message
         </button>
 
-        <p class='disclaimer'>
+        <p class="disclaimer">
           En cliquant sur envoyer, vous acceptez que vos informations soient
           utilisées uniquement pour vous répondre.
         </p>
       </form>
     </div>
   </div>
-  <div class='legal-link'>
-    <a href='/mentions-legales'>Mentions légales</a>
+  <div class="legal-link">
+    <a href="/mentions-legales">Mentions légales</a>
   </div>
 </section>
+
+<script
+  is:inline
+  src={turnstileSiteKey
+    ? 'https://challenges.cloudflare.com/turnstile/v0/api.js'
+    : undefined}
+  async
+  defer></script>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
     const revealBlocks = document.querySelectorAll(
-      '.reveal-left, .reveal-right'
+      '.reveal-left, .reveal-right',
     );
     const form = document.getElementById('contact-form');
     const statusEl = document.getElementById('contact-status');
+    const submitButton = form?.querySelector('[type="submit"]');
 
     const API_URL = form ? form.getAttribute('data-api-url') : '';
 
     const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
+      (entries) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('in-view');
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
-    revealBlocks.forEach(block => observer.observe(block));
+    revealBlocks.forEach((block) => observer.observe(block));
 
     const setStatus = (message, type = 'info') => {
       if (!statusEl) return;
@@ -205,7 +258,7 @@ const apiUrl = import.meta.env.PROD
       statusEl.dataset.type = type;
     };
 
-    form?.addEventListener('submit', async event => {
+    form?.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (!form) return;
 
@@ -215,10 +268,13 @@ const apiUrl = import.meta.env.PROD
         email: formData.get('email') || '',
         projectType: formData.get('project-type') || '',
         message: formData.get('message') || '',
+        website: formData.get('website') || '',
+        turnstileToken: formData.get('cf-turnstile-response') || '',
       };
 
       try {
         setStatus('Envoi en cours...', 'info');
+        if (submitButton) submitButton.disabled = true;
         const response = await fetch(API_URL, {
           method: 'POST',
           headers: {
@@ -227,17 +283,21 @@ const apiUrl = import.meta.env.PROD
           body: JSON.stringify(payload),
         });
 
-        if (!response.ok) {
-          throw new Error('Erreur serveur');
-        }
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || 'Erreur serveur');
 
         setStatus('Message envoyé, merci !', 'success');
         form.reset();
+        window.turnstile?.reset();
       } catch (error) {
         setStatus(
-          'Impossible d’envoyer le message. Réessaie plus tard.',
-          'error'
+          error instanceof Error
+            ? error.message
+            : 'Impossible d’envoyer le message. Réessaie plus tard.',
+          'error',
         );
+      } finally {
+        if (submitButton) submitButton.disabled = false;
       }
     });
   });
@@ -260,6 +320,18 @@ const apiUrl = import.meta.env.PROD
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
+  }
+
+  .hp-field {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .turnstile-container {
+    min-height: 65px;
   }
 
   .contact-info {

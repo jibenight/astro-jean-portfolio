@@ -1,23 +1,42 @@
 ---
-import { Image } from 'astro:assets';
 import heroVideo from '../assets/video/dev_web.mp4';
+import heroPoster from '../assets/images/background-jean-Q100.jpg';
 ---
 
-<section id='home' class='hero-video'>
-  <video class='bg-video' autoplay muted loop playsinline>
-    <source src={heroVideo} type='video/mp4' />
+<section
+  id="home"
+  class="hero-video"
+  style={`--hero-poster: url(${heroPoster.src})`}
+>
+  <video
+    class="bg-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster={heroPoster.src}
+    aria-hidden="true"
+  >
+    <source src={heroVideo} type="video/mp4" />
   </video>
-  <div class='overlay'></div>
+  <div class="overlay"></div>
 
-  <div class='hero-content'>
-    <p class='eyebrow'>Jean Nguyen — Front-end Astro/Tailwind + IA</p>
+  <div class="hero-content">
+    <p class="eyebrow">Jean Nguyen — Front-end Astro/Tailwind + IA</p>
     <h1>Des sites Astro rapides, accessibles et maintenables.</h1>
-    <p class='lead'>
+    <p class="lead">
       Intégration front, optimisation Core Web Vitals, automatisation et QA
       assistée par l’IA pour livrer vite, propre et scalable.
     </p>
-    <div class='hero-cta'>
-      <div class='kpis'>
+    <div class="hero-cta">
+      <button type="button" class="btn-primary" data-target="portfolio">
+        Voir mes projets
+      </button>
+      <button type="button" class="btn-ghost" data-target="contact">
+        Me contacter
+      </button>
+      <div class="kpis">
         <span><strong>Astro/TW</strong> stack cœur</span>
         <span><strong>CWV</strong> focus perfs</span>
         <span><strong>IA</strong> (Claude / ChatGPT / Gemini)</span>
@@ -36,6 +55,7 @@ import heroVideo from '../assets/video/dev_web.mp4';
     align-items: center;
     justify-content: center;
     padding: clamp(1.5rem, 4vw, 3rem);
+    background: #08111b var(--hero-poster) center / cover no-repeat;
   }
 
   #home p {
@@ -104,6 +124,7 @@ import heroVideo from '../assets/video/dev_web.mp4';
     border-radius: 12px;
     font-weight: 700;
     text-decoration: none;
+    cursor: pointer;
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease;
@@ -143,6 +164,12 @@ import heroVideo from '../assets/video/dev_web.mp4';
     #home {
       padding: 1.5rem;
       align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 640px), (prefers-reduced-data: reduce) {
+    .bg-video {
+      display: none;
     }
   }
 </style>

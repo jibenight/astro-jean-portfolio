@@ -1,11 +1,23 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
 backend:
-  name: git-gateway
+  name: github
+  repo: jibenight/astro-jean-portfolio
   branch: main
 
-local_backend: true
-
 media_folder: src/assets/images/images_portfolio
-public_folder: ../assets/images/images_portfolio
+public_folder: /images/portfolio
+
+media_libraries:
+  all:
+    max_file_size: 5242880
+    slugify_filename: true
+    transformations:
+      raster_image:
+        format: webp
+        quality: 85
+        width: 1600
+        height: 1600
 
 collections:
   - name: portfolio
@@ -16,8 +28,8 @@ collections:
     delete: true
     extension: md
     format: frontmatter
-    slug: "{{slug}}"
-    summary: "{{title}} — {{date}}"
+    slug: '{{slug}}'
+    summary: '{{title}} — {{date}}'
     sortable_fields:
       fields: [title, date]
       default:
@@ -37,6 +49,31 @@ collections:
       - label: Description de la réalisation
         name: creation
         widget: text
+      - label: Résumé de l’étude de cas
+        name: summary
+        widget: text
+        required: false
+      - label: Mon rôle
+        name: role
+        widget: string
+        required: false
+      - label: Problématique
+        name: challenge
+        widget: text
+        required: false
+      - label: Solution apportée
+        name: solution
+        widget: text
+        required: false
+      - label: Résultats
+        name: results
+        widget: list
+        required: false
+        default: []
+      - label: Témoignage
+        name: testimonial
+        widget: text
+        required: false
       - label: Date
         name: date
         widget: datetime
@@ -59,21 +96,32 @@ collections:
           - { label: Python, value: python }
           - { label: React, value: react }
           - { label: WordPress, value: wordpress }
+      - label: Catégorie
+        name: category
+        widget: select
+        required: false
+        options: [Custom build, WordPress, Ghost / Headless]
+      - label: Mettre en avant
+        name: featured
+        widget: boolean
+        default: false
+      - label: Statut
+        name: status
+        widget: select
+        default: online
+        options:
+          - { label: En ligne, value: online }
+          - { label: Archivé, value: archived }
       - label: URL du site
         name: href
         widget: string
         pattern:
-          - "^https?://.+"
+          - '^https?://.+'
           - Saisissez une URL commençant par http:// ou https://
       - label: URL GitHub
         name: github
         widget: string
         required: false
         pattern:
-          - "^https?://.+"
+          - '^https?://.+'
           - Saisissez une URL commençant par http:// ou https://
-      - label: Icône GitHub (champ historique)
-        name: logogit
-        widget: hidden
-        required: false
-        default: github

@@ -1,0 +1,270 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import { getPortfolioProjects } from '../../lib/portfolio.js';
+
+export async function getStaticPaths() {
+  const projects = await getPortfolioProjects();
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const description =
+  project.summary ||
+  `${project.creation} — projet ${project.title} réalisé par Jean Nguyen.`;
+---
+
+<Layout title={`${project.title} — Étude de cas`} description={description}>
+  <main class="case-study">
+    <a class="back-link" href="/#portfolio">← Retour au portfolio</a>
+
+    <header class="case-header">
+      <div>
+        <p class="eyebrow">{project.category}</p>
+        <h1>{project.title}</h1>
+        <p class="lead">{description}</p>
+        <div class="actions">
+          <a
+            class="btn-primary"
+            href={project.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visiter le site
+          </a>
+          {
+            project.github && (
+              <a
+                class="btn-secondary"
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Voir le code
+              </a>
+            )
+          }
+        </div>
+      </div>
+      {
+        project.imageAsset && (
+          <Image
+            src={project.imageAsset}
+            alt={project.alt}
+            width={1200}
+            height={675}
+            format="webp"
+            quality={88}
+            loading="eager"
+            fetchpriority="high"
+            class="hero-image"
+          />
+        )
+      }
+    </header>
+
+    <section class="facts" aria-label="Informations sur le projet">
+      <div><strong>Date</strong><span>{project.date}</span></div>
+      <div>
+        <strong>Rôle</strong><span>{project.role || project.creation}</span>
+      </div>
+      <div>
+        <strong>Statut</strong><span
+          >{project.status === 'online' ? 'En ligne' : 'Archivé'}</span
+        >
+      </div>
+    </section>
+
+    <div class="details">
+      {
+        project.challenge && (
+          <section>
+            <p class="eyebrow">Contexte</p>
+            <h2>La problématique</h2>
+            <p>{project.challenge}</p>
+          </section>
+        )
+      }
+      {
+        project.solution && (
+          <section>
+            <p class="eyebrow">Approche</p>
+            <h2>La solution apportée</h2>
+            <p>{project.solution}</p>
+          </section>
+        )
+      }
+      {
+        project.results.length > 0 && (
+          <section>
+            <p class="eyebrow">Impact</p>
+            <h2>Les résultats</h2>
+            <ul>
+              {project.results.map((result) => (
+                <li>{result}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+      <section>
+        <p class="eyebrow">Stack</p>
+        <h2>Technologies utilisées</h2>
+        <ul class="tech-list">
+          {project.logos.map((logo) => <li>{logo}</li>)}
+        </ul>
+      </section>
+      {
+        project.testimonial && (
+          <blockquote>
+            <p>“{project.testimonial}”</p>
+          </blockquote>
+        )
+      }
+    </div>
+
+    <section class="contact-cta">
+      <div>
+        <p class="eyebrow">Votre projet</p>
+        <h2>Besoin d’un site rapide et maintenable ?</h2>
+      </div>
+      <a class="btn-primary" href="/#contact">Parlons-en</a>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .case-study {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2rem clamp(1rem, 4vw, 4rem) 4rem;
+    color: #0f172a;
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 2rem;
+    color: #075f9f;
+    font-weight: 700;
+  }
+
+  .case-header {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: center;
+  }
+
+  h1 {
+    margin: 0.3rem 0 1rem;
+    font-size: clamp(2.4rem, 6vw, 4.8rem);
+    line-height: 1;
+  }
+
+  .lead {
+    max-width: 62ch;
+    color: #475569;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: #075f9f;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.16rem;
+    text-transform: uppercase;
+  }
+
+  .hero-image {
+    width: 100%;
+    border-radius: 24px;
+    box-shadow: 0 28px 70px rgba(15, 23, 42, 0.18);
+  }
+
+  .actions,
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    padding: 0.8rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 800;
+  }
+
+  .btn-primary {
+    background: #0d8ae8;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    border: 1px solid #9ccff3;
+    color: #075f9f;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 3rem 0;
+  }
+
+  .facts div,
+  .details section,
+  blockquote {
+    padding: 1.5rem;
+    border: 1px solid #dbe7f1;
+    border-radius: 20px;
+    background: #f8fbff;
+  }
+
+  .facts div {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .details h2 {
+    margin: 0.4rem 0 0.8rem;
+  }
+
+  .tech-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tech-list li {
+    padding: 0.5rem 0.8rem;
+    border-radius: 999px;
+    background: #e0f2fe;
+  }
+
+  blockquote {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .contact-cta {
+    margin-top: 3rem;
+    padding: 2rem;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    background: linear-gradient(120deg, #e0f2fe, #f8fbff);
+  }
+</style>

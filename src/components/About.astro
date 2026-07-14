@@ -6,37 +6,38 @@ import ConsoleVideo from '../assets/images/console-video.png';
 import Professeur from '../assets/images/professeur.png';
 import Clavier from '../assets/images/clavier.png';
 import Chatbot from '../assets/images/chatbot.png';
+import cvUrl from '../assets/images/CV-Jean-Nguyen.pdf?url';
 const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
 const isAvailable = true;
 ---
 
-<section id='about' class='about-section'>
+<section id="about" class="about-section">
   <Close onClick="closeSection('about')" />
-  <div class='container-title'>
-    <div class='title'>
+  <div class="container-title">
+    <div class="title">
       <h2>À propos de moi</h2>
       <p>Who I am</p>
     </div>
   </div>
 
-  <div class='about-hero'>
-    <div class='hero-media'>
-      <div class='portrait-frame'>
-        <div class='portrait-card'>
-          <div class='portrait-mask'>
+  <div class="about-hero">
+    <div class="hero-media">
+      <div class="portrait-frame">
+        <div class="portrait-card">
+          <div class="portrait-mask">
             <Image
               src={aboutPortrait}
-              alt='Portrait de Jean Nguyen'
+              alt="Portrait de Jean Nguyen"
               width={480}
               height={480}
-              class='portrait-img'
+              class="portrait-img"
             />
           </div>
         </div>
         <div
           class={`portrait-meta ${isAvailable ? 'status-available' : 'status-unavailable'}`}
         >
-          <span class='status-dot' aria-hidden='true'></span>
+          <span class="status-dot" aria-hidden="true"></span>
           {
             isAvailable
               ? 'Disponible pour missions et conseils produit'
@@ -45,8 +46,8 @@ const isAvailable = true;
         </div>
       </div>
     </div>
-    <div class='hero-text'>
-      <p class='eyebrow'>Développeur front-end — Astro.js, Tailwind, Vite</p>
+    <div class="hero-text">
+      <p class="eyebrow">Développeur front-end — Astro.js, Tailwind, Vite</p>
       <h3>Développeur front-end Astro/Tailwind, IA en soutien perfs.</h3>
       <p>
         J’aide les équipes à livrer des sites et back-offices rapides,
@@ -69,13 +70,13 @@ const isAvailable = true;
         prototyper, documenter et accélérer les revues, ce qui rehausse qualité
         et vitesse de livraison.
       </p>
-      <ul class='hero-tags pill-list'>
+      <ul class="hero-tags pill-list">
         <li>Astro.build & Tailwind</li>
         <li>Optimisation Core Web Vitals</li>
         <li>Intégration back-office & API</li>
         <li>IA (Claude / ChatGPT / Gemini)</li>
       </ul>
-      <div class='stats-grid'>
+      <div class="stats-grid">
         <div>
           <strong>{yearsExperience} ans</strong>
           <span>d’expérience pro</span>
@@ -92,91 +93,91 @@ const isAvailable = true;
     </div>
   </div>
 
-  <section class='timeline'>
+  <section class="timeline">
     <h3>Parcours</h3>
-    <div class='timeline-list'>
-      <div class='timeline-item'>
-        <div class='timeline-date'>2023 - 2025</div>
-        <div class='timeline-card'>
+    <div class="timeline-list">
+      <div class="timeline-item">
+        <div class="timeline-date">2023 - 2025</div>
+        <div class="timeline-card">
           <h4>Parent pause — CTO de mini-humain</h4>
           <p>
             Congé parental pour mon petit garçon : support 24/7, sprints de
             biberons et expertise “mode nuit” validée.
           </p>
-          <ul class='timeline-tags pill-list'>
+          <ul class="timeline-tags pill-list">
             <li>Skill bonus : résilience + café</li>
           </ul>
         </div>
       </div>
-      <div class='timeline-item'>
-        <div class='timeline-date'>2023</div>
-        <div class='timeline-card'>
+      <div class="timeline-item">
+        <div class="timeline-date">2023</div>
+        <div class="timeline-card">
           <h4>GospelEvent — Front-end WordPress</h4>
           <p>
             Optimisation Core Web Vitals, automatisation WebP et coaching d’un
             dev junior pour fiabiliser le site.
           </p>
-          <ul class='timeline-tags pill-list'>
+          <ul class="timeline-tags pill-list">
             <li>Perf web</li>
             <li>WebP auto</li>
             <li>Coaching dev</li>
           </ul>
         </div>
       </div>
-      <div class='timeline-item'>
-        <div class='timeline-date'>2022 - 2023</div>
-        <div class='timeline-card'>
+      <div class="timeline-item">
+        <div class="timeline-date">2022 - 2023</div>
+        <div class="timeline-card">
           <h4>Itiaki — Développeur Front-end</h4>
           <p>
             Intégration du site vitrine et des interfaces reliées au back-office
             Django, optimisation UX et responsive.
           </p>
-          <ul class='timeline-tags pill-list'>
+          <ul class="timeline-tags pill-list">
             <li>Django</li>
             <li>Bootstrap</li>
             <li>HTML/CSS/JS</li>
           </ul>
         </div>
       </div>
-      <div class='timeline-item'>
-        <div class='timeline-date'>2022</div>
-        <div class='timeline-card'>
+      <div class="timeline-item">
+        <div class="timeline-date">2022</div>
+        <div class="timeline-card">
           <h4>Opti Digital — Front-end ADS</h4>
           <p>
             Intégration et optimisation de tags publicitaires, debug Chrome
             DevTools, contrôle via GTM.
           </p>
-          <ul class='timeline-tags pill-list'>
+          <ul class="timeline-tags pill-list">
             <li>JS</li>
             <li>Perf</li>
             <li>Ad-tech</li>
           </ul>
         </div>
       </div>
-      <div class='timeline-item'>
-        <div class='timeline-date'>2021 - 2022</div>
-        <div class='timeline-card'>
+      <div class="timeline-item">
+        <div class="timeline-date">2021 - 2022</div>
+        <div class="timeline-card">
           <h4>ilotdesarts — Front-end & back-office</h4>
           <p>
             Refonte vitrine, back-office PHP/MySQL et système de réservation en
             ligne pour ateliers.
           </p>
-          <ul class='timeline-tags pill-list'>
+          <ul class="timeline-tags pill-list">
             <li>PHP</li>
             <li>MySQL</li>
             <li>HTML/CSS/JS</li>
           </ul>
         </div>
       </div>
-      <div class='timeline-item'>
-        <div class='timeline-date'>Projet perso</div>
-        <div class='timeline-card'>
+      <div class="timeline-item">
+        <div class="timeline-date">Projet perso</div>
+        <div class="timeline-card">
           <h4>get-password.com — Astro.js</h4>
           <p>
             Générateur de mots de passe open-source en production, hébergé et
             maintenu par mes soins.
           </p>
-          <ul class='timeline-tags pill-list'>
+          <ul class="timeline-tags pill-list">
             <li>Astro</li>
             <li>Tailwind</li>
             <li>GitHub</li>
@@ -186,27 +187,27 @@ const isAvailable = true;
     </div>
   </section>
 
-  <section class='method'>
+  <section class="method">
     <h3>Méthodologie</h3>
-    <div class='method-grid'>
-      <article class='method-card'>
-        <div class='method-icon'>01</div>
+    <div class="method-grid">
+      <article class="method-card">
+        <div class="method-icon">01</div>
         <h4>Audit perfs & accessibilité</h4>
         <ul>
           <li>Lighthouse, Core Web Vitals, dette front</li>
           <li>Accessibilité, UX rapide et responsive</li>
         </ul>
       </article>
-      <article class='method-card'>
-        <div class='method-icon'>02</div>
+      <article class="method-card">
+        <div class="method-icon">02</div>
         <h4>Build Astro/Tailwind</h4>
         <ul>
           <li>HTML sémantique, design system léger</li>
           <li>Back-office/API (Django, PHP, JS)</li>
         </ul>
       </article>
-      <article class='method-card'>
-        <div class='method-icon'>03</div>
+      <article class="method-card">
+        <div class="method-icon">03</div>
         <h4>Optimisation & automation</h4>
         <ul>
           <li>CI/CD, QA assistée par IA, monitoring</li>
@@ -216,13 +217,13 @@ const isAvailable = true;
     </div>
   </section>
 
-  <section class='fun-facts'>
+  <section class="fun-facts">
     <h3>Fun facts</h3>
-    <div class='facts-grid'>
-      <div class='fact-card'>
+    <div class="facts-grid">
+      <div class="fact-card">
         <Image
           src={Professeur}
-          alt='Mentoring'
+          alt="Mentoring"
           width={48}
           height={48}
           densities={[1.5, 2]}
@@ -230,10 +231,10 @@ const isAvailable = true;
         <h4>Formateur</h4>
         <p>Anime des ateliers web (HTML/CSS, WordPress, Digital).</p>
       </div>
-      <div class='fact-card'>
+      <div class="fact-card">
         <Image
           src={Chatbot}
-          alt='Communauté'
+          alt="Communauté"
           width={48}
           height={48}
           densities={[1.5, 2]}
@@ -241,10 +242,10 @@ const isAvailable = true;
         <h4>IA</h4>
         <p>Assistant quotidien pour analyse, debug et prototypage.</p>
       </div>
-      <div class='fact-card'>
+      <div class="fact-card">
         <Image
           src={Clavier}
-          alt='Rituel'
+          alt="Rituel"
           width={48}
           height={48}
           densities={[1.5, 2]}
@@ -252,10 +253,10 @@ const isAvailable = true;
         <h4>Stack fétiche</h4>
         <p>Astro.js + Tailwind + Vite pour les livraisons rapides.</p>
       </div>
-      <div class='fact-card'>
+      <div class="fact-card">
         <Image
           src={ConsoleVideo}
-          alt='Photo'
+          alt="Photo"
           width={48}
           height={48}
           densities={[1.5, 2]}
@@ -266,20 +267,33 @@ const isAvailable = true;
     </div>
   </section>
 
-  <section class='cta-card'>
+  <section class="cta-card">
     <div>
-      <p class='eyebrow'>Prendre un café virtuel</p>
+      <p class="eyebrow">Prendre un café virtuel</p>
       <h3>Parlons optimisation front, perfs et Astro.js.</h3>
       <p>Je peux auditer, intégrer ou accélérer votre prochaine release.</p>
     </div>
-    <button
-      type='button'
-      class='btn-cta popup-trigger'
-      data-open-popup='call-popup'
-      aria-haspopup='dialog'
-    >
-      Prendre contact
-    </button>
+    <div class="cta-actions">
+      <a class="btn-cta btn-secondary" href={cvUrl} download>
+        Télécharger mon CV
+      </a>
+      <a
+        class="btn-cta btn-secondary"
+        href="https://github.com/jibenight"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub
+      </a>
+      <button
+        type="button"
+        class="btn-cta popup-trigger"
+        data-open-popup="call-popup"
+        aria-haspopup="dialog"
+      >
+        Prendre contact
+      </button>
+    </div>
   </section>
 </section>
 
@@ -623,6 +637,20 @@ const isAvailable = true;
     font-weight: 700;
     font-size: 1.5rem;
     text-decoration: none;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.7rem;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    font-size: 1rem;
   }
 
   @media (max-width: 768px) {

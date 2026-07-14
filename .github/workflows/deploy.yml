@@ -1,0 +1,41 @@
+name: Déploiement o2switch
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run validate
+      - uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Ajouter le serveur aux hôtes connus
+        run: ssh-keyscan -p "${{ secrets.DEPLOY_PORT }}" "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+      - name: Synchroniser l’application
+        run: >-
+          rsync -az --delete
+          --exclude=.git
+          --exclude=.env
+          --exclude=node_modules
+          -e "ssh -p ${{ secrets.DEPLOY_PORT }}"
+          ./ "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+      - name: Installer les dépendances de production
+        run: >-
+          ssh -p "${{ secrets.DEPLOY_PORT }}"
+          "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}"
+          "cd '${{ secrets.DEPLOY_PATH }}' && npm ci --omit=dev"

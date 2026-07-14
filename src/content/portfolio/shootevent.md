@@ -1,7 +1,7 @@
 ---
 title: 'Shootevent'
-alt: 'Groupe de jeunes entrain de prendre un selfie'
-image: '../assets/images/images_portfolio/shootevent-1200-1024x593.jpg'
+alt: 'Groupe de jeunes en train de prendre un selfie'
+image: '/images/portfolio/shootevent-1200-1024x593.jpg'
 creation: 'Réalisation à 100%'
 date: '2017-07-01'
 logos: ['wordpress']

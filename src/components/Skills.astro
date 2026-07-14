@@ -1,6 +1,7 @@
 ---
 import Close from './Close.astro';
 import heroVideo from '../assets/video/code.mp4';
+import heroPoster from '../assets/images/console-video.png';
 const iconBasePath = '/icons-dev/';
 const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
 
@@ -66,18 +67,20 @@ const metrics = [
 ];
 ---
 
-<section id='skills' class='skills-section'>
+<section id="skills" class="skills-section">
   <Close onClick="closeSection('skills')" />
-  <div class='container-title'>
-    <div class='title'>
+  <div class="container-title">
+    <div class="title">
       <h2>Mes compétences</h2>
       <p>Skillset</p>
     </div>
   </div>
 
-  <div class='skills-hero reveal'>
+  <div class="skills-hero reveal">
     <div>
-      <p class='eyebrow'>Front-end Astro/Tailwind + IA (Claude/ChatGPT/Gemini)</p>
+      <p class="eyebrow">
+        Front-end Astro/Tailwind + IA (Claude/ChatGPT/Gemini)
+      </p>
       <h3>Stack moderne, perfs web et IA pour livrer vite et bien.</h3>
       <p>
         Intégration, perfs Core Web Vitals, accessibilité et automatisation :
@@ -85,64 +88,83 @@ const metrics = [
         qualité ni la maintenabilité.
       </p>
     </div>
-    <div class='hero-icon' aria-hidden='true'>
-      <video class='hero-video' src={heroVideo} autoplay muted loop playsinline
-      ></video>
+    <div class="hero-icon" aria-hidden="true">
+      <video
+        class="hero-video"
+        src={heroVideo}
+        poster={heroPoster.src}
+        preload="none"
+        muted
+        loop
+        playsinline></video>
     </div>
   </div>
 
-  <div class='skills-grid'>
-    <article class='card soft-card reveal'>
-      <div class='card-header'>
+  <div class="skills-grid">
+    <article class="card soft-card reveal">
+      <div class="card-header">
         <h3>Dimension humaine</h3>
         <div
-          class='skill-toggle'
-          role='group'
-          aria-label='Filtrer les aptitudes'
+          class="skill-toggle"
+          role="group"
+          aria-label="Filtrer les aptitudes"
         >
-          <button class='toggle-btn active' data-scope='soft'>Soft</button>
-          <button class='toggle-btn' data-scope='hard'>Hard</button>
+          <button
+            class="toggle-btn active"
+            data-scope="soft"
+            aria-pressed="true">Soft</button
+          >
+          <button class="toggle-btn" data-scope="hard" aria-pressed="false"
+            >Hard</button
+          >
         </div>
       </div>
 
-      <ul class='badge-list toggle-list soft active'>
-        {softSkills.map(skill => <li>{skill}</li>)}
+      <ul class="badge-list toggle-list soft active">
+        {softSkills.map((skill) => <li>{skill}</li>)}
       </ul>
-      <ul class='badge-list toggle-list hard'>
-        {hardHighlights.map(skill => <li>{skill}</li>)}
+      <ul class="badge-list toggle-list hard" hidden>
+        {hardHighlights.map((skill) => <li>{skill}</li>)}
       </ul>
     </article>
 
-    <article class='card kpi-card reveal'>
+    <article class="card kpi-card reveal">
       <h3>Impact en chiffres</h3>
-      <div class='metrics'>
+      <div class="metrics">
         {
-          metrics.map(item => (
-            <div class='metric-item'>
-              <span class='metric-value'>{item.value}</span>
-              <span class='metric-label'>{item.label}</span>
+          metrics.map((item) => (
+            <div class="metric-item">
+              <span class="metric-value">{item.value}</span>
+              <span class="metric-label">{item.label}</span>
             </div>
           ))
         }
       </div>
     </article>
 
-    <article class='card tech-card reveal'>
+    <article class="card tech-card reveal">
       <h3>Stack technique</h3>
-      <div class='skill-pills'>
+      <div class="skill-pills">
         {
-          techSkills.map(skill => (
-            <div class='pill'>
-              <div class='pill-info'>
+          techSkills.map((skill) => (
+            <div class="pill">
+              <div class="pill-info">
                 <img
                   src={`${iconBasePath}${skill.icon}`}
                   alt={`Icône ${skill.label}`}
-                  width='40'
-                  height='40'
+                  width="40"
+                  height="40"
                 />
                 <span>{skill.label}</span>
               </div>
-              <div class='progress'>
+              <div
+                class="progress"
+                role="progressbar"
+                aria-label={`Niveau ${skill.label}`}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow={skill.level}
+              >
                 <span style={`width: ${skill.level}%;`} />
               </div>
             </div>
@@ -151,16 +173,16 @@ const metrics = [
       </div>
     </article>
 
-    <article class='card ai-card reveal'>
+    <article class="card ai-card reveal">
       <h3>IA & automatisation</h3>
       <p>
         L’IA accompagne chaque phase : prototypage, développement, QA et
         surveillance de production. Elle agit comme un multiplicateur
         d’efficacité, pas un remplacement.
       </p>
-      <ul class='ai-tools'>
+      <ul class="ai-tools">
         {
-          aiTools.map(tool => (
+          aiTools.map((tool) => (
             <li>
               <div>
                 <strong>{tool.name}</strong>
@@ -174,9 +196,9 @@ const metrics = [
     </article>
   </div>
 
-  <div class='cta-wrap reveal'>
-    <div class='cta-text'>
-      <p class='eyebrow'>Prendre contact</p>
+  <div class="cta-wrap reveal">
+    <div class="cta-text">
+      <p class="eyebrow">Prendre contact</p>
       <h3>Prêt pour un audit express ou un kick-off ?</h3>
       <p>
         Partagez vos objectifs produit, j’arrive avec un plan d’action concret
@@ -184,10 +206,10 @@ const metrics = [
       </p>
     </div>
     <button
-      class='btn-primary popup-trigger'
-      type='button'
-      data-open-popup='call-popup'
-      aria-haspopup='dialog'
+      class="btn-primary popup-trigger"
+      type="button"
+      data-open-popup="call-popup"
+      aria-haspopup="dialog"
     >
       Prendre contact
     </button>
@@ -199,31 +221,35 @@ const metrics = [
     const toggleButtons = document.querySelectorAll('.toggle-btn');
     const lists = document.querySelectorAll('.toggle-list');
 
-    toggleButtons.forEach(button => {
+    toggleButtons.forEach((button) => {
       button.addEventListener('click', () => {
         const scope = button.dataset.scope;
-        toggleButtons.forEach(btn =>
-          btn.classList.toggle('active', btn === button)
-        );
-        lists.forEach(list => {
-          list.classList.toggle('active', list.classList.contains(scope));
+        toggleButtons.forEach((btn) => {
+          const isActive = btn === button;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-pressed', String(isActive));
+        });
+        lists.forEach((list) => {
+          const isActive = list.classList.contains(scope);
+          list.classList.toggle('active', isActive);
+          list.hidden = !isActive;
         });
       });
     });
 
     const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
+      (entries) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('in-view');
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
   });
 </script>
 

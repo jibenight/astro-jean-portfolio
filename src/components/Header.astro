@@ -22,21 +22,22 @@ const components = [
 
 <header>
   <button
-    class='menu-toggle'
-    type='button'
-    aria-label='Ouvrir le menu'
-    aria-expanded='false'
+    class="menu-toggle"
+    type="button"
+    aria-label="Ouvrir le menu"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
   >
     <span></span>
     <span></span>
     <span></span>
   </button>
 
-  <div class='mobile-menu' aria-hidden='true'>
-    <div class='mobile-menu-content'>
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
+    <div class="mobile-menu-content">
       {
         components.map(({ label, target }) => (
-          <button class='mobile-link' data-target={target}>
+          <button class="mobile-link" data-target={target}>
             {label}
           </button>
         ))
@@ -44,22 +45,27 @@ const components = [
     </div>
   </div>
 
-  <nav role='navigation' aria-label='navigation principale'>
+  <nav aria-label="Navigation principale">
     {
       components.map(({ label, position, rotation, target }) => (
-        <div class={`nav-item nav-${position}`} data-target={target}>
+        <button
+          type="button"
+          class={`nav-item nav-${position}`}
+          data-target={target}
+          aria-controls={`${target}-wrapper`}
+        >
           <p>{label}</p>
           <Image
             src={chevron}
-            alt={`Chevron pour ${label}`}
-            class='fade-in-image'
+            alt=""
+            class="fade-in-image"
             style={`transform: rotate(${rotation}deg);`}
             width={32}
             height={32}
-            format='webp'
+            format="webp"
             densities={[1.5, 2]}
           />
-        </div>
+        </button>
       ))
     }
   </nav>
@@ -75,15 +81,22 @@ const components = [
 
     const open = () => {
       menu.classList.add('open');
+      menu.removeAttribute('inert');
+      menu.setAttribute('aria-hidden', 'false');
       toggle.classList.add('open');
       toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Fermer le menu');
       document.body.classList.add('no-scroll');
+      menu.querySelector('.mobile-link')?.focus();
     };
 
     const close = () => {
       menu.classList.remove('open');
+      menu.setAttribute('inert', '');
+      menu.setAttribute('aria-hidden', 'true');
       toggle.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Ouvrir le menu');
       document.body.classList.remove('no-scroll');
     };
 
@@ -95,21 +108,22 @@ const components = [
       }
     });
 
-    links.forEach(link => {
+    links.forEach((link) => {
       link.addEventListener('click', () => {
         close();
       });
     });
 
-    menu.addEventListener('click', event => {
+    menu.addEventListener('click', (event) => {
       if (event.target === menu) {
         close();
       }
     });
 
-    document.addEventListener('keydown', event => {
+    document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && menu.classList.contains('open')) {
         close();
+        toggle.focus();
       }
     });
   });
@@ -138,6 +152,9 @@ const components = [
     align-items: center;
     animation: fadeIn 2s ease-in-out;
     pointer-events: auto;
+    color: inherit;
+    border: 0;
+    background: transparent;
   }
 
   .nav-item:hover {

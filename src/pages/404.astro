@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Page introuvable — Jean Nguyen"
+  description="La page demandée n’existe pas ou a été déplacée."
+  noindex
+>
+  <main class="not-found">
+    <p class="code">404</p>
+    <h1>Cette page s’est éclipsée.</h1>
+    <p>Le lien est peut-être ancien, mais le portfolio est toujours là.</p>
+    <a href="/">Retour à l’accueil</a>
+  </main>
+</Layout>
+
+<style>
+  .not-found {
+    min-height: 100vh;
+    display: grid;
+    place-content: center;
+    justify-items: start;
+    gap: 1rem;
+    padding: 2rem;
+    color: #0f172a;
+    background: linear-gradient(135deg, #e0f2fe, #f8fbff);
+  }
+
+  .code {
+    margin: 0;
+    color: #075f9f;
+    font-weight: 900;
+    letter-spacing: 0.2rem;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+  }
+
+  .not-found > p:not(.code) {
+    margin: 0;
+    color: #475569;
+    font-size: 1.15rem;
+  }
+
+  a {
+    display: inline-flex;
+    margin-top: 0.5rem;
+    padding: 0.85rem 1.3rem;
+    border-radius: 999px;
+    color: #fff;
+    background: #0d8ae8;
+    font-weight: 800;
+  }
+</style>

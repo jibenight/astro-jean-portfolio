@@ -1,0 +1,43 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "astro-jean-portfolio",
+  "main": "./worker/index.js",
+  "compatibility_date": "2026-07-14",
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "jean-nguyen.dev/*",
+      "zone_name": "jean-nguyen.dev",
+    },
+    {
+      "pattern": "www.jean-nguyen.dev/*",
+      "zone_name": "jean-nguyen.dev",
+    },
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": true,
+  },
+  "vars": {
+    "CLIENT_ORIGIN": "https://jean-nguyen.dev,https://www.jean-nguyen.dev",
+    "FROM_EMAIL": "contact@send.jean-nguyen.dev",
+    "TO_EMAIL": "contact@jean-nguyen.dev",
+    "TURNSTILE_REQUIRED": "true",
+  },
+  "ratelimits": [
+    {
+      "name": "CONTACT_RATE_LIMITER",
+      "namespace_id": "2026071401",
+      "simple": {
+        "limit": 5,
+        "period": 60,
+      },
+    },
+  ],
+  "observability": {
+    "enabled": true,
+  },
+}

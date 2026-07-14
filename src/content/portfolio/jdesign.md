@@ -1,7 +1,7 @@
 ---
 title: 'Jdesign'
-alt: 'Macbook air ouvert sur un bureau avec des objets autours'
-image: '../assets/images/images_portfolio/jdesign.jpg'
+alt: 'MacBook Air ouvert sur un bureau entouré de plusieurs objets'
+image: '/images/portfolio/jdesign.jpg'
 creation: 'Réalisation à 100%'
 date: '2017-07-01'
 logos: ['wordpress']

@@ -1,28 +1,70 @@
 ---
-import CallPopup from "../components/CallPopup.astro";
+import CallPopup from '../components/CallPopup.astro';
+import socialImage from '../assets/images/background-jean-Q100.jpg';
+
+const {
+  title = 'Jean Nguyen — Développeur front-end Astro',
+  description = 'Développeur front-end spécialisé en Astro, performance web, accessibilité et intégration de sites maintenables.',
+  noindex = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  Astro.site || Astro.url.origin,
+);
+const socialImageUrl = new URL(socialImage.src, Astro.site || Astro.url.origin);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Jean Nguyen',
+  url: new URL('/', Astro.site || Astro.url.origin).toString(),
+  image: socialImageUrl.toString(),
+  jobTitle: 'Développeur front-end',
+  knowsAbout: ['Astro', 'JavaScript', 'Accessibilité web', 'Performance web'],
+  sameAs: ['https://github.com/jibenight'],
+};
 ---
 
 <!doctype html>
-<html lang='fr'>
+<html lang="fr">
   <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width' />
-    <link rel='icon' type='image/png' href='/coding-2.png' />
-    <meta name='generator' content={Astro.generator} />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/coding-2.png" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
     <meta
-      name='description'
-      content="Jean Nguyen — développeur front-end Astro/Tailwind : sites ultra-rapides, perfs Core Web Vitals, IA pour livrer plus vite, navigation immersive et prise de contact express."
+      name="robots"
+      content={noindex ? 'noindex, nofollow' : 'index, follow'}
     />
-    <title>Jean Nguyen</title>
+    <meta name="theme-color" content="#0d8ae8" />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(structuredData)}
+    />
+    <title>{title}</title>
   </head>
   <body>
+    <a class="skip-link" href="#site-content">Aller au contenu</a>
     <slot />
     <CallPopup id="call-popup" />
     <script is:inline>
       document.addEventListener('DOMContentLoaded', () => {
         document
           .querySelectorAll('[data-email-user][data-email-domain]')
-          .forEach(el => {
+          .forEach((el) => {
             const user = el.getAttribute('data-email-user') || '';
             const domain = el.getAttribute('data-email-domain') || '';
             if (!user || !domain) return;
@@ -41,13 +83,33 @@ import CallPopup from "../components/CallPopup.astro";
 
 <style is:global>
   :root {
-    /* Ajustez si nécessaire */
     --primary-color: #1da5fe;
+    --primary-dark: #075f9f;
     --text-color: #000;
+    --surface: #fff;
+    --surface-muted: #f4f7fb;
+    --radius-card: 24px;
+    --shadow-card: 0 20px 45px rgba(15, 23, 42, 0.1);
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
 
   html {
-    font-family: 'Comfortaa', sans-serif;
+    font-family:
+      ui-rounded,
+      'Nunito',
+      system-ui,
+      -apple-system,
+      sans-serif;
+    color: var(--text-color);
+  }
+
+  body {
+    margin: 0;
   }
 
   p {
@@ -58,7 +120,11 @@ import CallPopup from "../components/CallPopup.astro";
   a {
     text-decoration: none;
     color: inherit;
-    outline: none;
+  }
+
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 3px solid #075f9f;
+    outline-offset: 3px;
   }
 
   button.popup-trigger {
@@ -70,6 +136,23 @@ import CallPopup from "../components/CallPopup.astro";
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease;
+  }
+
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 2000;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: #fff;
+    color: #075f9f;
+    font-weight: 700;
+    transform: translateY(-160%);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
   }
 
   button.popup-trigger:hover {
@@ -148,6 +231,10 @@ import CallPopup from "../components/CallPopup.astro";
     cursor: pointer;
   }
 
+  body.no-scroll {
+    overflow: hidden;
+  }
+
   /* Panel de base (occupant tout l'écran) */
   .panel {
     position: absolute;
@@ -164,6 +251,17 @@ import CallPopup from "../components/CallPopup.astro";
   .panel.active {
     display: block;
     z-index: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   /* ================= ANIMATIONS ===================== */

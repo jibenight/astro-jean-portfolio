@@ -5,18 +5,18 @@ const { width = 32, height = 32, onClick } = Astro.props;
 ---
 
 <button
-  class='close'
-  type='button'
-  aria-label='Fermer la section'
-  onClick={onClick}
+  class="close"
+  type="button"
+  aria-label="Fermer la section"
+  onclick={onClick}
 >
   <Image
     src={closeImage}
-    alt='bouton de fermeture'
+    alt=""
     width={width}
     height={height}
-    format='png'
-    class='close-icon'
+    format="png"
+    class="close-icon"
     densities={[1.5, 2]}
   />
 </button>
@@ -46,7 +46,6 @@ const { width = 32, height = 32, onClick } = Astro.props;
       filter 0.24s ease;
     backdrop-filter: blur(10px);
     animation: popIn 0.4s ease-out;
-    position: fixed;
     overflow: hidden;
   }
 

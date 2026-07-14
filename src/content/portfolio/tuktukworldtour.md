@@ -1,11 +1,11 @@
 ---
-title: 'tuktukworldtour.com'
+title: 'Tuktuk World Tour'
 alt: 'tuktuk en ligne'
-image: '../assets/images/images_portfolio/tuktuk.webp'
-creation: 'Réalisation à 100% - Création de theme pour le CMS ghost - Self-hosted'
+image: '/images/portfolio/tuktuk.webp'
+creation: 'Réalisation à 100% — création d’un thème pour le CMS Ghost auto-hébergé'
 date: '2024-06-10'
 logos: ['ghost', 'handlebars']
-logogit: 'github'
+featured: true
 github: 'https://github.com/jibenight/Ghost-theme-tuktuk'
 href: 'https://tuktukworldtour.com/'
 ---

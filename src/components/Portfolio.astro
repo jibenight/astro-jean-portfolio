@@ -1,76 +1,41 @@
 ---
 import { Image } from 'astro:assets';
 import Close from './Close.astro';
-import { getCollection } from 'astro:content';
-
-const imageImports = import.meta.glob('../assets/images/images_portfolio/*', {
-  eager: true,
-  import: 'default',
-});
+import { getPortfolioProjects } from '../lib/portfolio.js';
 
 const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
 
-const normalizeLogos = logos =>
-  Array.isArray(logos) ? logos : logos ? [logos] : [];
-
-const categoryFromLogo = logos => {
-  if (logos.includes('ghost')) return 'Ghost / Headless';
-  if (logos.includes('wordpress')) return 'WordPress';
-  return 'Custom build';
-};
-
-const getImageAsset = imagePath => {
-  if (!imagePath) return undefined;
-  const filename = imagePath.split('/').pop();
-  return filename
-    ? imageImports[`../assets/images/images_portfolio/${filename}`]
-    : undefined;
-};
-
-// Récupération + tri (récent -> ancien) en parsant explicitement la date (string ou Date)
-const projects = (await getCollection('portfolio'))
-  .map(entry => {
-    const logos = normalizeLogos(entry.data.logos);
-    const rawDate = entry.data.date;
-    const parsed =
-      rawDate instanceof Date ? rawDate : rawDate ? new Date(rawDate) : null;
-    const sortValue =
-      parsed && !isNaN(parsed.valueOf()) ? parsed.valueOf() : -Infinity;
-
-    return {
-      ...entry.data,
-      logos,
-      category: categoryFromLogo(logos),
-      imageAsset: getImageAsset(entry.data.image),
-      sortValue,
-    };
-  })
-  .sort((a, b) => b.sortValue - a.sortValue)
-  .map(({ sortValue, ...rest }) => rest);
-
-const featuredProjects = projects.slice(0, 2);
-const archiveProjects = projects.slice(2);
+const projects = await getPortfolioProjects();
+const selectedFeatured = projects.filter((project) => project.featured);
+const featuredProjects = [
+  ...selectedFeatured,
+  ...projects.filter((project) => !project.featured),
+].slice(0, 2);
+const featuredIds = new Set(featuredProjects.map((project) => project.id));
+const archiveProjects = projects.filter(
+  (project) => !featuredIds.has(project.id),
+);
 const categories = [
   'Tous',
-  ...new Set(projects.map(project => project.category)),
+  ...new Set(projects.map((project) => project.category)),
 ];
 ---
 
-<section id='portfolio' class='portfolio-section'>
+<section id="portfolio" class="portfolio-section">
   {/* Sécurisation de l'appel onClick */}
   <Close
     onClick="window.closeSection ? window.closeSection('portfolio') : console.warn('closeSection missing')"
   />
-  <div class='container-title'>
-    <div class='title'>
+  <div class="container-title">
+    <div class="title">
       <h2>Portfolio</h2>
       <p>Case studies</p>
     </div>
   </div>
 
-  <div class='portfolio-hero glass'>
-    <div class='hero-copy'>
-      <p class='eyebrow'>
+  <div class="portfolio-hero glass">
+    <div class="hero-copy">
+      <p class="eyebrow">
         Front-end Astro/Tailwind + IA — {yearsExperience}+ ans
       </p>
       <h3>Sites Astro rapides, accessibles, optimisés Core Web Vitals.</h3>
@@ -79,7 +44,7 @@ const categories = [
         l’IA. Focus sur des livraisons propres, scalables, avec des stacks
         légères et maintenables.
       </p>
-      <div class='hero-stats'>
+      <div class="hero-stats">
         <div>
           <strong>{yearsExperience}+ ans</strong>
           <span>d’expérience front</span>
@@ -94,13 +59,13 @@ const categories = [
         </div>
       </div>
     </div>
-    <div class='hero-filters'>
+    <div class="hero-filters">
       <p>Filtrer par stack</p>
-      <div class='filter-chips'>
+      <div class="filter-chips">
         {
           categories.map((category, index) => (
             <button
-              type='button'
+              type="button"
               class={`chip ${index === 0 ? 'active' : ''}`}
               data-filter={category}
               aria-pressed={index === 0}
@@ -113,63 +78,66 @@ const categories = [
     </div>
   </div>
 
-  <section class='featured'>
-    <div class='section-header'>
-      <p class='eyebrow'>Focus</p>
+  <section class="featured">
+    <div class="section-header">
+      <p class="eyebrow">Focus</p>
       <h3>Études récentes</h3>
     </div>
-    <div class='featured-grid'>
+    <div class="featured-grid">
       {
-        featuredProjects.map(project => (
-          <article class='featured-card' data-category={project.category}>
-            <div class='media-frame'>
+        featuredProjects.map((project) => (
+          <article class="featured-card" data-category={project.category}>
+            <div class="media-frame">
               {project.imageAsset ? (
                 <Image
                   src={project.imageAsset}
                   alt={project.alt || ''}
                   width={960}
                   height={540}
-                  format='webp'
+                  format="webp"
                   quality={90}
-                  loading='lazy'
-                  decoding='async'
-                  sizes='(max-width: 768px) 100vw, 50vw'
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               ) : (
-                <div class='media-fallback' aria-hidden='true' />
+                <div class="media-fallback" aria-hidden="true" />
               )}
-              <span class='category-pill'>{project.category}</span>
+              <span class="category-pill">{project.category}</span>
             </div>
-            <div class='featured-content'>
+            <div class="featured-content">
               <div>
                 <h4>{project.title}</h4>
                 <p>{project.creation}</p>
               </div>
-              <div class='logo-row'>
-                {project.logos.map(logo => (
+              <div class="logo-row">
+                {project.logos.map((logo) => (
                   <img
                     src={`/icons-dev/${logo}.svg`}
                     alt={`Logo ${logo}`}
-                    width='48'
-                    height='48'
+                    width="48"
+                    height="48"
                   />
                 ))}
               </div>
-              <div class='card-actions'>
+              <div class="card-actions">
+                <a href={`/projets/${project.id}/`} class="btn-primary">
+                  Voir l’étude de cas
+                </a>
                 <a
                   href={project.href}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  class='btn-primary'
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-ghost"
                 >
-                  Voir le site
+                  Site
                 </a>
                 {project.github && (
                   <a
                     href={project.github}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    class='btn-ghost'
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-ghost"
                   >
                     Repo GitHub
                   </a>
@@ -182,63 +150,66 @@ const categories = [
     </div>
   </section>
 
-  <section class='projects-grid'>
-    <div class='section-header'>
-      <p class='eyebrow'>Archive</p>
+  <section class="projects-grid">
+    <div class="section-header">
+      <p class="eyebrow">Archive</p>
       <h3>Projets livrés</h3>
     </div>
-    <div class='grid'>
+    <div class="grid">
       {
-        archiveProjects.map(project => (
-          <article class='project-card' data-category={project.category}>
-            <div class='media-frame'>
+        archiveProjects.map((project) => (
+          <article class="project-card" data-category={project.category}>
+            <div class="media-frame">
               {project.imageAsset ? (
                 <Image
                   src={project.imageAsset}
                   alt={project.alt || ''}
                   width={720}
                   height={480}
-                  format='webp'
+                  format="webp"
                   quality={80}
-                  loading='lazy'
-                  decoding='async'
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               ) : (
-                <div class='media-fallback' aria-hidden='true' />
+                <div class="media-fallback" aria-hidden="true" />
               )}
-              <span class='category-pill'>{project.category}</span>
+              <span class="category-pill">{project.category}</span>
             </div>
-            <div class='project-body'>
+            <div class="project-body">
               <div>
                 <h4>{project.title}</h4>
                 <p>{project.creation}</p>
               </div>
-              <div class='logo-row'>
-                {project.logos.map(logo => (
+              <div class="logo-row">
+                {project.logos.map((logo) => (
                   <img
                     src={`/icons-dev/${logo}.svg`}
                     alt={`Logo ${logo}`}
-                    width='40'
-                    height='40'
+                    width="40"
+                    height="40"
                   />
                 ))}
               </div>
-              <div class='card-actions'>
+              <div class="card-actions">
+                <a href={`/projets/${project.id}/`} class="btn-primary">
+                  Étude de cas
+                </a>
                 <a
                   href={project.href}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  class='btn-primary'
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-ghost"
                 >
-                  Voir le site
+                  Site
                 </a>
                 {project.github && (
                   <a
                     href={project.github}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    class='btn-ghost'
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-ghost"
                   >
                     Repo GitHub
                   </a>
@@ -251,9 +222,9 @@ const categories = [
     </div>
   </section>
 
-  <section class='cta-card glass'>
+  <section class="cta-card glass">
     <div>
-      <p class='eyebrow'>Encore plus de projets</p>
+      <p class="eyebrow">Encore plus de projets</p>
       <h3>Besoin d’un audit ou d’un aperçu détaillé ?</h3>
       <p>
         Parlons de votre stack actuel, des points de friction et de la roadmap
@@ -261,10 +232,10 @@ const categories = [
       </p>
     </div>
     <button
-      type='button'
-      class='btn-primary popup-trigger'
-      data-open-popup='call-popup'
-      aria-haspopup='dialog'
+      type="button"
+      class="btn-primary popup-trigger"
+      data-open-popup="call-popup"
+      aria-haspopup="dialog"
     >
       Prendre contact
     </button>
@@ -272,28 +243,21 @@ const categories = [
 </section>
 
 <script is:inline>
-  // Définition de closeSection pour le bouton Close
-  // On le met sur window pour qu'il soit accessible globalement
-  window.closeSection = id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  };
-
   document.addEventListener('DOMContentLoaded', () => {
     const chips = document.querySelectorAll('.chip');
     const cards = document.querySelectorAll('[data-category]');
 
-    chips.forEach(chip => {
+    chips.forEach((chip) => {
       chip.addEventListener('click', () => {
         const filter = chip.dataset.filter;
 
-        chips.forEach(btn => {
+        chips.forEach((btn) => {
           const isActive = btn === chip;
           btn.classList.toggle('active', isActive);
           btn.setAttribute('aria-pressed', isActive); // Accessibilité
         });
 
-        cards.forEach(card => {
+        cards.forEach((card) => {
           const match = filter === 'Tous' || card.dataset.category === filter;
           // Utilisation de la classe .hidden-card définie en global
           card.classList.toggle('hidden-card', !match);
