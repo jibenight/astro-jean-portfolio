@@ -32,6 +32,11 @@ test('affiche le menu hamburger sur mobile', async ({ page }) => {
 
   const menuButton = page.getByRole('button', { name: 'Ouvrir le menu' });
   await expect(menuButton).toBeVisible();
+  await expect(page.locator('.bg-video')).toBeHidden();
+  await expect(page.locator('#home')).toHaveCSS(
+    'background-position',
+    '20% 50%',
+  );
   await menuButton.click();
   await expect(page.getByRole('button', { name: 'Portfolio' })).toBeVisible();
 });
