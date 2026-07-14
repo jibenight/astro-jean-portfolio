@@ -53,7 +53,7 @@ import Button from './ui/Button.astro';
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(1.5rem, 4vw, 3rem);
+    padding: clamp(2rem, 7vw, 7rem);
     background: var(--color-neutral-950) var(--hero-poster) center / cover
       no-repeat;
   }
@@ -76,15 +76,15 @@ import Button from './ui/Button.astro';
     inset: 0;
     background: radial-gradient(
       circle at 20% 20%,
-      color-mix(in srgb, var(--color-brand-600) 45%, transparent),
-      rgba(0, 0, 0, 0.55)
+      color-mix(in srgb, var(--color-brand-600) 32%, transparent),
+      rgba(7, 17, 31, 0.76)
     );
   }
 
   .hero-content {
     position: relative;
     z-index: 1;
-    max-width: 720px;
+    width: min(100%, 820px);
     display: grid;
     gap: var(--space-4);
     text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
@@ -93,19 +93,28 @@ import Button from './ui/Button.astro';
   .eyebrow {
     text-transform: uppercase;
     letter-spacing: 0.2rem;
-    font-size: 0.85rem;
-    opacity: 0.85;
+    color: var(--color-brand-300);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    opacity: 1;
     margin: 0;
   }
 
   h1 {
-    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    max-width: 13ch;
+    font-size: clamp(3.4rem, 6.2vw, 6.4rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
     margin: 0;
   }
 
   .lead {
-    max-width: 560px;
+    max-width: 60ch;
     margin: 0;
+    color: var(--color-neutral-200);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-body);
   }
 
   .hero-cta {
@@ -123,16 +132,27 @@ import Button from './ui/Button.astro';
   }
 
   .kpis span {
-    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(7, 17, 31, 0.35);
     padding: 0.5rem 0.8rem;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-pill);
     font-size: 0.9rem;
   }
 
   @media (max-width: 900px) {
     #home {
       padding: 1.5rem;
-      align-items: flex-start;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 640px) {
+    h1 {
+      font-size: clamp(3rem, 14vw, 4.6rem);
+    }
+
+    .hero-content {
+      padding-bottom: 4rem;
     }
   }
 

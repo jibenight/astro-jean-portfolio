@@ -23,25 +23,34 @@ import Layout from '../layouts/Layout.astro';
     justify-items: start;
     gap: 1rem;
     padding: 2rem;
-    color: #0f172a;
-    background: linear-gradient(135deg, #e0f2fe, #f8fbff);
+    color: var(--color-text-inverse);
+    background:
+      radial-gradient(
+        circle at 25% 25%,
+        rgba(29, 165, 254, 0.22),
+        transparent 28rem
+      ),
+      var(--color-neutral-950);
   }
 
   .code {
     margin: 0;
-    color: #075f9f;
-    font-weight: 900;
+    color: var(--color-brand-500);
+    font-weight: 700;
     letter-spacing: 0.2rem;
   }
 
   h1 {
     margin: 0;
     font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
   }
 
   .not-found > p:not(.code) {
     margin: 0;
-    color: #475569;
+    color: var(--color-neutral-300);
     font-size: 1.15rem;
   }
 
@@ -50,8 +59,8 @@ import Layout from '../layouts/Layout.astro';
     margin-top: 0.5rem;
     padding: 0.85rem 1.3rem;
     border-radius: 999px;
-    color: #fff;
-    background: #0d8ae8;
-    font-weight: 800;
+    color: var(--color-neutral-0);
+    background: var(--color-brand-600);
+    font-weight: 700;
   }
 </style>

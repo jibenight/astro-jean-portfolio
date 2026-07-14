@@ -89,6 +89,46 @@ test('filtre le portfolio et conserve son accessibilité', async ({ page }) => {
   expect(severeViolations).toEqual([]);
 });
 
+test('harmonise les panneaux éditoriaux sans régression accessible', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  const panels = [
+    { id: 'about', heading: /Du code clair, une approche humaine/ },
+    { id: 'skills', heading: /Une stack moderne, sans complexité inutile/ },
+    { id: 'contact', heading: /Parlons de votre prochain projet/ },
+  ];
+
+  for (const panel of panels) {
+    await page.goto(`/#${panel.id}`);
+
+    const section = page.locator(`#${panel.id}`);
+    await expect(page.locator(`#${panel.id}-wrapper`)).toHaveAttribute(
+      'aria-hidden',
+      'false',
+    );
+    await expect(
+      page.getByRole('heading', { level: 2, name: panel.heading }),
+    ).toBeVisible();
+
+    const hasHorizontalOverflow = await section.evaluate(
+      (element) => element.scrollWidth > element.clientWidth + 1,
+    );
+    expect(hasHorizontalOverflow).toBe(false);
+
+    const results = await new AxeBuilder({ page })
+      .include(`#${panel.id}`)
+      .withTags(['wcag2a', 'wcag2aa'])
+      .analyze();
+    const severeViolations = results.violations.filter(({ impact }) =>
+      ['critical', 'serious'].includes(impact ?? ''),
+    );
+
+    expect(severeViolations).toEqual([]);
+  }
+});
+
 test('documente le design system et ses composants', async ({ page }) => {
   await page.goto('/design-system/');
 

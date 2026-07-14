@@ -138,40 +138,45 @@ const description =
 
 <style>
   .case-study {
-    max-width: 1180px;
+    width: min(100%, var(--container-lg));
+    min-height: 100vh;
     margin: 0 auto;
-    padding: 2rem clamp(1rem, 4vw, 4rem) 4rem;
-    color: #0f172a;
+    padding: var(--space-8) var(--gutter) var(--space-16);
+    color: var(--color-text-inverse);
   }
 
   .back-link {
     display: inline-flex;
     margin-bottom: 2rem;
-    color: #075f9f;
+    color: var(--color-brand-300);
     font-weight: 700;
   }
 
   .case-header {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: clamp(2rem, 6vw, 6rem);
     align-items: center;
   }
 
   h1 {
     margin: 0.3rem 0 1rem;
-    font-size: clamp(2.4rem, 6vw, 4.8rem);
-    line-height: 1;
+    color: var(--color-neutral-0);
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
   }
 
   .lead {
     max-width: 62ch;
-    color: #475569;
+    color: var(--color-neutral-300);
+    line-height: var(--line-height-body);
   }
 
   .eyebrow {
     margin: 0;
-    color: #075f9f;
+    color: var(--color-brand-300);
     font-size: 0.82rem;
     font-weight: 800;
     letter-spacing: 0.16rem;
@@ -180,8 +185,8 @@ const description =
 
   .hero-image {
     width: 100%;
-    border-radius: 24px;
-    box-shadow: 0 28px 70px rgba(15, 23, 42, 0.18);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
   }
 
   .actions,
@@ -189,6 +194,10 @@ const description =
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+  }
+
+  .actions {
+    margin-top: var(--space-6);
   }
 
   .btn-primary,
@@ -200,13 +209,18 @@ const description =
   }
 
   .btn-primary {
-    background: #0d8ae8;
-    color: #fff;
+    color: var(--color-neutral-0);
+    background: linear-gradient(
+      120deg,
+      var(--color-brand-600),
+      var(--color-brand-500)
+    );
+    box-shadow: var(--shadow-brand);
   }
 
   .btn-secondary {
-    border: 1px solid #9ccff3;
-    color: #075f9f;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: var(--color-neutral-0);
   }
 
   .facts {
@@ -220,14 +234,22 @@ const description =
   .details section,
   blockquote {
     padding: 1.5rem;
-    border: 1px solid #dbe7f1;
-    border-radius: 20px;
-    background: #f8fbff;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    color: var(--color-text);
+    background: var(--color-neutral-50);
   }
 
   .facts div {
     display: grid;
     gap: 0.45rem;
+  }
+
+  .facts strong {
+    color: var(--color-brand-700);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
   }
 
   .details {
@@ -238,6 +260,14 @@ const description =
 
   .details h2 {
     margin: 0.4rem 0 0.8rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .details section > p:last-child,
+  .details li {
+    color: var(--color-text-muted);
+    line-height: var(--line-height-body);
   }
 
   .tech-list {
@@ -248,7 +278,8 @@ const description =
   .tech-list li {
     padding: 0.5rem 0.8rem;
     border-radius: 999px;
-    background: #e0f2fe;
+    color: var(--color-brand-700);
+    background: var(--color-brand-50);
   }
 
   blockquote {
@@ -259,12 +290,29 @@ const description =
   .contact-cta {
     margin-top: 3rem;
     padding: 2rem;
-    border-radius: 24px;
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
-    background: linear-gradient(120deg, #e0f2fe, #f8fbff);
+    color: var(--color-neutral-950);
+    background: var(--color-brand-500);
+  }
+
+  .contact-cta h2 {
+    margin: var(--space-2) 0 0;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .contact-cta .eyebrow {
+    color: var(--color-brand-900);
+  }
+
+  .contact-cta .btn-primary {
+    color: var(--color-neutral-0);
+    background: var(--color-neutral-950);
+    box-shadow: none;
   }
 </style>
