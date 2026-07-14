@@ -124,13 +124,10 @@ const getProjectYear = (project: { date: string }) =>
                   <Image
                     src={project.imageAsset}
                     alt={project.alt || ''}
-                    width={1200}
-                    height={760}
                     format="webp"
                     quality={90}
                     loading="lazy"
                     decoding="async"
-                    sizes="(max-width: 768px) 100vw, 62vw"
                   />
                 ) : (
                   <div class="media-fallback" aria-hidden="true" />
@@ -233,8 +230,6 @@ const getProjectYear = (project: { date: string }) =>
                       <Image
                         src={project.imageAsset}
                         alt=""
-                        width={720}
-                        height={480}
                         format="webp"
                         quality={78}
                         loading="lazy"
@@ -270,13 +265,10 @@ const getProjectYear = (project: { date: string }) =>
                   <Image
                     src={project.imageAsset}
                     alt=""
-                    width={920}
-                    height={680}
                     format="webp"
                     quality={84}
                     loading="lazy"
                     decoding="async"
-                    sizes="36vw"
                   />
                 ) : (
                   <div class="media-fallback" />

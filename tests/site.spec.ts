@@ -42,6 +42,19 @@ test('rend une étude de cas et le sitemap', async ({ page, request }) => {
     page.getByRole('heading', { level: 1, name: 'Get-Password' }),
   ).toBeVisible();
 
+  const heroImage = page.locator('.hero-image');
+  const heroRatios = await heroImage.evaluate((image) => {
+    const element = image as HTMLImageElement;
+    const bounds = element.getBoundingClientRect();
+
+    return {
+      natural: element.naturalWidth / element.naturalHeight,
+      rendered: bounds.width / bounds.height,
+    };
+  });
+  expect(heroRatios.natural).toBeCloseTo(4 / 3, 1);
+  expect(heroRatios.rendered).toBeCloseTo(heroRatios.natural, 2);
+
   const sitemap = await request.get('/sitemap.xml');
   expect(sitemap.ok()).toBeTruthy();
   await expect(sitemap.text()).resolves.toContain('/projets/get-password/');
@@ -77,6 +90,18 @@ test('filtre le portfolio et conserve son accessibilité', async ({ page }) => {
       ),
     )
     .toBe(true);
+
+  const featuredImage = page.locator('.featured-visual img').first();
+  const featuredMedia = await featuredImage.evaluate((image) => {
+    const element = image as HTMLImageElement;
+
+    return {
+      naturalRatio: element.naturalWidth / element.naturalHeight,
+      objectFit: getComputedStyle(element).objectFit,
+    };
+  });
+  expect(featuredMedia.naturalRatio).toBeCloseTo(4 / 3, 1);
+  expect(featuredMedia.objectFit).toBe('cover');
 
   const results = await new AxeBuilder({ page })
     .include('#portfolio')

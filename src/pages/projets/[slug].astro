@@ -54,8 +54,6 @@ const description =
           <Image
             src={project.imageAsset}
             alt={project.alt}
-            width={1200}
-            height={675}
             format="webp"
             quality={88}
             loading="eager"
@@ -184,7 +182,9 @@ const description =
   }
 
   .hero-image {
+    display: block;
     width: 100%;
+    height: auto;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
   }
