@@ -89,6 +89,38 @@ test('filtre le portfolio et conserve son accessibilité', async ({ page }) => {
   expect(severeViolations).toEqual([]);
 });
 
+test('documente le design system et ses composants', async ({ page }) => {
+  await page.goto('/design-system/');
+
+  await expect(
+    page.getByRole('heading', {
+      level: 1,
+      name: /Clair par défaut. Expressif quand il faut./,
+    }),
+  ).toBeVisible();
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    'content',
+    'noindex, nofollow',
+  );
+  await expect(page.locator('.color-card')).toHaveCount(11);
+  await expect(
+    page.getByRole('button', { name: /Action principale/ }),
+  ).toBeVisible();
+
+  await page.locator('.color-card').first().click();
+  await expect(page.locator('.copy-status')).not.toBeEmpty();
+
+  const results = await new AxeBuilder({ page })
+    .include('.design-system')
+    .withTags(['wcag2a', 'wcag2aa'])
+    .analyze();
+  const severeViolations = results.violations.filter(({ impact }) =>
+    ['critical', 'serious'].includes(impact ?? ''),
+  );
+
+  expect(severeViolations).toEqual([]);
+});
+
 test('ne présente aucune violation d’accessibilité grave', async ({ page }) => {
   await page.goto('/');
   const results = await new AxeBuilder({ page })

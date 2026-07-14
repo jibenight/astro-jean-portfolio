@@ -1,6 +1,7 @@
 ---
 import heroVideo from '../assets/video/dev_web.mp4';
 import heroPoster from '../assets/images/background-jean-Q100.jpg';
+import Button from './ui/Button.astro';
 ---
 
 <section
@@ -30,12 +31,10 @@ import heroPoster from '../assets/images/background-jean-Q100.jpg';
       assistée par l’IA pour livrer vite, propre et scalable.
     </p>
     <div class="hero-cta">
-      <button type="button" class="btn-primary" data-target="portfolio">
-        Voir mes projets
-      </button>
-      <button type="button" class="btn-ghost" data-target="contact">
+      <Button size="lg" data-target="portfolio"> Voir mes projets </Button>
+      <Button variant="inverse" size="lg" data-target="contact">
         Me contacter
-      </button>
+      </Button>
       <div class="kpis">
         <span><strong>Astro/TW</strong> stack cœur</span>
         <span><strong>CWV</strong> focus perfs</span>
@@ -50,12 +49,13 @@ import heroPoster from '../assets/images/background-jean-Q100.jpg';
     position: relative;
     min-height: 100vh;
     overflow: hidden;
-    color: #fff;
+    color: var(--color-text-inverse);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: clamp(1.5rem, 4vw, 3rem);
-    background: #08111b var(--hero-poster) center / cover no-repeat;
+    background: var(--color-neutral-950) var(--hero-poster) center / cover
+      no-repeat;
   }
 
   #home p {
@@ -76,7 +76,7 @@ import heroPoster from '../assets/images/background-jean-Q100.jpg';
     inset: 0;
     background: radial-gradient(
       circle at 20% 20%,
-      rgba(13, 138, 232, 0.45),
+      color-mix(in srgb, var(--color-brand-600) 45%, transparent),
       rgba(0, 0, 0, 0.55)
     );
   }
@@ -86,7 +86,7 @@ import heroPoster from '../assets/images/background-jean-Q100.jpg';
     z-index: 1;
     max-width: 720px;
     display: grid;
-    gap: 1rem;
+    gap: var(--space-4);
     text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   }
 
@@ -110,45 +110,14 @@ import heroPoster from '../assets/images/background-jean-Q100.jpg';
 
   .hero-cta {
     display: flex;
-    gap: 1.5rem;
+    gap: var(--space-6);
     align-items: center;
     flex-wrap: wrap;
   }
 
-  .btn-primary,
-  .btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.8rem 1.4rem;
-    border-radius: 12px;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-
-  .btn-primary {
-    background: linear-gradient(120deg, #0d8ae8, #1da5fe);
-    color: #fff;
-    box-shadow: 0 15px 40px rgba(13, 138, 232, 0.35);
-  }
-
-  .btn-ghost {
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: #fff;
-  }
-
-  .btn-primary:hover,
-  .btn-ghost:hover {
-    transform: translateY(-2px);
-  }
-
   .kpis {
     display: flex;
-    gap: 1rem;
+    gap: var(--space-4);
     flex-wrap: wrap;
     opacity: 0.9;
   }
@@ -156,7 +125,7 @@ import heroPoster from '../assets/images/background-jean-Q100.jpg';
   .kpis span {
     background: rgba(255, 255, 255, 0.12);
     padding: 0.5rem 0.8rem;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     font-size: 0.9rem;
   }
 

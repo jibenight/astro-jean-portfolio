@@ -1,0 +1,1077 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/ui/Button.astro';
+import Badge from '../components/ui/Badge.astro';
+
+const colors = [
+  { name: 'Brand 500', token: '--color-brand-500', value: '#1DA5FE' },
+  { name: 'Brand 600', token: '--color-brand-600', value: '#0D8AE8' },
+  { name: 'Brand 700', token: '--color-brand-700', value: '#075F9F' },
+  { name: 'Neutral 950', token: '--color-neutral-950', value: '#07111F' },
+  { name: 'Neutral 900', token: '--color-neutral-900', value: '#0B1524' },
+  { name: 'Neutral 700', token: '--color-neutral-700', value: '#40566A' },
+  { name: 'Neutral 500', token: '--color-neutral-500', value: '#71859A' },
+  { name: 'Neutral 200', token: '--color-neutral-200', value: '#DCE5EE' },
+  { name: 'Neutral 50', token: '--color-neutral-50', value: '#F7F9FC' },
+  { name: 'Success', token: '--color-success', value: '#065F46' },
+  { name: 'Danger', token: '--color-danger', value: '#C42F42' },
+];
+
+const spacing = [
+  { token: '--space-1', value: '4px' },
+  { token: '--space-2', value: '8px' },
+  { token: '--space-3', value: '12px' },
+  { token: '--space-4', value: '16px' },
+  { token: '--space-6', value: '24px' },
+  { token: '--space-8', value: '32px' },
+  { token: '--space-12', value: '48px' },
+  { token: '--space-16', value: '64px' },
+  { token: '--space-24', value: '96px' },
+];
+
+const radii = [
+  { token: '--radius-sm', label: 'Petit', value: '8px' },
+  { token: '--radius-md', label: 'Standard', value: '12px' },
+  { token: '--radius-lg', label: 'Large', value: '18px' },
+  { token: '--radius-xl', label: 'Carte', value: '24px' },
+  { token: '--radius-pill', label: 'Pilule', value: '999px' },
+];
+---
+
+<Layout
+  title="Design system — Jean Nguyen"
+  description="Tokens, composants et règles d’interface du portfolio de Jean Nguyen."
+  noindex={true}
+>
+  <div class="design-system">
+    <header class="ds-topbar">
+      <a class="ds-brand" href="/" aria-label="Retour au portfolio">
+        <span aria-hidden="true">JN</span>
+        <strong>Interface system</strong>
+      </a>
+      <div class="ds-meta">
+        <Badge tone="success">Stable</Badge>
+        <span>v1.0 · 2026</span>
+        <a href="/">Retour au site <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main id="site-content">
+      <section class="ds-hero">
+        <div class="ui-container ds-hero-grid">
+          <div>
+            <p class="ui-kicker">Jean Nguyen / Design system</p>
+            <h1>
+              Clair par défaut.<br /><span>Expressif</span> quand il faut.
+            </h1>
+          </div>
+          <div class="ds-hero-copy">
+            <p>
+              Un langage visuel compact pour construire des expériences web
+              rapides, accessibles et cohérentes — sans ajouter de dépendance au
+              projet.
+            </p>
+            <div class="ui-cluster">
+              <Badge tone="inverse">Astro natif</Badge>
+              <Badge tone="inverse">WCAG AA</Badge>
+              <Badge tone="inverse">4 px grid</Badge>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="ui-container ds-layout">
+        <aside class="ds-sidebar" aria-label="Sommaire du design system">
+          <p>Fondations</p>
+          <nav>
+            <a href="#principes">Principes</a>
+            <a href="#couleurs">Couleurs</a>
+            <a href="#typographie">Typographie</a>
+            <a href="#espacement">Espacement</a>
+          </nav>
+          <p>Interface</p>
+          <nav>
+            <a href="#boutons">Boutons</a>
+            <a href="#badges">Badges</a>
+            <a href="#cartes">Cartes</a>
+            <a href="#formulaires">Formulaires</a>
+            <a href="#accessibilite">Accessibilité</a>
+          </nav>
+        </aside>
+
+        <div class="ds-content">
+          <section id="principes" class="ds-section">
+            <header class="ds-section-heading">
+              <p class="ui-kicker">01 / Direction</p>
+              <h2>Principes</h2>
+              <p>
+                Les choix visuels servent d’abord la compréhension, la vitesse
+                et la confiance.
+              </p>
+            </header>
+            <div class="principle-grid">
+              <article class="principle-card">
+                <span>01</span>
+                <h3>Contraste utile</h3>
+                <p>
+                  Le bleu attire l’attention. Le bleu nuit structure. Le blanc
+                  laisse respirer le contenu.
+                </p>
+              </article>
+              <article class="principle-card">
+                <span>02</span>
+                <h3>Densité maîtrisée</h3>
+                <p>
+                  Une grille de 4 px et peu de tailles produisent un rythme
+                  stable sur tous les écrans.
+                </p>
+              </article>
+              <article class="principle-card">
+                <span>03</span>
+                <h3>Mouvement intentionnel</h3>
+                <p>
+                  Les transitions expliquent un changement d’état et respectent
+                  toujours les préférences système.
+                </p>
+              </article>
+            </div>
+          </section>
+
+          <section id="couleurs" class="ds-section">
+            <header class="ds-section-heading">
+              <p class="ui-kicker">02 / Fondations</p>
+              <h2>Couleurs</h2>
+              <p>
+                Une palette courte : marque, neutres et états sémantiques.
+                Cliquez sur un échantillon pour copier son token.
+              </p>
+            </header>
+            <div class="color-grid">
+              {
+                colors.map((color) => (
+                  <button
+                    type="button"
+                    class="color-card"
+                    data-copy-token={color.token}
+                    aria-label={`Copier le token ${color.token}`}
+                    style={`--swatch: var(${color.token})`}
+                  >
+                    <span class="color-swatch" />
+                    <span class="color-data">
+                      <strong>{color.name}</strong>
+                      <code>{color.token}</code>
+                      <small>{color.value}</small>
+                    </span>
+                  </button>
+                ))
+              }
+            </div>
+            <p class="copy-status" role="status" aria-live="polite"></p>
+          </section>
+
+          <section id="typographie" class="ds-section">
+            <header class="ds-section-heading">
+              <p class="ui-kicker">03 / Fondations</p>
+              <h2>Typographie</h2>
+              <p>
+                Une pile système arrondie : rapide à charger, chaleureuse et
+                lisible sur chaque plateforme.
+              </p>
+            </header>
+            <div class="type-specimens">
+              <article class="type-row type-display">
+                <div>
+                  <code>Display</code><span>clamp(3.2rem, 8vw, 7.5rem)</span>
+                </div>
+                <p>Rapide &amp; mémorable.</p>
+              </article>
+              <article class="type-row type-heading">
+                <div>
+                  <code>Heading</code><span>clamp(1.8rem, 3vw, 2.5rem)</span>
+                </div>
+                <p>Une hiérarchie immédiatement lisible.</p>
+              </article>
+              <article class="type-row type-body">
+                <div><code>Body</code><span>1rem / 1.6</span></div>
+                <p>
+                  Le texte courant reste confortable sur des lignes de 45 à 75
+                  caractères, avec un contraste conforme au niveau AA.
+                </p>
+              </article>
+              <article class="type-row type-label">
+                <div><code>Label</code><span>0.75rem / +12%</span></div>
+                <p>PROJET SÉLECTIONNÉ · ASTRO · 2026</p>
+              </article>
+            </div>
+          </section>
+
+          <section id="espacement" class="ds-section">
+            <header class="ds-section-heading">
+              <p class="ui-kicker">04 / Fondations</p>
+              <h2>Espacement &amp; forme</h2>
+              <p>
+                Les espacements suivent une base de 4 px. Les rayons traduisent
+                le niveau de proximité et d’interaction.
+              </p>
+            </header>
+            <div class="spacing-list">
+              {
+                spacing.map((item) => (
+                  <div class="spacing-row">
+                    <code>{item.token}</code>
+                    <span
+                      class="spacing-bar"
+                      style={`--space-value: var(${item.token})`}
+                    />
+                    <small>{item.value}</small>
+                  </div>
+                ))
+              }
+            </div>
+            <div class="radius-grid">
+              {
+                radii.map((radius) => (
+                  <div>
+                    <span
+                      class="radius-shape"
+                      style={`border-radius: var(${radius.token})`}
+                    />
+                    <strong>{radius.label}</strong>
+                    <code>{radius.token}</code>
+                    <small>{radius.value}</small>
+                  </div>
+                ))
+              }
+            </div>
+          </section>
+
+          <section id="boutons" class="ds-section">
+            <header class="ds-section-heading">
+              <p class="ui-kicker">05 / Composants</p>
+              <h2>Boutons</h2>
+              <p>
+                Une action primaire par contexte. Les variantes secondaires
+                organisent les choix sans concurrencer l’objectif principal.
+              </p>
+            </header>
+            <div class="component-demo">
+              <div class="demo-canvas button-showcase">
+                <Button size="lg"
+                  >Action principale <span aria-hidden="true">→</span></Button
+                >
+                <Button variant="secondary">Action secondaire</Button>
+                <Button variant="ghost">Action discrète</Button>
+                <Button disabled>Indisponible</Button>
+              </div>
+              <div class="demo-canvas demo-inverse">
+                <Button variant="inverse">Sur fond sombre</Button>
+                <Button variant="primary" size="sm">Petit bouton</Button>
+              </div>
+              <div class="component-notes">
+                <code>&lt;Button variant="primary" size="lg"&gt;</code>
+                <span>Hauteur tactile minimale : 44 px</span>
+                <span>Rayon : pill</span>
+              </div>
+            </div>
+          </section>
+
+          <section id="badges" class="ds-section">
+            <header class="ds-section-heading">
+              <p class="ui-kicker">06 / Composants</p>
+              <h2>Badges &amp; états</h2>
+              <p>
+                Les badges décrivent une information courte. Ils ne remplacent
+                jamais un bouton ou un lien.
+              </p>
+            </header>
+            <div class="demo-canvas badge-showcase">
+              <Badge>Astro</Badge>
+              <Badge tone="brand">Projet à la une</Badge>
+              <Badge tone="success">
+                <span class="status-dot" aria-hidden="true"></span>Disponible
+              </Badge>
+              <span class="ui-alert"
+                ><strong aria-hidden="true">i</strong>Information contextuelle
+                importante.</span
+              >
+              <span class="ui-alert ui-alert--success"
+                ><strong aria-hidden="true">✓</strong>Modification enregistrée
+                avec succès.</span
+              >
+            </div>
+          </section>
+
+          <section id="cartes" class="ds-section">
+            <header class="ds-section-heading">
+              <p class="ui-kicker">07 / Composants</p>
+              <h2>Cartes</h2>
+              <p>
+                Une carte regroupe un contenu autonome. L’ombre indique une
+                élévation, jamais une simple décoration.
+              </p>
+            </header>
+            <div class="card-showcase">
+              <article class="ui-card">
+                <Badge tone="brand">Standard</Badge>
+                <h3>Surface délimitée</h3>
+                <p>
+                  Bordure subtile, rayon de 24 px et espacement intérieur de 32
+                  px.
+                </p>
+                <a href="#cartes"
+                  >En savoir plus <span aria-hidden="true">→</span></a
+                >
+              </article>
+              <article class="ui-card ui-card--raised">
+                <Badge>Élevée</Badge>
+                <h3>Contenu prioritaire</h3>
+                <p>
+                  Une ombre moyenne sépare la carte de la surface sans alourdir
+                  la composition.
+                </p>
+                <a href="#cartes"
+                  >En savoir plus <span aria-hidden="true">→</span></a
+                >
+              </article>
+              <article class="ui-card ui-card--inverse">
+                <Badge tone="inverse">Inverse</Badge>
+                <h3>Moment éditorial</h3>
+                <p>
+                  Le bleu nuit crée un contraste fort pour une étude de cas ou
+                  un appel à l’action.
+                </p>
+                <a href="#cartes"
+                  >En savoir plus <span aria-hidden="true">→</span></a
+                >
+              </article>
+            </div>
+          </section>
+
+          <section id="formulaires" class="ds-section">
+            <header class="ds-section-heading">
+              <p class="ui-kicker">08 / Composants</p>
+              <h2>Formulaires</h2>
+              <p>
+                Chaque champ possède un libellé visible, une aide optionnelle et
+                un état de focus explicite.
+              </p>
+            </header>
+            <form class="form-showcase" data-demo-form>
+              <label class="ui-field">
+                Nom complet
+                <input class="ui-input" type="text" placeholder="Jean Nguyen" />
+                <small>Utilisé uniquement pour personnaliser la réponse.</small>
+              </label>
+              <label class="ui-field">
+                Type de projet
+                <select class="ui-input">
+                  <option>Site vitrine</option>
+                  <option>Application web</option>
+                  <option>Audit performance</option>
+                </select>
+              </label>
+              <label class="ui-field form-message">
+                Message
+                <textarea
+                  class="ui-input"
+                  rows="4"
+                  placeholder="Quelques mots sur votre besoin…"></textarea>
+              </label>
+              <Button type="submit">Envoyer la demande</Button>
+            </form>
+          </section>
+
+          <section id="accessibilite" class="ds-section">
+            <header class="ds-section-heading">
+              <p class="ui-kicker">09 / Qualité</p>
+              <h2>Accessibilité</h2>
+              <p>
+                L’accessibilité est une contrainte de conception permanente,
+                testée automatiquement et manuellement.
+              </p>
+            </header>
+            <div class="a11y-grid">
+              <article>
+                <strong>4.5:1</strong>
+                <h3>Contraste minimum</h3>
+                <p>Pour tout texte courant et contrôle interactif.</p>
+              </article>
+              <article>
+                <strong>44 px</strong>
+                <h3>Cible tactile</h3>
+                <p>Dimension minimale des actions principales.</p>
+              </article>
+              <article>
+                <strong>100%</strong>
+                <h3>Navigation clavier</h3>
+                <p>Focus visible et ordre de lecture logique.</p>
+              </article>
+              <article>
+                <strong>AA</strong>
+                <h3>Niveau visé</h3>
+                <p>Tests Axe et respect de reduced-motion.</p>
+              </article>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="ds-footer ui-container">
+      <p>Jean Nguyen Interface System · conçu pour durer, pas pour décorer.</p>
+      <a href="#site-content"
+        >Revenir en haut <span aria-hidden="true">↑</span></a
+      >
+    </footer>
+  </div>
+</Layout>
+
+<script is:inline>
+  document
+    .querySelector('[data-demo-form]')
+    ?.addEventListener('submit', (event) => {
+      event.preventDefault();
+    });
+
+  document.querySelectorAll('[data-copy-token]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const token = button.getAttribute('data-copy-token');
+      const status = document.querySelector('.copy-status');
+      if (!token || !status) return;
+
+      try {
+        await navigator.clipboard.writeText(`var(${token})`);
+        status.textContent = `${token} copié dans le presse-papiers.`;
+      } catch {
+        status.textContent = `Token à copier : var(${token})`;
+      }
+    });
+  });
+</script>
+
+<style>
+  .design-system {
+    min-height: 100vh;
+    color: var(--color-text);
+    background: var(--color-canvas);
+  }
+
+  .design-system :global(p) {
+    font-size: inherit;
+  }
+
+  .ds-topbar {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-6);
+    min-height: 76px;
+    padding-inline: var(--gutter);
+    color: var(--color-text-inverse);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background: var(--color-neutral-950);
+  }
+
+  .ds-brand,
+  .ds-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .ds-brand > span {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border-radius: var(--radius-md);
+    color: var(--color-neutral-950);
+    background: var(--color-brand-500);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-black);
+  }
+
+  .ds-brand strong {
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.04em;
+  }
+
+  .ds-meta {
+    color: var(--color-neutral-300);
+    font-size: var(--font-size-xs);
+  }
+
+  .ds-meta > a {
+    margin-left: var(--space-2);
+    color: var(--color-neutral-0);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .ds-hero {
+    padding-block: clamp(5rem, 10vw, 9rem);
+    overflow: hidden;
+    color: var(--color-text-inverse);
+    background:
+      radial-gradient(
+        circle at 82% 20%,
+        rgba(29, 165, 254, 0.27),
+        transparent 30rem
+      ),
+      var(--color-neutral-950);
+  }
+
+  .ds-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.55fr);
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: end;
+  }
+
+  .ds-hero h1 {
+    max-width: 11ch;
+    margin: var(--space-5) 0 0;
+    font-size: var(--font-size-display);
+    font-weight: var(--font-weight-black);
+    letter-spacing: -0.07em;
+    line-height: 0.88;
+  }
+
+  .ds-hero h1 span {
+    color: var(--color-brand-500);
+  }
+
+  .ds-hero-copy {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .ds-hero-copy > p {
+    margin: 0;
+    color: var(--color-neutral-300);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-body);
+  }
+
+  .ds-layout {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: start;
+  }
+
+  .ds-sidebar {
+    position: sticky;
+    top: var(--space-8);
+    display: grid;
+    gap: var(--space-3);
+    padding-block: var(--space-16);
+  }
+
+  .ds-sidebar p {
+    margin: var(--space-4) 0 0;
+    color: var(--color-text-subtle);
+    font-size: 0.68rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .ds-sidebar nav {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .ds-sidebar a {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .ds-sidebar a:hover,
+  .ds-sidebar a:focus-visible {
+    color: var(--color-brand-700);
+    background: var(--color-brand-50);
+  }
+
+  .ds-content {
+    min-width: 0;
+  }
+
+  .ds-section {
+    padding-block: var(--space-section);
+    border-bottom: 1px solid var(--color-border-subtle);
+    scroll-margin-top: var(--space-6);
+  }
+
+  .ds-section-heading {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 720px;
+    margin-bottom: var(--space-10);
+  }
+
+  .ds-section-heading h2 {
+    margin: 0;
+    font-size: var(--font-size-4xl);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-heading);
+  }
+
+  .ds-section-heading > p:last-child {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: var(--line-height-body);
+  }
+
+  .principle-grid,
+  .card-showcase,
+  .a11y-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .principle-card {
+    min-height: 260px;
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+  }
+
+  .principle-card > span {
+    display: block;
+    color: var(--color-brand-700);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-black);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .principle-card h3,
+  .ui-card h3,
+  .a11y-grid h3 {
+    margin: var(--space-8) 0 var(--space-3);
+    font-size: var(--font-size-xl);
+    letter-spacing: -0.025em;
+  }
+
+  .principle-card p,
+  .ui-card p,
+  .a11y-grid p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-body);
+  }
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .color-card {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    text-align: left;
+    background: var(--color-surface);
+    transition:
+      transform var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard);
+  }
+
+  .color-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .color-swatch {
+    display: block;
+    width: 100%;
+    height: 118px;
+    border: 1px solid rgba(7, 17, 31, 0.08);
+    border-radius: var(--radius-md);
+    background: var(--swatch);
+  }
+
+  .color-data {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .color-data strong {
+    font-size: var(--font-size-sm);
+  }
+
+  .color-data code,
+  .color-data small,
+  .copy-status,
+  .type-row code,
+  .type-row span,
+  .spacing-row code,
+  .spacing-row small,
+  .radius-grid code,
+  .radius-grid small,
+  .component-notes {
+    color: var(--color-text-subtle);
+    font-family: var(--font-family-mono);
+    font-size: 0.68rem;
+  }
+
+  .copy-status {
+    min-height: 1.2rem;
+    margin: var(--space-3) 0 0;
+  }
+
+  .type-specimens {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .type-row {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: baseline;
+    padding-block: var(--space-8);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .type-row > div {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .type-row p {
+    margin: 0;
+  }
+
+  .type-display p {
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    font-weight: var(--font-weight-black);
+    letter-spacing: -0.065em;
+    line-height: var(--line-height-tight);
+  }
+
+  .type-heading p {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-black);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-heading);
+  }
+
+  .type-body p {
+    max-width: 64ch;
+    color: var(--color-text-muted);
+    line-height: var(--line-height-body);
+  }
+
+  .type-label p {
+    color: var(--color-brand-700);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  .spacing-list {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .spacing-row {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) 44px;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .spacing-bar {
+    display: block;
+    width: min(100%, calc(var(--space-value) * 4));
+    height: var(--space-3);
+    min-width: var(--space-1);
+    border-radius: var(--radius-pill);
+    background: var(--color-brand-500);
+  }
+
+  .radius-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-12);
+  }
+
+  .radius-grid > div {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .radius-shape {
+    display: block;
+    height: 90px;
+    border: 2px solid var(--color-brand-500);
+    background: var(--color-brand-50);
+  }
+
+  .radius-grid strong {
+    font-size: var(--font-size-sm);
+  }
+
+  .component-demo {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .demo-canvas {
+    padding: var(--space-8);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+  }
+
+  .button-showcase,
+  .badge-showcase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .demo-inverse {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    background: var(--color-neutral-950);
+  }
+
+  .component-notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-inline: var(--space-4);
+  }
+
+  .badge-showcase .ui-alert {
+    flex: 1 1 290px;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 13%, transparent);
+  }
+
+  .ui-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 310px;
+  }
+
+  .ui-card h3 {
+    margin-top: var(--space-10);
+  }
+
+  .ui-card a {
+    margin-top: auto;
+    padding-top: var(--space-8);
+    color: var(--color-brand-700);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .ui-card--inverse h3 {
+    color: var(--color-neutral-0);
+  }
+
+  .ui-card--inverse p {
+    color: var(--color-neutral-300);
+  }
+
+  .ui-card--inverse a {
+    color: var(--color-brand-300);
+  }
+
+  .form-showcase {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+    padding: var(--space-8);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+  }
+
+  .form-message {
+    grid-column: 1 / -1;
+  }
+
+  .form-message textarea {
+    resize: vertical;
+  }
+
+  .form-showcase :global(.ui-button) {
+    justify-self: start;
+  }
+
+  .a11y-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .a11y-grid article {
+    padding: var(--space-6);
+    border-top: 3px solid var(--color-brand-500);
+    background: var(--color-surface);
+  }
+
+  .a11y-grid strong {
+    color: var(--color-brand-700);
+    font-size: var(--font-size-3xl);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .a11y-grid h3 {
+    margin: var(--space-6) 0 var(--space-2);
+    font-size: var(--font-size-md);
+  }
+
+  .ds-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding-block: var(--space-12);
+    color: var(--color-text-subtle);
+    font-size: var(--font-size-xs);
+  }
+
+  .ds-footer p {
+    margin: 0;
+  }
+
+  .ds-footer a {
+    color: var(--color-brand-700);
+    font-weight: var(--font-weight-bold);
+  }
+
+  @media (max-width: 960px) {
+    .ds-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .ds-sidebar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: var(--space-2);
+      overflow-x: auto;
+      margin-inline: calc(var(--gutter) * -1);
+      padding: var(--space-3) var(--gutter);
+      border-bottom: 1px solid var(--color-border-subtle);
+      background: rgba(247, 249, 252, 0.94);
+      backdrop-filter: blur(16px);
+      scrollbar-width: none;
+    }
+
+    .ds-sidebar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ds-sidebar > p {
+      display: none;
+    }
+
+    .ds-sidebar nav {
+      display: flex;
+    }
+
+    .ds-sidebar a {
+      white-space: nowrap;
+    }
+
+    .principle-grid,
+    .card-showcase {
+      grid-template-columns: 1fr;
+    }
+
+    .principle-card {
+      min-height: 0;
+    }
+
+    .a11y-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 700px) {
+    .ds-topbar {
+      min-height: 68px;
+    }
+
+    .ds-brand strong,
+    .ds-meta > span,
+    .ds-meta :global(.ui-badge) {
+      display: none;
+    }
+
+    .ds-hero-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .ds-hero h1 {
+      font-size: clamp(3.3rem, 16vw, 5.5rem);
+    }
+
+    .type-row {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
+    .type-display p {
+      font-size: clamp(2.8rem, 15vw, 4.5rem);
+    }
+
+    .radius-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .spacing-row {
+      grid-template-columns: 92px minmax(0, 1fr) 36px;
+      gap: var(--space-2);
+    }
+
+    .demo-canvas,
+    .form-showcase {
+      padding: var(--space-5);
+    }
+
+    .button-showcase :global(.ui-button),
+    .form-showcase :global(.ui-button) {
+      width: 100%;
+    }
+
+    .form-showcase {
+      grid-template-columns: 1fr;
+    }
+
+    .form-message {
+      grid-column: auto;
+    }
+
+    .a11y-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ds-footer {
+      flex-direction: column;
+    }
+  }
+</style>

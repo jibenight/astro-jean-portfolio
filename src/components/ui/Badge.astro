@@ -1,0 +1,12 @@
+---
+export interface Props extends Record<string, unknown> {
+  tone?: 'neutral' | 'brand' | 'success' | 'inverse';
+  class?: string;
+}
+
+const { tone = 'neutral', class: className = '', ...attributes } = Astro.props;
+const toneClass = tone === 'neutral' ? '' : `ui-badge--${tone}`;
+const classes = `ui-badge ${toneClass} ${className}`.trim();
+---
+
+<span class={classes} {...attributes}><slot /></span>

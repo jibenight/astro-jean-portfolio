@@ -1,6 +1,8 @@
 ---
 import CallPopup from '../components/CallPopup.astro';
 import socialImage from '../assets/images/background-jean-Q100.jpg';
+import '../styles/tokens.css';
+import '../styles/primitives.css';
 
 const {
   title = 'Jean Nguyen — Développeur front-end Astro',
@@ -82,16 +84,6 @@ const structuredData = {
 </html>
 
 <style is:global>
-  :root {
-    --primary-color: #1da5fe;
-    --primary-dark: #075f9f;
-    --text-color: #000;
-    --surface: #fff;
-    --surface-muted: #f4f7fb;
-    --radius-card: 24px;
-    --shadow-card: 0 20px 45px rgba(15, 23, 42, 0.1);
-  }
-
   *,
   *::before,
   *::after {
@@ -99,12 +91,7 @@ const structuredData = {
   }
 
   html {
-    font-family:
-      ui-rounded,
-      'Nunito',
-      system-ui,
-      -apple-system,
-      sans-serif;
+    font-family: var(--font-family-sans);
     color: var(--text-color);
   }
 
@@ -123,19 +110,8 @@ const structuredData = {
   }
 
   :where(a, button, input, select, textarea):focus-visible {
-    outline: 3px solid #075f9f;
+    outline: 3px solid var(--color-focus);
     outline-offset: 3px;
-  }
-
-  button.popup-trigger {
-    font-size: 1.1rem;
-    font-weight: 800;
-    border-radius: 26px;
-    padding: 1.2rem 2.1rem;
-    box-shadow: 0 20px 38px rgba(0, 0, 0, 0.14);
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
   }
 
   .skip-link {
@@ -145,19 +121,14 @@ const structuredData = {
     z-index: 2000;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
-    background: #fff;
-    color: #075f9f;
+    background: var(--color-surface);
+    color: var(--color-brand-700);
     font-weight: 700;
     transform: translateY(-160%);
   }
 
   .skip-link:focus {
     transform: translateY(0);
-  }
-
-  button.popup-trigger:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 22px 40px rgba(0, 0, 0, 0.16);
   }
 
   .sub-title {
@@ -219,7 +190,7 @@ const structuredData = {
     position: absolute;
     right: 0;
     bottom: -10px;
-    color: #1da5fe;
+    color: var(--color-brand-500);
     font-weight: 500;
   }
 

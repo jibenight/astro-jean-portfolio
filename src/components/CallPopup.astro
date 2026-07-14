@@ -1,4 +1,6 @@
 ---
+import Button from './ui/Button.astro';
+
 export interface Props {
   id?: string;
   phone?: string;
@@ -38,11 +40,12 @@ const [emailUser = '', emailDomain = ''] = email.split('@');
       maximum.
     </p>
     <div class="popup-actions">
-      <a class="btn-primary" href={phoneHref}>Appeler</a>
-      <a
-        class="btn-ghost"
+      <Button href={phoneHref}>Appeler</Button>
+      <Button
+        href="#"
+        variant="secondary"
         data-email-user={emailUser}
-        data-email-domain={emailDomain}>Écrire un mail</a
+        data-email-domain={emailDomain}>Écrire un mail</Button
       >
     </div>
   </div>
@@ -122,7 +125,7 @@ const [emailUser = '', emailDomain = ''] = email.split('@');
   .popup-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.45);
+    background: rgba(7, 17, 31, 0.58);
     display: grid;
     place-items: center;
     z-index: 999;
@@ -134,12 +137,12 @@ const [emailUser = '', emailDomain = ''] = email.split('@');
 
   .popup-card {
     position: relative;
-    background: #fff;
+    background: var(--color-surface);
     padding: 1.8rem;
-    border-radius: 24px;
+    border-radius: var(--radius-xl);
     max-width: 480px;
     width: min(90vw, 480px);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
+    box-shadow: var(--shadow-lg);
     display: grid;
     gap: 0.8rem;
   }
@@ -152,7 +155,7 @@ const [emailUser = '', emailDomain = ''] = email.split('@');
     border: none;
     font-size: 1.4rem;
     cursor: pointer;
-    color: #475569;
+    color: var(--color-text-muted);
   }
 
   .popup-actions {
@@ -161,39 +164,12 @@ const [emailUser = '', emailDomain = ''] = email.split('@');
     flex-wrap: wrap;
   }
 
-  .btn-primary,
-  .btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.3rem;
-    border-radius: 12px;
-    font-weight: 700;
-    text-decoration: none;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      background 0.2s ease;
-  }
-
-  .btn-primary {
-    background: linear-gradient(120deg, #0d8ae8, #1da5fe);
-    color: #fff;
-    box-shadow: 0 15px 30px rgba(13, 138, 232, 0.25);
-  }
-
-  .btn-ghost {
-    border: 1px solid rgba(13, 138, 232, 0.3);
-    color: #0d8ae8;
-    background: #f8fbff;
-  }
-
   .eyebrow {
     text-transform: uppercase;
     letter-spacing: 0.18rem;
     font-size: 0.8rem;
     margin: 0;
-    color: #64748b;
+    color: var(--color-text-subtle);
   }
 
   h3 {
@@ -202,7 +178,7 @@ const [emailUser = '', emailDomain = ''] = email.split('@');
 
   .lead {
     margin: 0;
-    color: #4b5563;
+    color: var(--color-text-muted);
   }
 
   @media (max-width: 640px) {
@@ -218,8 +194,7 @@ const [emailUser = '', emailDomain = ''] = email.split('@');
       gap: 0.6rem;
     }
 
-    .btn-primary,
-    .btn-ghost {
+    .popup-actions :global(.ui-button) {
       justify-content: center;
       padding: 0.7rem 1rem;
       border-radius: 14px;

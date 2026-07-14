@@ -1,0 +1,33 @@
+---
+export interface Props extends Record<string, unknown> {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'inverse';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  class: className = '',
+  ...attributes
+} = Astro.props;
+
+const classes =
+  `ui-button ui-button--${variant} ui-button--${size} ${className}`.trim();
+---
+
+{
+  href ? (
+    <a href={href} class={classes} {...attributes}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={classes} {...attributes}>
+      <slot />
+    </button>
+  )
+}
