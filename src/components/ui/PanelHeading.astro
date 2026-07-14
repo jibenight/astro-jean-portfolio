@@ -47,8 +47,8 @@ const { index, label, description } = Astro.props;
     color: var(--color-neutral-0);
     font-size: clamp(3.5rem, 7.4vw, 7.6rem);
     font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 0.86;
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
   }
 
   h2 :global(.accent) {

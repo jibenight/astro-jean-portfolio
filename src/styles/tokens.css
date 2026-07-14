@@ -62,10 +62,10 @@
   --font-weight-medium: 600;
   --font-weight-bold: 750;
   --font-weight-black: 900;
-  --line-height-tight: 0.95;
+  --line-height-tight: 1;
   --line-height-heading: 1.1;
   --line-height-body: 1.6;
-  --letter-spacing-tight: -0.045em;
+  --letter-spacing-tight: -0.025em;
   --letter-spacing-wide: 0.12em;
 
   /* Spacing — 4px base */
