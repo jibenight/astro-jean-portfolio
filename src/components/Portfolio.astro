@@ -4,7 +4,6 @@ import Close from './Close.astro';
 import { getPortfolioProjects } from '../lib/portfolio.js';
 
 const yearsExperience = Math.max(0, new Date().getFullYear() - 2017);
-
 const projects = await getPortfolioProjects();
 const selectedFeatured = projects.filter((project) => project.featured);
 const featuredProjects = [
@@ -19,48 +18,67 @@ const categories = [
   'Tous',
   ...new Set(projects.map((project) => project.category)),
 ];
+
+const techLabels: Record<string, string> = {
+  astro: 'Astro',
+  css3: 'CSS',
+  express: 'Express',
+  ghost: 'Ghost',
+  handlebars: 'Handlebars',
+  html5: 'HTML',
+  js: 'JavaScript',
+  nodejs: 'Node.js',
+  python: 'Python',
+  react: 'React',
+  wordpress: 'WordPress',
+};
+
+const getTechLabel = (tech: string) => techLabels[tech] || tech;
+const getProjectNumber = (index: number) => String(index + 1).padStart(2, '0');
+const getProjectYear = (project: { date: string }) =>
+  String(project.date).slice(0, 4);
 ---
 
 <section id="portfolio" class="portfolio-section">
-  {/* Sécurisation de l'appel onClick */}
   <Close
     onClick="window.closeSection ? window.closeSection('portfolio') : console.warn('closeSection missing')"
   />
-  <div class="container-title">
-    <div class="title">
-      <h2>Portfolio</h2>
-      <p>Case studies</p>
-    </div>
-  </div>
 
-  <div class="portfolio-hero glass">
-    <div class="hero-copy">
-      <p class="eyebrow">
-        Front-end Astro/Tailwind + IA — {yearsExperience}+ ans
-      </p>
-      <h3>Sites Astro rapides, accessibles, optimisés Core Web Vitals.</h3>
-      <p>
-        Intégration front, audits perfs/a11y, automatisation et QA assistée par
-        l’IA. Focus sur des livraisons propres, scalables, avec des stacks
-        légères et maintenables.
-      </p>
-      <div class="hero-stats">
-        <div>
-          <strong>{yearsExperience}+ ans</strong>
-          <span>d’expérience front</span>
-        </div>
-        <div>
-          <strong>Astro/TW</strong>
-          <span>stack cœur</span>
-        </div>
-        <div>
-          <strong>IA</strong>
-          <span>analyse & QA</span>
+  <div class="portfolio-shell">
+    <header class="portfolio-intro">
+      <p class="intro-kicker">Portfolio / 01</p>
+      <div class="intro-grid">
+        <h2>Des sites utiles,<br /><span>rapides</span> et mémorables.</h2>
+        <div class="intro-copy">
+          <p>
+            Je conçois des expériences web légères et maintenables, de la
+            stratégie à la mise en ligne. Chaque projet cherche le juste
+            équilibre entre identité, performance et simplicité d’usage.
+          </p>
+          <a href="#selected-work" class="intro-link">
+            Découvrir les projets <span aria-hidden="true">↓</span>
+          </a>
         </div>
       </div>
-    </div>
-    <div class="hero-filters">
-      <p>Filtrer par stack</p>
+
+      <dl class="portfolio-metrics" aria-label="Chiffres clés du portfolio">
+        <div>
+          <dt>{projects.length}</dt>
+          <dd>projets sélectionnés</dd>
+        </div>
+        <div>
+          <dt>{yearsExperience}+</dt>
+          <dd>années d’expérience</dd>
+        </div>
+        <div>
+          <dt>3</dt>
+          <dd>écosystèmes maîtrisés</dd>
+        </div>
+      </dl>
+    </header>
+
+    <nav class="filter-bar" aria-label="Filtrer les projets">
+      <span class="filter-label">Explorer</span>
       <div class="filter-chips">
         {
           categories.map((category, index) => (
@@ -75,437 +93,1068 @@ const categories = [
           ))
         }
       </div>
-    </div>
-  </div>
-
-  <section class="featured">
-    <div class="section-header">
-      <p class="eyebrow">Focus</p>
-      <h3>Études récentes</h3>
-    </div>
-    <div class="featured-grid">
-      {
-        featuredProjects.map((project) => (
-          <article class="featured-card" data-category={project.category}>
-            <div class="media-frame">
-              {project.imageAsset ? (
-                <Image
-                  src={project.imageAsset}
-                  alt={project.alt || ''}
-                  width={960}
-                  height={540}
-                  format="webp"
-                  quality={90}
-                  loading="lazy"
-                  decoding="async"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              ) : (
-                <div class="media-fallback" aria-hidden="true" />
-              )}
-              <span class="category-pill">{project.category}</span>
-            </div>
-            <div class="featured-content">
-              <div>
-                <h4>{project.title}</h4>
-                <p>{project.creation}</p>
-              </div>
-              <div class="logo-row">
-                {project.logos.map((logo) => (
-                  <img
-                    src={`/icons-dev/${logo}.svg`}
-                    alt={`Logo ${logo}`}
-                    width="48"
-                    height="48"
-                  />
-                ))}
-              </div>
-              <div class="card-actions">
-                <a href={`/projets/${project.id}/`} class="btn-primary">
-                  Voir l’étude de cas
-                </a>
-                <a
-                  href={project.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn-ghost"
-                >
-                  Site
-                </a>
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn-ghost"
-                  >
-                    Repo GitHub
-                  </a>
-                )}
-              </div>
-            </div>
-          </article>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="projects-grid">
-    <div class="section-header">
-      <p class="eyebrow">Archive</p>
-      <h3>Projets livrés</h3>
-    </div>
-    <div class="grid">
-      {
-        archiveProjects.map((project) => (
-          <article class="project-card" data-category={project.category}>
-            <div class="media-frame">
-              {project.imageAsset ? (
-                <Image
-                  src={project.imageAsset}
-                  alt={project.alt || ''}
-                  width={720}
-                  height={480}
-                  format="webp"
-                  quality={80}
-                  loading="lazy"
-                  decoding="async"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              ) : (
-                <div class="media-fallback" aria-hidden="true" />
-              )}
-              <span class="category-pill">{project.category}</span>
-            </div>
-            <div class="project-body">
-              <div>
-                <h4>{project.title}</h4>
-                <p>{project.creation}</p>
-              </div>
-              <div class="logo-row">
-                {project.logos.map((logo) => (
-                  <img
-                    src={`/icons-dev/${logo}.svg`}
-                    alt={`Logo ${logo}`}
-                    width="40"
-                    height="40"
-                  />
-                ))}
-              </div>
-              <div class="card-actions">
-                <a href={`/projets/${project.id}/`} class="btn-primary">
-                  Étude de cas
-                </a>
-                <a
-                  href={project.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn-ghost"
-                >
-                  Site
-                </a>
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn-ghost"
-                  >
-                    Repo GitHub
-                  </a>
-                )}
-              </div>
-            </div>
-          </article>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="cta-card glass">
-    <div>
-      <p class="eyebrow">Encore plus de projets</p>
-      <h3>Besoin d’un audit ou d’un aperçu détaillé ?</h3>
-      <p>
-        Parlons de votre stack actuel, des points de friction et de la roadmap
-        idéale pour accélérer.
+      <p class="filter-status" aria-live="polite">
+        {projects.length} projets affichés
       </p>
-    </div>
-    <button
-      type="button"
-      class="btn-primary popup-trigger"
-      data-open-popup="call-popup"
-      aria-haspopup="dialog"
+    </nav>
+
+    <section
+      id="selected-work"
+      class="portfolio-group selected-work"
+      aria-labelledby="selected-work-title"
     >
-      Prendre contact
-    </button>
-  </section>
+      <header class="group-heading">
+        <div>
+          <p class="group-kicker">Sélection</p>
+          <h3 id="selected-work-title">Projets à la une</h3>
+        </div>
+        <span>{String(featuredProjects.length).padStart(2, '0')} études</span>
+      </header>
+
+      <div class="featured-list">
+        {
+          featuredProjects.map((project, index) => (
+            <article
+              class={`featured-project ${index % 2 === 1 ? 'is-reversed' : ''}`}
+              data-project-card
+              data-category={project.category}
+            >
+              <div class="featured-visual">
+                {project.imageAsset ? (
+                  <Image
+                    src={project.imageAsset}
+                    alt={project.alt || ''}
+                    width={1200}
+                    height={760}
+                    format="webp"
+                    quality={90}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 768px) 100vw, 62vw"
+                  />
+                ) : (
+                  <div class="media-fallback" aria-hidden="true" />
+                )}
+                <span class="visual-number" aria-hidden="true">
+                  {getProjectNumber(index)}
+                </span>
+              </div>
+
+              <div class="featured-copy">
+                <div class="project-overline">
+                  <span>{project.category}</span>
+                  <span>{getProjectYear(project)}</span>
+                </div>
+                <h4>{project.title}</h4>
+                <p class="project-description">
+                  {project.summary || project.creation}
+                </p>
+
+                <p class="project-highlight">
+                  <span>Impact</span>
+                  {project.results[0] ||
+                    (project.status === 'online'
+                      ? 'Projet actuellement en ligne'
+                      : 'Projet archivé')}
+                </p>
+
+                <dl class="project-meta">
+                  <div>
+                    <dt>Rôle</dt>
+                    <dd>{project.role || project.creation}</dd>
+                  </div>
+                  <div>
+                    <dt>Technologies</dt>
+                    <dd>{project.logos.map(getTechLabel).join(' · ')}</dd>
+                  </div>
+                </dl>
+
+                <div class="project-actions">
+                  <a href={`/projets/${project.id}/`} class="case-link">
+                    Voir l’étude de cas <span aria-hidden="true">→</span>
+                  </a>
+                  <div class="external-links">
+                    <a
+                      href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Site <span aria-hidden="true">↗</span>
+                    </a>
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        GitHub <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section
+      class="portfolio-group archive-work"
+      aria-labelledby="archive-work-title"
+    >
+      <header class="group-heading">
+        <div>
+          <p class="group-kicker">Index</p>
+          <h3 id="archive-work-title">Tous les projets</h3>
+        </div>
+        <span>{String(archiveProjects.length).padStart(2, '0')} projets</span>
+      </header>
+
+      <div class="archive-layout">
+        <div class="archive-list">
+          {
+            archiveProjects.map((project, index) => (
+              <article
+                class="archive-item"
+                data-project-card
+                data-category={project.category}
+              >
+                <a
+                  href={`/projets/${project.id}/`}
+                  class="archive-link"
+                  data-preview-target={project.id}
+                >
+                  <span class="archive-number">
+                    {getProjectNumber(featuredProjects.length + index)}
+                  </span>
+                  <span class="archive-mobile-visual">
+                    {project.imageAsset ? (
+                      <Image
+                        src={project.imageAsset}
+                        alt=""
+                        width={720}
+                        height={480}
+                        format="webp"
+                        quality={78}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <span class="media-fallback" aria-hidden="true" />
+                    )}
+                  </span>
+                  <span class="archive-name">
+                    <strong>{project.title}</strong>
+                    <small>{project.creation}</small>
+                  </span>
+                  <span class="archive-category">{project.category}</span>
+                  <span class="archive-year">{getProjectYear(project)}</span>
+                  <span class="archive-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </a>
+              </article>
+            ))
+          }
+        </div>
+
+        <aside class="archive-preview" aria-hidden="true">
+          {
+            archiveProjects.map((project, index) => (
+              <div
+                class={`archive-preview-item ${index === 0 ? 'active' : ''}`}
+                data-preview={project.id}
+              >
+                {project.imageAsset ? (
+                  <Image
+                    src={project.imageAsset}
+                    alt=""
+                    width={920}
+                    height={680}
+                    format="webp"
+                    quality={84}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="36vw"
+                  />
+                ) : (
+                  <div class="media-fallback" />
+                )}
+                <span>{project.title}</span>
+              </div>
+            ))
+          }
+        </aside>
+      </div>
+    </section>
+
+    <section class="portfolio-cta">
+      <p class="group-kicker">Un projet en tête ?</p>
+      <div>
+        <h3>Construisons quelque chose de clair et durable.</h3>
+        <button
+          type="button"
+          class="cta-link popup-trigger"
+          data-open-popup="call-popup"
+          aria-haspopup="dialog"
+        >
+          Démarrer une conversation <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </section>
+  </div>
 </section>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    const chips = document.querySelectorAll('.chip');
-    const cards = document.querySelectorAll('[data-category]');
+    const portfolio = document.querySelector('#portfolio');
+    if (!portfolio) return;
+
+    const chips = [...portfolio.querySelectorAll('[data-filter]')];
+    const projectCards = [...portfolio.querySelectorAll('[data-project-card]')];
+    const groups = [...portfolio.querySelectorAll('.portfolio-group')];
+    const status = portfolio.querySelector('.filter-status');
+    const previewLinks = [
+      ...portfolio.querySelectorAll('[data-preview-target]'),
+    ];
+    const previewItems = [...portfolio.querySelectorAll('[data-preview]')];
+
+    const setPreview = (id) => {
+      previewItems.forEach((item) => {
+        item.classList.toggle('active', item.dataset.preview === id);
+      });
+    };
+
+    const selectFirstVisiblePreview = () => {
+      const firstVisible = previewLinks.find(
+        (link) => !link.closest('[data-project-card]')?.hidden,
+      );
+      if (firstVisible) setPreview(firstVisible.dataset.previewTarget);
+    };
+
+    const applyFilter = (filter) => {
+      let visibleCount = 0;
+
+      projectCards.forEach((card) => {
+        const matches = filter === 'Tous' || card.dataset.category === filter;
+        card.hidden = !matches;
+        if (matches) visibleCount += 1;
+      });
+
+      groups.forEach((group) => {
+        group.hidden = ![...group.querySelectorAll('[data-project-card]')].some(
+          (card) => !card.hidden,
+        );
+      });
+
+      if (status) {
+        status.textContent = `${visibleCount} projet${visibleCount > 1 ? 's' : ''} affiché${visibleCount > 1 ? 's' : ''}`;
+      }
+
+      selectFirstVisiblePreview();
+    };
 
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
-        const filter = chip.dataset.filter;
-
-        chips.forEach((btn) => {
-          const isActive = btn === chip;
-          btn.classList.toggle('active', isActive);
-          btn.setAttribute('aria-pressed', isActive); // Accessibilité
+        chips.forEach((button) => {
+          const active = button === chip;
+          button.classList.toggle('active', active);
+          button.setAttribute('aria-pressed', String(active));
         });
-
-        cards.forEach((card) => {
-          const match = filter === 'Tous' || card.dataset.category === filter;
-          // Utilisation de la classe .hidden-card définie en global
-          card.classList.toggle('hidden-card', !match);
-        });
+        applyFilter(chip.dataset.filter || 'Tous');
       });
+    });
+
+    previewLinks.forEach((link) => {
+      const activate = () => setPreview(link.dataset.previewTarget);
+      link.addEventListener('pointerenter', activate);
+      link.addEventListener('focus', activate);
     });
   });
 </script>
 
 <style>
   #portfolio {
+    --portfolio-bg: #07111f;
+    --portfolio-panel: #f5f7fb;
+    --portfolio-ink: #0b1524;
+    --portfolio-muted: #93a4b8;
+    --portfolio-blue: #1da5fe;
     position: fixed;
     inset: 0;
+    z-index: 100;
     overflow-y: auto;
-    padding: 2rem clamp(1rem, 4vw, 5rem);
-    background: radial-gradient(circle at top right, #eef6ff, #f7f8fc 45%);
-    z-index: 100; /* Assure que le portfolio passe au-dessus du reste */
+    padding: 0 clamp(1rem, 4vw, 4rem) 4rem;
+    color: #f8fbff;
+    background:
+      radial-gradient(
+        circle at 82% 4%,
+        rgba(29, 165, 254, 0.2),
+        transparent 30rem
+      ),
+      radial-gradient(
+        circle at 5% 45%,
+        rgba(29, 165, 254, 0.08),
+        transparent 26rem
+      ),
+      var(--portfolio-bg);
+    scrollbar-gutter: stable;
   }
 
-  #portfolio p {
-    line-height: 1.4;
+  .portfolio-shell {
+    width: min(100%, 1320px);
+    margin: 0 auto;
   }
 
-  .glass {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 32px;
-    box-shadow: 0 35px 80px rgba(15, 23, 42, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+  .portfolio-intro {
+    padding: clamp(6rem, 12vh, 10rem) 0 clamp(3.5rem, 8vh, 6rem);
   }
 
-  .portfolio-hero {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
-    margin-bottom: 3rem;
-    align-items: center;
-  }
-
-  .eyebrow {
+  .intro-kicker,
+  .group-kicker {
+    margin: 0;
+    color: var(--portfolio-blue);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    letter-spacing: 0.2rem;
-    font-size: 0.85rem;
-    color: #7a7a7a;
   }
 
-  .hero-stats {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
+  .intro-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.55fr);
+    gap: clamp(2rem, 7vw, 7rem);
+    align-items: end;
     margin-top: 1.5rem;
   }
 
-  .hero-stats strong {
-    display: block;
-    font-size: 1.8rem;
+  .intro-grid h2 {
+    max-width: 11ch;
+    margin: 0;
+    color: #fff;
+    font-size: clamp(3.5rem, 7.4vw, 7.6rem);
+    font-weight: 850;
+    letter-spacing: -0.07em;
+    line-height: 0.86;
+  }
+
+  .intro-grid h2 span {
+    color: var(--portfolio-blue);
+  }
+
+  .intro-copy {
+    padding-bottom: 0.35rem;
+  }
+
+  .intro-copy p {
+    margin: 0;
+    color: #bac6d4;
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+  }
+
+  .intro-link {
+    display: inline-flex;
+    gap: 0.65rem;
+    align-items: center;
+    margin-top: 1.5rem;
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .intro-link span {
+    color: var(--portfolio-blue);
+  }
+
+  .portfolio-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: clamp(3rem, 7vw, 6rem) 0 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .portfolio-metrics div {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0 1.5rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .portfolio-metrics div:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .portfolio-metrics dt {
+    color: #fff;
+    font-size: clamp(1.7rem, 3vw, 2.7rem);
+    font-weight: 850;
+    line-height: 1;
+  }
+
+  .portfolio-metrics dd {
+    margin: 0;
+    color: var(--portfolio-muted);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .filter-bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.2rem;
+    align-items: center;
+    margin: 0 calc(clamp(1rem, 4vw, 4rem) * -1) 5rem;
+    padding: 1rem clamp(1rem, 4vw, 4rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(7, 17, 31, 0.88);
+    backdrop-filter: blur(18px);
+  }
+
+  .filter-label,
+  .filter-status {
+    color: var(--portfolio-muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .filter-status {
+    margin: 0;
+    margin-right: 2.5rem;
+    white-space: nowrap;
   }
 
   .filter-chips {
     display: flex;
+    gap: 0.55rem;
     flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-top: 1rem;
   }
 
   .chip {
+    min-height: 40px;
+    padding: 0.55rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 999px;
-    border: 1px solid rgba(13, 138, 232, 0.25);
-    padding: 0.45rem 1.1rem;
-    cursor: pointer;
-    background: transparent;
-    font-weight: 600;
-    color: #0d8ae8;
-    transition: 0.2s ease;
+    color: #c4cfdb;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 750;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .chip:hover,
+  .chip:focus-visible {
+    color: #fff;
+    border-color: rgba(29, 165, 254, 0.7);
   }
 
   .chip.active {
-    background: linear-gradient(120deg, #0d8ae8, #1da5fe);
-    color: #fff;
-    border-color: transparent;
+    color: #06101d;
+    border-color: var(--portfolio-blue);
+    background: var(--portfolio-blue);
   }
 
-  .featured,
-  .projects-grid {
-    margin-bottom: 3rem;
+  .portfolio-group {
+    margin-bottom: clamp(5rem, 10vw, 9rem);
   }
 
-  .section-header {
-    margin-bottom: 1rem;
-  }
-
-  .featured-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .featured-card,
-  .project-card {
-    border-radius: 28px;
-    box-shadow: 0 25px 65px rgba(0, 0, 0, 0.12);
-    overflow: hidden;
+  .group-heading {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
     gap: 1rem;
-    padding: 1.2rem 1.2rem 1.5rem;
-    background: #fff;
-    transition:
-      transform 0.25s ease,
-      box-shadow 0.25s ease;
+    margin-bottom: 2rem;
   }
 
-  .project-card {
-    gap: 0.8rem;
+  .group-heading h3 {
+    margin: 0.35rem 0 0;
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 4rem);
+    letter-spacing: -0.045em;
+    line-height: 1;
   }
 
-  .media-frame {
-    position: relative;
-    border-radius: 24px;
+  .group-heading > span {
+    color: var(--portfolio-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .featured-list {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .featured-project {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.72fr);
+    grid-template-areas: 'visual copy';
+    min-height: 520px;
     overflow: hidden;
-    aspect-ratio: 16 / 9;
-    background: #e4ecf8;
+    border-radius: 18px;
+    color: var(--portfolio-ink);
+    background: var(--portfolio-panel);
+    box-shadow: 0 35px 90px rgba(0, 0, 0, 0.2);
   }
 
-  .media-frame :is(img, picture) {
-    position: absolute;
-    inset: 0;
+  .featured-project.is-reversed {
+    grid-template-columns: minmax(320px, 0.72fr) minmax(0, 1.45fr);
+    grid-template-areas: 'copy visual';
+  }
+
+  .featured-visual {
+    position: relative;
+    grid-area: visual;
+    min-height: 420px;
+    overflow: hidden;
+    background: #dfe7ef;
+  }
+
+  .featured-visual :global(img),
+  .archive-mobile-visual :global(img),
+  .archive-preview-item :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .category-pill {
+  .featured-visual :global(img) {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background: rgba(17, 24, 39, 0.85);
-    color: #fff;
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    font-size: 0.85rem;
+    inset: 0;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .featured-content,
-  .project-body {
+  .visual-number {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(4rem, 9vw, 9rem);
+    font-weight: 900;
+    letter-spacing: -0.08em;
+    line-height: 0.85;
+    text-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .featured-copy {
+    grid-area: copy;
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    padding: clamp(1.75rem, 4vw, 3.4rem);
   }
 
-  .logo-row {
+  .project-overline {
     display: flex;
-    gap: 0.65rem;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    color: #557086;
+    font-size: 0.76rem;
+    font-weight: 850;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .featured-copy h4 {
+    margin: 1.25rem 0 0;
+    font-size: clamp(2.2rem, 4vw, 4.5rem);
+    letter-spacing: -0.06em;
+    line-height: 0.95;
+  }
+
+  .project-description {
+    margin: 1.2rem 0 0;
+    color: #475d70;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .project-highlight {
+    display: grid;
+    gap: 0.3rem;
+    margin: 1.7rem 0 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--portfolio-blue);
+    color: #172b3d;
+    font-size: 0.95rem;
+    font-weight: 750;
+  }
+
+  .project-highlight span {
+    color: #698092;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .project-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    margin: 1.7rem 0 0;
+    padding: 1.25rem 0;
+    border-top: 1px solid #cfdae3;
+    border-bottom: 1px solid #cfdae3;
+  }
+
+  .project-meta div {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0.75rem;
+  }
+
+  .project-meta dt {
+    color: #758b9c;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .project-meta dd {
+    margin: 0;
+    color: #172b3d;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .project-actions {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1.6rem;
   }
 
-  .logo-row img {
-    width: 56px;
-    height: 56px;
-    object-fit: contain;
-    padding: 6px;
-    border-radius: 14px;
-    background: rgba(13, 138, 232, 0.06);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  .case-link {
+    display: inline-flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.9rem 1.25rem;
+    border-radius: 999px;
+    color: #fff;
+    background: var(--portfolio-ink);
+    font-size: 0.88rem;
+    font-weight: 800;
   }
 
-  .card-actions {
+  .case-link span,
+  .cta-link span {
+    color: var(--portfolio-blue);
+    transition: transform 0.2s ease;
+  }
+
+  .external-links {
     display: flex;
     gap: 0.8rem;
-    flex-wrap: wrap;
   }
 
-  .btn-primary {
-    background: linear-gradient(120deg, #0d8ae8, #1da5fe);
-    color: #fff;
-    border-radius: 99px;
-    padding: 0.9rem 1.6rem;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1rem;
-    border: none;
+  .external-links a {
+    color: #52697b;
+    font-size: 0.8rem;
+    font-weight: 800;
   }
 
-  .cta-card .btn-primary {
-    font-size: 1.5rem;
-  }
-
-  .btn-ghost {
-    border-radius: 12px;
-    padding: 0.6rem 1.2rem;
-    text-decoration: none;
-    font-weight: 600;
-    border: 1px solid rgba(13, 138, 232, 0.4);
-    color: #0d8ae8;
-    text-align: center;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .projects-grid .grid {
+  .archive-layout {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
   }
 
-  .link {
-    color: #0d8ae8;
-    text-decoration: none;
-    font-weight: 600;
-    margin-top: auto;
+  .archive-list {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
   }
 
-  .cta-card {
-    padding: 2rem;
-    display: flex;
-    gap: 1.5rem;
+  .archive-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .archive-link {
+    display: grid;
+    grid-template-columns:
+      3rem minmax(170px, 1fr) minmax(110px, 0.45fr)
+      4rem 2rem;
+    gap: 1rem;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    min-height: 94px;
+    color: #dce5ee;
+    transition:
+      color 0.2s ease,
+      padding 0.25s ease,
+      background 0.2s ease;
   }
 
-  /* IMPORTANT : :global() empêche Astro de renommer cette classe.
-     C'est vital car elle est ajoutée via JS, pas présente dans le HTML initial. */
-  :global(.hidden-card) {
+  .archive-number,
+  .archive-year,
+  .archive-category {
+    color: #71859a;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .archive-name {
+    display: grid;
+    gap: 0.28rem;
+  }
+
+  .archive-name strong {
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    letter-spacing: -0.025em;
+  }
+
+  .archive-name small {
+    display: -webkit-box;
+    overflow: hidden;
+    color: #71859a;
+    font-size: 0.76rem;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .archive-arrow {
+    color: var(--portfolio-blue);
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+  }
+
+  .archive-mobile-visual {
+    display: none;
+  }
+
+  .archive-preview {
+    position: sticky;
+    top: 7.5rem;
+    height: min(58vh, 520px);
+    min-height: 380px;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #111e2d;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+  }
+
+  .archive-preview-item {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(1.035);
+    transition:
+      opacity 0.35s ease,
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .archive-preview-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 55%, rgba(0, 0, 0, 0.72));
+  }
+
+  .archive-preview-item.active {
+    z-index: 1;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .archive-preview-item span {
+    position: absolute;
+    z-index: 2;
+    right: 1.5rem;
+    bottom: 1.3rem;
+    left: 1.5rem;
+    color: #fff;
+    font-size: clamp(1.3rem, 2.4vw, 2.2rem);
+    font-weight: 850;
+    letter-spacing: -0.04em;
+  }
+
+  .media-fallback {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background:
+      linear-gradient(135deg, rgba(29, 165, 254, 0.35), transparent), #15273a;
+  }
+
+  .portfolio-cta {
+    margin-bottom: 3rem;
+    padding: clamp(2rem, 5vw, 4.5rem);
+    overflow: hidden;
+    border-radius: 18px;
+    color: #06101d;
+    background:
+      radial-gradient(
+        circle at 85% 15%,
+        rgba(255, 255, 255, 0.45),
+        transparent 18rem
+      ),
+      var(--portfolio-blue);
+  }
+
+  .portfolio-cta .group-kicker {
+    color: #064775;
+  }
+
+  .portfolio-cta > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 2rem;
+    margin-top: 1.2rem;
+  }
+
+  .portfolio-cta h3 {
+    max-width: 12ch;
+    margin: 0;
+    font-size: clamp(2.2rem, 5vw, 5.2rem);
+    letter-spacing: -0.06em;
+    line-height: 0.95;
+  }
+
+  .cta-link {
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 1rem 1.35rem;
+    border-radius: 999px;
+    color: #fff;
+    background: #07111f;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 850;
+  }
+
+  :global([data-project-card][hidden]),
+  :global(.portfolio-group[hidden]) {
     display: none !important;
   }
 
-  @media (max-width: 768px) {
-    .portfolio-hero {
-      grid-template-columns: 1fr;
+  @media (hover: hover) and (min-width: 769px) {
+    .featured-project:hover .featured-visual :global(img) {
+      transform: scale(1.035);
     }
 
-    .hero-stats {
-      flex-direction: column;
+    .case-link:hover span,
+    .case-link:focus-visible span,
+    .cta-link:hover span,
+    .cta-link:focus-visible span,
+    .archive-link:hover .archive-arrow,
+    .archive-link:focus-visible .archive-arrow {
+      transform: translateX(4px);
     }
 
-    .card-actions {
-      flex-direction: column;
+    .archive-link:hover,
+    .archive-link:focus-visible {
+      padding-inline: 0.75rem;
+      color: #fff;
+      background: rgba(29, 165, 254, 0.08);
     }
   }
 
-  @media (min-width: 769px) {
-    .featured-card:hover,
-    .project-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.14);
+  @media (max-width: 900px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .intro-copy {
+      max-width: 52ch;
+    }
+
+    .filter-bar {
+      grid-template-columns: auto 1fr;
+    }
+
+    .filter-status {
+      display: none;
+    }
+
+    .featured-project,
+    .featured-project.is-reversed {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'visual'
+        'copy';
+    }
+
+    .archive-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .archive-preview {
+      display: none;
+    }
+
+    .archive-link {
+      grid-template-columns:
+        3rem minmax(0, 1fr) minmax(100px, 0.35fr)
+        3.5rem 2rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #portfolio {
+      padding-inline: 1rem;
+    }
+
+    .portfolio-intro {
+      padding-top: 6.5rem;
+    }
+
+    .intro-grid h2 {
+      font-size: clamp(3.2rem, 16vw, 5rem);
+      line-height: 0.9;
+    }
+
+    .portfolio-metrics {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem 0;
+    }
+
+    .portfolio-metrics div {
+      padding: 0 1rem;
+    }
+
+    .portfolio-metrics div:nth-child(3) {
+      grid-column: 1 / -1;
+      padding: 1.25rem 0 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-left: 0;
+    }
+
+    .filter-bar {
+      display: block;
+      margin-right: -1rem;
+      margin-left: -1rem;
+      padding-inline: 1rem;
+    }
+
+    .filter-label {
+      display: block;
+      margin-bottom: 0.7rem;
+    }
+
+    .filter-chips {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-right: 4.5rem;
+      padding-bottom: 0.25rem;
+      scrollbar-width: none;
+    }
+
+    .filter-chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chip {
+      flex: 0 0 auto;
+    }
+
+    .group-heading {
+      align-items: start;
+    }
+
+    .group-heading > span {
+      padding-top: 0.25rem;
+    }
+
+    .featured-project {
+      min-height: 0;
+    }
+
+    .featured-visual {
+      min-height: 260px;
+    }
+
+    .featured-copy {
+      padding: 1.5rem;
+    }
+
+    .featured-copy h4 {
+      font-size: clamp(2.35rem, 12vw, 3.6rem);
+    }
+
+    .project-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .case-link {
+      justify-content: space-between;
+    }
+
+    .external-links {
+      justify-content: space-between;
+    }
+
+    .archive-link {
+      grid-template-columns: 2.2rem minmax(0, 1fr) 1.5rem;
+      gap: 0.75rem;
+      padding: 1.15rem 0;
+    }
+
+    .archive-mobile-visual {
+      display: block;
+      grid-column: 2 / -1;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #122337;
+    }
+
+    .archive-name {
+      grid-column: 2;
+    }
+
+    .archive-category,
+    .archive-year {
+      display: none;
+    }
+
+    .archive-arrow {
+      grid-column: 3;
+      grid-row: 2;
+    }
+
+    .portfolio-cta > div {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .cta-link {
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured-visual :global(img),
+    .archive-preview-item,
+    .archive-arrow,
+    .case-link span,
+    .cta-link span,
+    .chip {
+      transition: none;
     }
   }
 </style>

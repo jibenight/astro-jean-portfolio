@@ -47,6 +47,48 @@ test('rend une étude de cas et le sitemap', async ({ page, request }) => {
   await expect(sitemap.text()).resolves.toContain('/projets/get-password/');
 });
 
+test('filtre le portfolio et conserve son accessibilité', async ({ page }) => {
+  await page.goto('/#portfolio');
+
+  await expect(
+    page.getByRole('heading', {
+      level: 2,
+      name: /Des sites utiles, rapides et mémorables/,
+    }),
+  ).toBeVisible();
+
+  const wordpressFilter = page.getByRole('button', {
+    name: 'WordPress',
+    exact: true,
+  });
+  await wordpressFilter.click();
+  await expect(wordpressFilter).toHaveAttribute('aria-pressed', 'true');
+
+  const visibleProjects = page.locator(
+    '#portfolio [data-project-card]:visible',
+  );
+  expect(await visibleProjects.count()).toBeGreaterThan(0);
+  await expect
+    .poll(() =>
+      visibleProjects.evaluateAll((projects) =>
+        projects.every(
+          (project) => project.getAttribute('data-category') === 'WordPress',
+        ),
+      ),
+    )
+    .toBe(true);
+
+  const results = await new AxeBuilder({ page })
+    .include('#portfolio')
+    .withTags(['wcag2a', 'wcag2aa'])
+    .analyze();
+  const severeViolations = results.violations.filter(({ impact }) =>
+    ['critical', 'serious'].includes(impact ?? ''),
+  );
+
+  expect(severeViolations).toEqual([]);
+});
+
 test('ne présente aucune violation d’accessibilité grave', async ({ page }) => {
   await page.goto('/');
   const results = await new AxeBuilder({ page })
