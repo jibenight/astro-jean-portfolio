@@ -108,10 +108,11 @@ navigateur : `decap-server` et l’option `local_backend` ne sont pas utilisés.
 ### Utilisation en production
 
 La configuration utilise le backend GitHub pour le dépôt
-`jibenight/astro-jean-portfolio` sur la branche `main`. Pour un usage personnel,
-la connexion peut se faire avec un jeton GitHub depuis l’écran de connexion.
-Pour plusieurs utilisateurs, configurez un client OAuth compatible Sveltia.
-Les comptes autorisés doivent disposer d’un accès en écriture au dépôt.
+`jibenight/astro-jean-portfolio` sur la branche `main`. La connexion passe par
+le Worker officiel Sveltia CMS Authenticator déployé sur Cloudflare ; seul OAuth
+GitHub est proposé, sans saisie de jeton personnel. Cloudflare Access protège en
+plus le chemin `/admin`. Les comptes autorisés doivent disposer d’un accès en
+écriture au dépôt.
 
 ### Enrichir une étude de cas
 

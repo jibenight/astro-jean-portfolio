@@ -4,6 +4,8 @@ backend:
   name: github
   repo: jibenight/astro-jean-portfolio
   branch: main
+  base_url: https://sveltia-cms-auth.jean-nguyen.workers.dev
+  auth_methods: [oauth]
 
 media_folder: src/assets/images/images_portfolio
 public_folder: /images/portfolio

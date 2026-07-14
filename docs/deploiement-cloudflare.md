@@ -138,6 +138,26 @@ de Cloudflare. Dans ce cas :
 - commande de déploiement : `npx wrangler deploy` ;
 - variable de build : `PUBLIC_TURNSTILE_SITE_KEY`.
 
+## 8. Protéger Sveltia avec Cloudflare Access
+
+L’authentificateur OAuth officiel est déployé séparément à l’adresse
+`https://sveltia-cms-auth.jean-nguyen.workers.dev`. Il contient les secrets
+`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` et `ALLOWED_DOMAINS`. La configuration
+Sveltia utilise cette adresse comme `base_url` et n’autorise que la méthode
+`oauth`.
+
+Dans **Cloudflare Zero Trust > Access > Applications**, créer une application
+**Self-hosted** nommée `Portfolio — Administration` avec les deux chemins :
+
+- `jean-nguyen.dev/admin`
+- `jean-nguyen.dev/admin/*`
+
+Créer une politique **Allow** limitée à l’adresse
+`account@jean-nguyen.dev`. Le code à usage unique par email peut servir de
+méthode de connexion. Ne pas protéger le domaine `workers.dev` de
+l’authentificateur : son callback OAuth doit rester joignable depuis la fenêtre
+Sveltia.
+
 ## Retour arrière
 
 Ne supprimer le déploiement o2switch qu’après plusieurs jours de production
