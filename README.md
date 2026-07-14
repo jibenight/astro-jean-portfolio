@@ -61,3 +61,33 @@ API_PORT=3001
 - `npm run dev` / `npm run build` / `npm run preview`
 - `npm run api` (serveur Express)
 - `npm run astro ...` (add, check, etc.)
+
+## Administration du portfolio avec Sveltia CMS
+
+L’interface d’administration est disponible à l’adresse `/admin/`. Elle permet
+de créer, modifier et supprimer les projets stockés dans
+`src/content/portfolio`, ainsi que de gérer leurs images.
+
+### Utilisation locale
+
+Lancez le proxy local compatible Sveltia/Decap CMS dans un terminal :
+
+```sh
+npx decap-server
+```
+
+Puis lancez Astro dans un autre terminal :
+
+```sh
+npm run dev
+```
+
+Ouvrez ensuite http://localhost:4321/admin/. Les modifications sont écrites
+directement dans le dépôt local et restent à committer avec Git.
+
+### Utilisation en production
+
+La configuration utilise le backend `git-gateway` sur la branche `main`. Le
+site déployé doit donc activer un service compatible Git Gateway et autoriser
+les comptes qui pourront accéder à `/admin/`. Les modifications enregistrées
+depuis l’interface seront alors committées dans le dépôt GitHub.

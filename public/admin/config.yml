@@ -1,0 +1,79 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+media_folder: src/assets/images/images_portfolio
+public_folder: ../assets/images/images_portfolio
+
+collections:
+  - name: portfolio
+    label: Portfolio
+    label_singular: Projet
+    folder: src/content/portfolio
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    summary: "{{title}} — {{date}}"
+    sortable_fields:
+      fields: [title, date]
+      default:
+        field: date
+        direction: descending
+    fields:
+      - label: Titre
+        name: title
+        widget: string
+      - label: Texte alternatif de l’image
+        name: alt
+        widget: string
+        hint: Décrivez brièvement l’image pour l’accessibilité.
+      - label: Image
+        name: image
+        widget: image
+      - label: Description de la réalisation
+        name: creation
+        widget: text
+      - label: Date
+        name: date
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+      - label: Technologies
+        name: logos
+        widget: select
+        multiple: true
+        options:
+          - { label: Astro, value: astro }
+          - { label: CSS, value: css3 }
+          - { label: Express, value: express }
+          - { label: Ghost, value: ghost }
+          - { label: Handlebars, value: handlebars }
+          - { label: HTML, value: html5 }
+          - { label: JavaScript, value: js }
+          - { label: Node.js, value: nodejs }
+          - { label: Python, value: python }
+          - { label: React, value: react }
+          - { label: WordPress, value: wordpress }
+      - label: URL du site
+        name: href
+        widget: string
+        pattern:
+          - "^https?://.+"
+          - Saisissez une URL commençant par http:// ou https://
+      - label: URL GitHub
+        name: github
+        widget: string
+        required: false
+        pattern:
+          - "^https?://.+"
+          - Saisissez une URL commençant par http:// ou https://
+      - label: Icône GitHub (champ historique)
+        name: logogit
+        widget: hidden
+        required: false
+        default: github
